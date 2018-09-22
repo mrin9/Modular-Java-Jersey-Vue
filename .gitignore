@@ -9,6 +9,6 @@
 apache-tomcat*
 **/apache-tomcat*/
 **/.vscode
-**/.iml
+**/*.iml
 **/node_modules/
 **/dist/
