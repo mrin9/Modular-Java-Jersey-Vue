@@ -3,7 +3,7 @@ package com.app;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class AppStartup implements ServletContextListener {
+public class WebContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {

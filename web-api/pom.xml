@@ -196,7 +196,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.app.WebServer</mainClass>
+                            <mainClass>com.app.TomcatStarter</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>

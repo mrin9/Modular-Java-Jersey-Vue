@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
 
     <listener>
-        <listener-class>com.app.AppStartup</listener-class>
+        <listener-class>com.app.WebContextListener</listener-class>
     </listener>
 
     <!-- Jersey Servlet -->
@@ -16,7 +16,7 @@
         </servlet-class>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>com.app.RestServer</param-value>
+            <param-value>com.app.JerseyApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -28,7 +28,7 @@
     <!-- Swagger Servlet -->
     <servlet>
         <servlet-name>SwaggerConfigServlet</servlet-name>
-        <servlet-class>com.app.config.SwaggerConfigServlet</servlet-class>
+        <servlet-class>com.app.SwaggerConfigServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
 

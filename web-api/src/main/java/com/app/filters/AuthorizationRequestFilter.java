@@ -17,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import com.app.RestServer;
 import org.apache.commons.lang3.StringUtils;
 import javax.ws.rs.Priorities;
 

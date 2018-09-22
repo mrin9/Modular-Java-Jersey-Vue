@@ -11,11 +11,11 @@ import com.app.filters.AuthorizationRequestFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.slf4j.*;
 
-public class RestServer extends ResourceConfig {
-    private static Logger log = LoggerFactory.getLogger(RestServer.class);
+public class JerseyApplication extends ResourceConfig {
+    private static Logger log = LoggerFactory.getLogger(JerseyApplication.class);
 
-    public RestServer(@Context ServletContext servletContext) throws Exception {
-        log.info(String.format("\n\n *** Jersey Container Initiated *** \n REST APIs available at : localhost:%s/api \n *** *** *** *** *** \n", String.valueOf(WebServer.port)));
+    public JerseyApplication(@Context ServletContext servletContext) throws Exception {
+        log.info(String.format("\n\n *** Jersey Container Initiated *** \n REST APIs available at : localhost:%s/api \n *** *** *** *** *** \n", String.valueOf(TomcatStarter.port)));
 
         // Register Features
         register(JacksonFeature.class );

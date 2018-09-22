@@ -4,7 +4,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.app.util.HibernateUtil;
 import com.github.lalyos.jfiglet.FigletFont;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
@@ -13,17 +12,14 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
-import org.apache.catalina.LifecycleException;
 import org.slf4j.*;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.io.*;
 
 
-public class WebServer {
-    private static Logger log = LoggerFactory.getLogger(WebServer.class);
+public class TomcatStarter {
+    private static Logger log = LoggerFactory.getLogger(TomcatStarter.class);
 
     public static int port=8080;
     private static Tomcat tomcat;
@@ -32,7 +28,7 @@ public class WebServer {
     private static File getRootFolder() {
         try {
             File root;
-            String runningJarPath = WebServer.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().replaceAll("\\\\", "/");
+            String runningJarPath = TomcatStarter.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().replaceAll("\\\\", "/");
             int lastIndexOf = runningJarPath.lastIndexOf("/target/");
             if (lastIndexOf < 0) {
                 root = new File("");
@@ -65,7 +61,7 @@ public class WebServer {
         }
         StandardContext ctx = (StandardContext) tomcat.addWebapp("", webContentFolder.getAbsolutePath());
         //Set execution independent of current thread context classloader (compatibility with exec:java mojo)
-        ctx.setParentClassLoader(WebServer.class.getClassLoader());
+        ctx.setParentClassLoader(TomcatStarter.class.getClassLoader());
 
         System.out.println("configuring app with basedir: " + webContentFolder.getAbsolutePath());
 

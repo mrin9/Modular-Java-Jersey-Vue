@@ -62,6 +62,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
+                    <!-- Source & target are not necessary, but intelliJ depends on it to set the Java compiler settings  -->
+                    <source>10</source>
+                    <target>10</target>
                     <release>10</release>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
