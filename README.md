@@ -1,6 +1,8 @@
 
 ## Modular Java, Embedded Tomcat, Fat Jar, Vue JS 
-Application to demonstrate various parts of a service oriented RESTfull application. 
+Application to demonstrate various parts of a service oriented RESTfull application.
+
+
 
 ### Technology Stack
 Component          | Technology
@@ -15,3 +17,18 @@ In Memory DB       | H2
 Persistence        | JPA (Using Hibernate)
 Frontend           | Vue JS
 Client Build Tools | vue-cli, Webpack, yarn
+
+## Prerequisites
+Ensure you have this installed before proceeding further
+- Java 10+
+- Maven 3.5.4+
+
+
+### Easy Build and Run 
+```bash
+# Maven Build : Navigate to the root folder where pom.xml is present 
+mvn clean install
+
+# Run The App 
+java -jar ./web-api/target/modules/web-api-1.0.0.jar
+```
