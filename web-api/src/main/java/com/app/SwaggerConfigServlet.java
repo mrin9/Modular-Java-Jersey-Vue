@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
 import io.swagger.models.Info;
@@ -14,6 +15,7 @@ import io.swagger.models.Swagger;
 import io.swagger.models.auth.ApiKeyAuthDefinition;
 import io.swagger.models.auth.In;
 
+@WebServlet(name = "SwaggerConfigServlet", loadOnStartup=2, urlPatterns = {"/apidocs"})
 public class SwaggerConfigServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

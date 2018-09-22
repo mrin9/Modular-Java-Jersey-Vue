@@ -1,6 +1,7 @@
 package com.app;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Context;
 
 import com.app.util.HibernateUtil;
@@ -11,6 +12,7 @@ import com.app.filters.AuthorizationRequestFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.slf4j.*;
 
+@ApplicationPath("/api/*")
 public class JerseyApplication extends ResourceConfig {
     private static Logger log = LoggerFactory.getLogger(JerseyApplication.class);
 

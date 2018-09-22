@@ -4,13 +4,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
 
+
+
+    <!-- ::: ::: WEB-CONTEXT LISTNER ::: ::: -->
+    <!-- Defined using annotation @WebListener (so commented)
     <listener>
         <listener-class>com.app.WebContextListener</listener-class>
     </listener>
+    -->
 
-    <!-- Jersey Servlet -->
+
+
+    <!-- ::: ::: JERSEY SERVLET ::: ::: -->
+    <!--
+        There a three main different ways (in a servlet container) to configure Jersey (JAX-RS):
+            With only web.xml
+            With both web.xml and an Application or ResourceConfig class
+            With only an Application or ResourceConfig class annotated with @ApplicationPath.
+     -->
+    <!-- Defined using annotation @ApplicationPath("/api/*") (so commented)
     <servlet>
-        <servlet-name>RestServer</servlet-name>
+        <servlet-name>JerseyApplication</servlet-name>
         <servlet-class>
             org.glassfish.jersey.servlet.ServletContainer
         </servlet-class>
@@ -21,16 +35,21 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RestServer</servlet-name>
+        <servlet-name>JerseyApplication</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+    -->
 
-    <!-- Swagger Servlet -->
+
+
+    <!-- ::: ::: SWAGGER SERVLET ::: ::: -->
+    <!-- Defined using annotation @WebServlet(name = "SwaggerConfigServlet", loadOnStartup=2)
     <servlet>
         <servlet-name>SwaggerConfigServlet</servlet-name>
         <servlet-class>com.app.SwaggerConfigServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
+    -->
 
 
     <!-- START - The Welcome File List -->
