@@ -1,0 +1,14 @@
+**/.DS_Store
+**/target
+**/.classpath
+**/.project
+**/.settings
+**/.idea/
+**/nbactions.xml
+**/nb-configuration.xml
+apache-tomcat*
+**/apache-tomcat*/
+**/.vscode
+**/.iml
+**/node_modules/
+**/dist/

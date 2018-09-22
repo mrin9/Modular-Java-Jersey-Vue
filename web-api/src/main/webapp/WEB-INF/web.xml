@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+
+    <listener>
+        <listener-class>com.app.AppStartup</listener-class>
+    </listener>
+
+    <!-- Jersey Servlet -->
+    <servlet>
+        <servlet-name>RestServer</servlet-name>
+        <servlet-class>
+            org.glassfish.jersey.servlet.ServletContainer
+        </servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.app.RestServer</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RestServer</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Swagger Servlet -->
+    <servlet>
+        <servlet-name>SwaggerConfigServlet</servlet-name>
+        <servlet-class>com.app.config.SwaggerConfigServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+
+    <!-- START - The Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>/welcome.html</welcome-file>
+        <welcome-file>/index.htm </welcome-file>
+        <welcome-file>/index.jsp </welcome-file>
+    </welcome-file-list>
+    <!-- END - The Welcome File List -->
+    
+    <error-page>
+        <error-code>400</error-code>
+        <location>/page_error.html?code=400</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/page_error.html?code=404</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/page_error.html?code=500</location>
+    </error-page>
+
+</web-app>
