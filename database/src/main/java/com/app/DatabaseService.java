@@ -1,5 +1,7 @@
 package com.app;
 
+import java.io.File;
+import java.io.InputStream;
 import java.sql.*;
 import org.h2.tools.Server;
 import org.slf4j.*;
@@ -46,5 +48,16 @@ public class DatabaseService {
 
         return dbConnection;
     }
+
+    public static File getSqlScriptResourceAsFile( String fileName){
+        File file = new File(DatabaseService.class.getClassLoader().getResource(fileName).getFile());
+        return file;
+    }
+
+    public static InputStream getSqlScriptResourceAsStream(String fileName){
+        InputStream is = DatabaseService.class.getClassLoader().getResourceAsStream(fileName);
+        return is;
+    }
+
 
 }

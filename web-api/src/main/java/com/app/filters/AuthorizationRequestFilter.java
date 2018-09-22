@@ -59,7 +59,6 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
             return;
         }
 
-
         String jwtToken = reqContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isBlank(jwtToken)) {
             resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Empty Token" );

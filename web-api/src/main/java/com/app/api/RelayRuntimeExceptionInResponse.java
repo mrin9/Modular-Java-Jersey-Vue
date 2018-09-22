@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * If Rest API controller or Jersey framework throws any exception then this ExceptionMapper
- * class will catch the exception and returns JSON error response.
+ * class will catch the exception and returns JSON error response. (instead of sending some web-server generated html content)
  *
  */
 @Provider
@@ -29,7 +29,7 @@ public class RelayRuntimeExceptionInResponse implements ExceptionMapper<RuntimeE
 
         log.error(stackTrace);
 
-        resp.setErrorMessage(e.getMessage()!=null?e.getMessage():e.toString());
+        resp.setErrorMessage( (e.getClass().getCanonicalName() +":-")  +  (e.getMessage()!=null?e.getMessage():e.toString()));
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(resp)
                 .type(MediaType.APPLICATION_JSON)
