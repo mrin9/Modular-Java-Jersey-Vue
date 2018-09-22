@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.mrin</groupId>
-        <artifactId>order-processing-jersey-elastic</artifactId>
+        <artifactId>jersey-vue</artifactId>
         <version>1.0.0</version>
     </parent>
     <groupId>com.mrin</groupId>
@@ -45,11 +45,6 @@
         </dependency>
 
         <!-- Jars build from other projects within this module -->
-        <dependency>
-            <groupId>com.mrin</groupId>
-            <artifactId>data-generator</artifactId>
-            <version>1.0.0</version>
-        </dependency>
         <dependency>
             <groupId>com.mrin</groupId>
             <artifactId>database</artifactId>

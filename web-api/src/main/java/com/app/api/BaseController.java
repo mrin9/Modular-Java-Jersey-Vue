@@ -8,22 +8,10 @@ import javax.ws.rs.core.SecurityContext;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 
+// These Request parameters will appear for all the controllers which extends from base controller
 @ApiImplicitParams({
-    @ApiImplicitParam(
-        name="timezone-id",
-        paramType="header",
-        dataType="string",
-        example="America/Los_Angeles",
-        required=false,
-        value="If provided, date/time will be converted to the given timezone, else date and time will be in GMT"
-    ),
-    @ApiImplicitParam(
-        name="locale",
-        paramType="header",
-        dataType="string",
-        example="en-US",
-        required=false,
-        value="if provided, this will override 'Accept-Language' header"
+    @ApiImplicitParam(name="locale", paramType="header", dataType="string",  example="en-US", required=false,
+        value="when provided, this will given more preference than 'Accept-Language' header from browser"
     )
 })
 
@@ -40,5 +28,4 @@ public class BaseController {
 
     @Context
     protected SecurityContext securityContext;
-
 }

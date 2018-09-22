@@ -11,7 +11,7 @@ import javax.persistence.Column;
 @Entity
 public class User implements Serializable, Principal {
     @Id  @Column(name = "USER_ID") private String userId;
-    private String password = "";
+    private String password;
     private String company;
     private @Column(name = "FIRST_NAME") String firstName;
     private @Column(name = "LAST_NAME")  String lastName;
