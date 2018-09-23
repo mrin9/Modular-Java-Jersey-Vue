@@ -1,20 +1,14 @@
 package com.app.api.product;
 
 import com.app.api.BaseController;
-import com.app.model.customer.CustomerResponse;
 import com.app.model.product.ProductModel;
 import com.app.model.product.ProductResponse;
-import com.app.model.user.LoginResponse;
-import com.app.model.user.User;
-import com.app.model.user.UserListResponse;
-import com.app.model.user.UserOutputModel;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -22,7 +16,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,7 +27,7 @@ public class ProductController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get list of products")
+    @ApiOperation(value = "Get list of products", response = ProductResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getProductList(
         @ApiParam(value="Product Id") @QueryParam("id") int id,

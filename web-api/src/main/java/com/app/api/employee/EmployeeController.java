@@ -17,7 +17,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,7 +28,7 @@ public class EmployeeController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get list of employees")
+    @ApiOperation(value = "Get list of employees", response = EmployeeResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getEmployeeList(
         @ApiParam(value="Employee Id") @QueryParam("id") int id,

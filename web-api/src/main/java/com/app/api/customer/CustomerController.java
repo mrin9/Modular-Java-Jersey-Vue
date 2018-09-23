@@ -3,17 +3,12 @@ package com.app.api.customer;
 import com.app.api.BaseController;
 import com.app.model.customer.CustomerModel;
 import com.app.model.customer.CustomerResponse;
-import com.app.model.user.LoginResponse;
-import com.app.model.user.User;
-import com.app.model.user.UserListResponse;
-import com.app.model.user.UserOutputModel;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -21,7 +16,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,7 +27,7 @@ public class CustomerController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get list of customers")
+    @ApiOperation(value = "Get list of customers", response = CustomerResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getCustomerList(
         @ApiParam(value="Customer Id") @QueryParam("id") int id,
