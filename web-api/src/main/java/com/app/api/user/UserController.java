@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Projections;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -35,21 +36,32 @@ public class UserController extends BaseController {
     @ApiOperation(value = "Get list of users")
     @RolesAllowed({"ADMIN"})
     public Response getUserList(
-        @ApiParam(value="Page No", example="0") @DefaultValue("0")  @QueryParam("page") int page,
-        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("size") int size,
+        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") Long page,
+        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") Long pageSize,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Role", allowableValues="USER,ADMIN") @QueryParam("role") String role,
-        @ApiParam(value="First Name") @QueryParam("first-name") String firstName
+        @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName
     ) {
         // Fill hibernate search by example user
+        Long recordFrom=0L;
         User searchUser = new User();
         if (StringUtils.isNotBlank(userId)){ searchUser.setUserId(userId); }
         if (StringUtils.isNotBlank(role)){ searchUser.setRole(role); }
         if (StringUtils.isNotBlank(firstName)){ searchUser.setFirstName(firstName); }
+        if (page<=0){
+            page = 1L;
+            recordFrom = (page-1L)*page;
+        }
+        if (pageSize<=0){
+            pageSize =20L;
+        }
 
         // Execute the Hibernate Query
         Example userExample = Example.create(searchUser);
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(User.class).add(userExample);
+        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(User.class);
+        criteria.add(userExample);
+        criteria.setFirstResult( (int) (long)recordFrom);
+        criteria.setMaxResults(  (int) (long)pageSize);
         List<User> userList = criteria.list();
 
         // Fill the result into userOutput list
@@ -59,8 +71,12 @@ public class UserController extends BaseController {
             userFoundList.add(usrOutput);
         }
 
+        criteria.setProjection(Projections.rowCount());
+        Long count = (Long) criteria.uniqueResult(); //TODO: I am getting count of all the user what I need is count of users based on the criteria
+
         UserListResponse resp = new UserListResponse();
         resp.setList(userFoundList);
+        resp.setPageStats(count,pageSize, page,"");
         resp.setSuccessMessage("List of users");
         return Response.ok(resp).build();
     }
