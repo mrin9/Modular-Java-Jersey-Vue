@@ -1,6 +1,8 @@
 package com.app.api.order;
 
 import com.app.api.BaseController;
+import com.app.model.order.OrderModel;
+import com.app.model.order.OrderResponse;
 import com.app.model.user.LoginResponse;
 import com.app.model.user.User;
 import com.app.model.user.UserListResponse;
@@ -13,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
@@ -30,73 +33,56 @@ public class OrderController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get list of users")
+    @ApiOperation(value = "Get list of orders and order-details")
     @RolesAllowed({"ADMIN"})
-    public Response getUserList(
-        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") Long page,
-        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") Long pageSize,
-        @ApiParam(value="User Id") @QueryParam("user-id") String userId,
-        @ApiParam(value="Role", allowableValues="USER,ADMIN") @QueryParam("role") String role,
-        @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName
+    public Response getOrderList(
+        @ApiParam(value="Order Id") @QueryParam("order-id") int orderId,
+        @ApiParam(value="Customer Id") @QueryParam("customer-id") int customerId,
+        @ApiParam(value="Employee Id") @QueryParam("employee-id") int employeeId,
+        @ApiParam(value="Payment Type", allowableValues="Check, Cash, Card") @QueryParam("payment-type") String paymentType,
+        @ApiParam(value="Order Status", allowableValues="On Hold, Shipped, Complete, New") @QueryParam("order-status") String orderStatus,
+        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
+        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize
     ) {
-        // Fill hibernate search by example user
-        Long recordFrom=0L;
-        User searchUser = new User();
-        if (StringUtils.isNotBlank(userId)){ searchUser.setUserId(userId); }
-        if (StringUtils.isNotBlank(role)){ searchUser.setRole(role); }
-        if (StringUtils.isNotBlank(firstName)){ searchUser.setFirstName(firstName); }
+        int recordFrom=0;
+        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(OrderModel.class);
+        if (orderId > 0) {
+            criteria.add(Restrictions.eq("orderId",  orderId ));
+        }
+        if (customerId > 0) {
+            criteria.add(Restrictions.eq("customerId",  customerId ));
+        }
+        if (employeeId > 0) {
+            criteria.add(Restrictions.eq("employeeId",  employeeId ));
+        }
+        if (StringUtils.isNotBlank(paymentType)) {
+            criteria.add(Restrictions.eq("payementType",  paymentType ));
+        }
+        if (StringUtils.isNotBlank(orderStatus)) {
+            criteria.add(Restrictions.eq("orderStatus",  orderStatus ));
+        }
         if (page<=0){
-            page = 1L;
-            recordFrom = (page-1L)*page;
+            page = 1;
         }
-        if (pageSize<=0){
-            pageSize =20L;
+        if (pageSize<=0 || pageSize > 1000){
+            pageSize =20;
         }
+        recordFrom = (page-1) * pageSize;
 
         // Execute the Hibernate Query
-        Example userExample = Example.create(searchUser);
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(User.class);
-        criteria.add(userExample);
-        criteria.setFirstResult( (int) (long)recordFrom);
-        criteria.setMaxResults(  (int) (long)pageSize);
-        List<User> userList = criteria.list();
-
-        // Fill the result into userOutput list
-        List userFoundList = new ArrayList<UserOutputModel>();
-        for (User tmpUser : userList) {
-            UserOutputModel usrOutput = new UserOutputModel(tmpUser);
-            userFoundList.add(usrOutput);
-        }
+        criteria.setFirstResult((int) (long)recordFrom);
+        criteria.setMaxResults((int) (long)pageSize);
+        List<OrderModel> orderFoundList = criteria.list();
 
         criteria.setProjection(Projections.rowCount());
-        Long count = (Long) criteria.uniqueResult(); //TODO: I am getting count of all the user what I need is count of users based on the criteria
+        int totalRows = Math.toIntExact((Long) criteria.uniqueResult());
 
-        UserListResponse resp = new UserListResponse();
-        resp.setList(userFoundList);
-        resp.setPageStats(count,pageSize, page,"");
-        resp.setSuccessMessage("List of users");
+        OrderResponse resp = new OrderResponse();
+        resp.setList(orderFoundList);
+        resp.setPageStats(totalRows, pageSize, page,"");
+        resp.setSuccessMessage("List of orders");
         return Response.ok(resp).build();
     }
-
-    @GET
-    @Path("/logged-user")
-    @RolesAllowed({"USER"})
-    @ApiOperation(value = "Get Details of Logged in User")
-    public Response getLoggedInUser() {
-
-        User userFromToken = (User)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
-        UserOutputModel userOutput = new UserOutputModel(userFromToken);
-
-        LoginResponse resp = new LoginResponse();
-        resp.setData(userOutput);
-        resp.setSuccessMessage("Current Logged in User Details");
-        return Response.ok(resp).build();
-    }
-
-
-
-
-
 
 
 }

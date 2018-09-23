@@ -1,8 +1,9 @@
-package com.app.api.customer;
+package com.app.api.product;
 
 import com.app.api.BaseController;
-import com.app.model.customer.CustomerModel;
 import com.app.model.customer.CustomerResponse;
+import com.app.model.product.ProductModel;
+import com.app.model.product.ProductResponse;
 import com.app.model.user.LoginResponse;
 import com.app.model.user.User;
 import com.app.model.user.UserListResponse;
@@ -25,63 +26,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Path("customers")
-@Api(value = "Customers")
+@Path("products")
+@Api(value = "Products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CustomerController extends BaseController {
+public class ProductController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get list of customers")
+    @ApiOperation(value = "Get list of products")
     @RolesAllowed({"ADMIN"})
-    public Response getCustomerList(
-        @ApiParam(value="Customer Id") @QueryParam("id") int id,
-        @ApiParam(value="Company") @QueryParam("company") String company,
-        @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName,
-        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
-        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize
+    public Response getProductList(
+        @ApiParam(value="Product Id") @QueryParam("id") int id,
+        @ApiParam(value="Category",allowableValues = "Camera, Laptop, Tablet, Phone") @QueryParam("category") String category,
+        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")    @QueryParam("page") int page,
+        @ApiParam(value="Items in each page", example="20")     @DefaultValue("20")   @QueryParam("page-size") int pageSize
     ) {
 
         int recordFrom=0;
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(CustomerModel.class);
+        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(ProductModel.class);
 
         if (id > 0){
             criteria.add(Restrictions.eq("id",  id ));
         }
-        if (StringUtils.isNotBlank(company)){
-            criteria.add(Restrictions.eq("company",  company ));
-        }
-        if (StringUtils.isNotBlank(firstName)){
-            criteria.add(Restrictions.eq("firstName",  firstName ));
+        if (StringUtils.isNotBlank(category)){
+            criteria.add(Restrictions.eq("category",  category ));
         }
         if (page<=0){
             page = 1;
         }
-        if (pageSize<=0 || pageSize > 1000){
-            pageSize =20;
+        if (pageSize <= 0 || pageSize > 1000){
+            pageSize = 20;
         }
         recordFrom = (page-1) * pageSize;
 
         // Execute the Hibernate Query
         criteria.setFirstResult( (int) (long)recordFrom);
         criteria.setMaxResults(  (int) (long)pageSize);
-        List<CustomerModel> customerList = criteria.list();
+        List<ProductModel> productList = criteria.list();
 
         criteria.setProjection(Projections.rowCount());
         int rowCount = Math.toIntExact((Long) criteria.uniqueResult());
 
-        CustomerResponse resp = new CustomerResponse();
-        resp.setList(customerList);
+        ProductResponse resp = new ProductResponse();
+        resp.setList(productList);
         resp.setPageStats(rowCount, pageSize, page,"");
-        resp.setSuccessMessage("List of customers");
+        resp.setSuccessMessage("List of products");
         return Response.ok(resp).build();
     }
-
-
-
-
-
-
 
 }

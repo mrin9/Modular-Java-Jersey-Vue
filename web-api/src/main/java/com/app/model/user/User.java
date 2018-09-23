@@ -10,11 +10,11 @@ import javax.persistence.Column;
 
 @Entity
 public class User implements Serializable, Principal {
-    @Id  @Column(name = "USER_ID") private String userId;
+    @Id  @Column(name = "user_id") private String userId;
     private String password;
     private String company;
-    private @Column(name = "FIRST_NAME") String firstName;
-    private @Column(name = "LAST_NAME")  String lastName;
+    @Column(name = "first_name") private  String firstName;
+    @Column(name = "last_name") private   String lastName;
     private String email;
 
     @JsonIgnore private String phone;

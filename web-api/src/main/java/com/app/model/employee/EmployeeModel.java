@@ -6,21 +6,20 @@ import javax.persistence.*;
 @Table(name = "employees")
 public class EmployeeModel {
 
-    @Id
-    private Integer id;
-    private String  lastName;
-    private String  firstName;
+    @Id private Integer id;
+    @Column(name = "last_name") private String  lastName;
+    @Column(name = "first_name") private String  firstName;
     private String  email;
     private String  avatar;
-    private String  jobTitle;
+    @Column(name = "job_title") private String  jobTitle;
     private String  department;
-    private Integer managerId;
+    @Column(name = "manager_id") private Integer managerId;
     private String  phone;
     private String  address1;
     private String  address2;
     private String  city;
     private String  state;
-    private String  postalCode;
+    @Column(name = "postal_code") private String  postalCode;
     private String  country;
 
 

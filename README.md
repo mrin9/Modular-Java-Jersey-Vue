@@ -32,3 +32,8 @@ mvn clean install
 # Run The App 
 java -jar ./web-api/target/modules/web-api-1.0.0.jar
 ```
+
+##### Once the App is running
+[URL for API Docs](http://localhost:8080/api-docs/index.html)
+[URL to Access H2 DB](http://localhost:8082)
+[URL for REST APIs](http://localhost:8080/api)

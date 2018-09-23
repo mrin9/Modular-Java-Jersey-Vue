@@ -6,17 +6,16 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "products")
 public class ProductModel {
-    @Id
-    private Integer id;
-    private String  productCode;
-    private String  productName;
-    private String  description;
-    private Long    standardCost;
-    private Long    listPrice;
-    private Integer targetLevel;
-    private Integer reorderLevel;
-    private Integer minimumReorderQuantity;
-    private String  quantityPerUnit;
+    @Id private Integer id;
+    @Column(name = "product_code")      private String  productCode;
+    @Column(name = "product_name")      private String  productName;
+    @Column(name = "description")       private String  description;
+    @Column(name = "standard_cost")     private Long    standardCost;
+    @Column(name = "list_price")        private Long    listPrice;
+    @Column(name = "target_level")      private Integer targetLevel;
+    @Column(name = "reorder_level")     private Integer reorderLevel;
+    @Column(name = "quantity_per_unit") private String  quantityPerUnit;
+    @Column(name = "minimum_reorder_quantity") private Integer minimumReorderQuantity;
     private Integer discontinued;
     @ApiModelProperty(allowableValues = "Camera, Laptop, Tablet, Phone") private String category;
 

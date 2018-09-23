@@ -35,25 +35,25 @@ public class UserController extends BaseController {
     @ApiOperation(value = "Get list of users")
     @RolesAllowed({"ADMIN"})
     public Response getUserList(
-        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") Long page,
-        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") Long pageSize,
+        @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
+        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Role", allowableValues="USER,ADMIN") @QueryParam("role") String role,
         @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName
     ) {
         // Fill hibernate search by example user
-        Long recordFrom=0L;
+        int recordFrom=0;
         User searchUser = new User();
         if (StringUtils.isNotBlank(userId)){ searchUser.setUserId(userId); }
         if (StringUtils.isNotBlank(role)){ searchUser.setRole(role); }
         if (StringUtils.isNotBlank(firstName)){ searchUser.setFirstName(firstName); }
         if (page<=0){
-            page = 1L;
-            recordFrom = (page-1L)*page;
+            page = 1;
         }
-        if (pageSize<=0){
-            pageSize =20L;
+        if (pageSize<=0 || pageSize > 1000){
+            pageSize =20;
         }
+        recordFrom = (page-1) * pageSize;
 
         // Execute the Hibernate Query
         Example userExample = Example.create(searchUser);
@@ -71,11 +71,11 @@ public class UserController extends BaseController {
         }
 
         criteria.setProjection(Projections.rowCount());
-        Long count = (Long) criteria.uniqueResult(); //TODO: I am getting count of all the user what I need is count of users based on the criteria
+        int totalRows = Math.toIntExact((Long) criteria.uniqueResult()); //TODO: I am getting count of all the user what I need is count of users based on the criteria
 
         UserListResponse resp = new UserListResponse();
         resp.setList(userFoundList);
-        resp.setPageStats(count,pageSize, page,"");
+        resp.setPageStats(totalRows, pageSize, page,"");
         resp.setSuccessMessage("List of users");
         return Response.ok(resp).build();
     }

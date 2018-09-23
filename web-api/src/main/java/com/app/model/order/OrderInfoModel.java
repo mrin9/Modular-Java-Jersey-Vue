@@ -5,24 +5,26 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.*;
 import java.math.*;
 
+@Entity
+@Table(name = "order_info")
 public class OrderInfoModel {
     @Id
-    private Integer orderId;
-    private Integer employeeId;
-    private Integer customerId;
-    private Date    orderDate;
-    private Date    shippedDate;
-    private Date    paidDate;
-    private String  shipName;
-    private String  shipAddress1;
-    private String  shipAddress2;
-    private String  shipCity;
-    private String  shipState;
-    private String  shipPostalCode;
-    private String  shipCountry;
-    private BigDecimal shippingFee;
-    @ApiModelProperty(allowableValues = "Check, Cash, Card") private String paymentType;
-    @ApiModelProperty(allowableValues = "On Hold, Shipped, Complete, New")private String orderStatus;
+    @Column(name = "order_id")      private Integer orderId;
+    @Column(name = "employee_id")   private Integer employeeId;
+    @Column(name = "customer_id")   private Integer customerId;
+    @Column(name = "order_date")    private Date    orderDate;
+    @Column(name = "shipped_date")  private Date    shippedDate;
+    @Column(name = "paid_date")     private Date    paidDate;
+    @Column(name = "ship_name")     private String  shipName;
+    @Column(name = "ship_address1") private String  shipAddress1;
+    @Column(name = "ship_address2") private String  shipAddress2;
+    @Column(name = "ship_city")     private String  shipCity;
+    @Column(name = "ship_state")    private String  shipState;
+    @Column(name = "ship_postal_code") private String  shipPostalCode;
+    @Column(name = "ship_country")  private String  shipCountry;
+    @Column(name = "shipping_fee")  private BigDecimal shippingFee;
+    @Column(name = "payment_type") @ApiModelProperty(allowableValues = "Check, Cash, Card") private String paymentType;
+    @Column(name = "order_status") @ApiModelProperty(allowableValues = "On Hold, Shipped, Complete, New")private String orderStatus;
 
     private String customerName;
     private String customerPhone;
