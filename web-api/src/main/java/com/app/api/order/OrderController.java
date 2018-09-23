@@ -1,7 +1,6 @@
-package com.app.api.user;
+package com.app.api.order;
 
 import com.app.api.BaseController;
-import com.app.model.BaseResponse;
 import com.app.model.user.LoginResponse;
 import com.app.model.user.User;
 import com.app.model.user.UserListResponse;
@@ -15,7 +14,6 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Path("users")
-@Api(value = "Users")
+@Path("orders")
+@Api(value = "Orders")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UserController extends BaseController {
+public class OrderController extends BaseController {
 
     @GET
     @Path("")

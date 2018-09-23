@@ -1,7 +1,6 @@
-package com.app.api.user;
+package com.app.api.customer;
 
 import com.app.api.BaseController;
-import com.app.model.BaseResponse;
 import com.app.model.user.LoginResponse;
 import com.app.model.user.User;
 import com.app.model.user.UserListResponse;
@@ -15,7 +14,6 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,15 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Path("users")
-@Api(value = "Users")
+@Path("customers")
+@Api(value = "Customers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UserController extends BaseController {
+public class CustomerController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get list of users")
+    @ApiOperation(value = "Get list of customers")
     @RolesAllowed({"ADMIN"})
     public Response getUserList(
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") Long page,
