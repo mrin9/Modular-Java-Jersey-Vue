@@ -1,5 +1,7 @@
 package com.app.api;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +27,12 @@ public class RelayRuntimeExceptionInResponse implements ExceptionMapper<RuntimeE
     @Override
     public Response toResponse(RuntimeException e) {
         BaseResponse resp = new BaseResponse();
-        String stackTrace = Stream.of(e.getStackTrace()).map((a) -> a.toString()).collect(Collectors.joining("' , '",  "[ '",  "' ]"));
+        String stackTrace="";
+        //stackTrace = Stream.of(e.getStackTrace()).map((a) -> a.toString()).collect(Collectors.joining("' , '",  "[ '",  "' ]"));
+
+        StringWriter exceptions = new StringWriter();
+        e.printStackTrace(new PrintWriter(exceptions));
+        stackTrace = exceptions.toString();
 
         log.error(stackTrace);
 

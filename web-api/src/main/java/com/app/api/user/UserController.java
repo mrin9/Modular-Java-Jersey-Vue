@@ -11,17 +11,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Criteria;
+import org.hibernate.*;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.app.util.HibernateUtil.getSessionFactory;
 
 
 @Path("users")
@@ -41,7 +44,7 @@ public class UserController extends BaseController {
         @ApiParam(value="Role", allowableValues="USER,ADMIN") @QueryParam("role") String role,
         @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName
     ) {
-        // Fill hibernate search by example user
+        // Fill hibernate search by example user (Hibernate Query-by-example way of searching )
         int recordFrom=0;
         User searchUser = new User();
         if (StringUtils.isNotBlank(userId)){ searchUser.setUserId(userId); }
@@ -57,7 +60,7 @@ public class UserController extends BaseController {
 
         // Execute the Hibernate Query
         Example userExample = Example.create(searchUser);
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(User.class);
+        Criteria criteria = getSessionFactory().openSession().createCriteria(User.class);
         criteria.add(userExample);
         criteria.setFirstResult( (int) (long)recordFrom);
         criteria.setMaxResults(  (int) (long)pageSize);
@@ -96,7 +99,52 @@ public class UserController extends BaseController {
     }
 
 
+    @DELETE
+    @Path("{userId}")
+    @ApiOperation(value = "Delete a user by id", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN"})
+    public Response deleteUser(@ApiParam(value="User Id") @PathParam("userId") String userId) {
 
+        BaseResponse resp = new BaseResponse();
+
+        if (StringUtils.isBlank(userId)){
+            resp.setErrorMessage("Must provide a valid ID");
+            return Response.ok(resp).build();
+        }
+
+        String hql = "delete User where userId = :userId";
+        Query q = getSessionFactory().openSession().createQuery(hql).setParameter("userId", userId);
+        try {
+            q.executeUpdate();
+        }
+        catch (ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot delete User - Database constraints are violated");
+            return Response.ok(resp).build();
+        }
+        resp.setSuccessMessage("Deleted");
+        return Response.ok(resp).build();
+    }
+
+    @POST
+    @Path("")
+    @ApiOperation(value = "Add a User", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN"})
+    public Response addUser(User user) {
+
+        BaseResponse resp = new BaseResponse();
+        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            hbrSession.beginTransaction();
+            hbrSession.save(user);
+            hbrSession.getTransaction().commit();
+        }
+        catch (HibernateException | ConstraintViolationException  e) {
+            resp.setErrorMessage("Cannot add User - " + e.getMessage() + ", " +e.getCause().getMessage());
+        }
+
+        return Response.ok(resp).build();
+    }
 
 
 

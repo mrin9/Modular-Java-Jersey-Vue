@@ -6,6 +6,7 @@ import java.security.Principal;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -55,7 +56,7 @@ public class User implements Serializable, Principal {
     @JsonIgnore // This getter is duplicate of getId but is must for all classes that implements java.security.Principal
     public String getName() {return userId;}
 
-    public String getFullName(){ return this.firstName + " " + this.lastName; }
+    @JsonIgnore @Transient public String getFullName(){ return this.firstName + " " + this.lastName; }
 
     public String getUserId() {return userId;}
     public void setUserId(String userId) { this.userId = userId; }

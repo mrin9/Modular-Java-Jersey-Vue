@@ -1,6 +1,7 @@
 package com.app.api.product;
 
 import com.app.api.BaseController;
+import com.app.model.BaseResponse;
 import com.app.model.product.ProductModel;
 import com.app.model.product.ProductResponse;
 import com.app.util.HibernateUtil;
@@ -9,10 +10,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -66,6 +69,33 @@ public class ProductController extends BaseController {
         resp.setPageStats(rowCount, pageSize, page,"");
         resp.setSuccessMessage("List of products");
         return Response.ok(resp).build();
+    }
+
+    @DELETE
+    @Path("{productId}")
+    @ApiOperation(value = "Delete a product by id", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN"})
+    public Response deleteProduct(@ApiParam(value="Product Id") @PathParam("productId") int id) {
+
+        BaseResponse resp = new BaseResponse();
+
+        if (id <= 0){
+            resp.setErrorMessage("Must provide a valid ID");
+            return Response.ok(resp).build();
+        }
+
+        String hql = "delete ProductModel where id = :id";
+        Query q = HibernateUtil.getSessionFactory().openSession().createQuery(hql).setParameter("id", id);
+        try {
+            q.executeUpdate();
+        }
+        catch (ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot delete product - Database constraints are violated");
+            return Response.ok(resp).build();
+        }
+        resp.setSuccessMessage("Deleted");
+        return Response.ok(resp).build();
+
     }
 
 }
