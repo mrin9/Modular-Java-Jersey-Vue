@@ -1,13 +1,10 @@
 package com.app.api.user;
 
 import javax.annotation.security.PermitAll;
-import javax.servlet.http.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import javax.ws.rs.container.ContainerRequestContext;
 
 import com.app.model.user.*;
-import com.app.util.Constants;
 import org.apache.commons.lang3.StringUtils;
 
 import io.swagger.annotations.*;
@@ -19,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.Query;
 import com.app.util.TokenUtil;
+import org.slf4j.Logger;
 
 
 @Path("/authenticate")
@@ -26,8 +24,7 @@ import com.app.util.TokenUtil;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthenticationController extends BaseController {
-    private static org.slf4j.Logger log = LoggerFactory.getLogger(AuthenticationController.class);
-
+    private static Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     @POST
     @PermitAll

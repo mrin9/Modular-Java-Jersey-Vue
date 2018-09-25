@@ -4,6 +4,7 @@ import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
+import com.app.model.product.ProductModel;
 import com.app.model.user.*;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -83,7 +85,7 @@ public class UserController extends BaseController {
 
     @GET
     @Path("/logged-user")
-    @RolesAllowed({"USER"})
+    @RolesAllowed({"CUSTOMER", "SUPPORT"})
     @ApiOperation(value = "Get Details of Logged in User")
     public Response getLoggedInUser() {
 
@@ -96,6 +98,40 @@ public class UserController extends BaseController {
         return Response.ok(resp).build();
     }
 
+    @GET
+    @Path("{userId}")
+    @RolesAllowed({"CUSTOMER", "SUPPORT"})
+    @ApiOperation(value = "Get Details of a User by id")
+    public Response getUserDetailsById(@ApiParam(value="User Id") @PathParam("userId") String userId) {
+        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(UserViewModel.class);
+
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
+        criteria.add(Restrictions.eq("userId",  userId ));
+        UserViewModel userView = (UserViewModel)criteria.uniqueResult();
+        UserResponse resp = new UserResponse();
+
+        if (userView!=null) {
+            if (userFromToken.getRole().equalsIgnoreCase("ADMIN") || userFromToken.getUserId().equals(userId)) {
+                //For Admins and Own-Id - Just remove the password
+                userView.setPassword("");
+            } else {
+                // If not a ADMIN or not his own id then strip all the data and just send the id
+                userView.setEmployeeId(0);
+                userView.setCustomerId(0);
+                userView.setPassword("");
+                userView.setRole("");
+                userView.setEmail("");
+                userView.setFullName("");
+            }
+            UserOutputModel userOutput = new UserOutputModel(userView);
+            resp.setData(userOutput);
+            resp.setSuccessMessage("User Details");
+        }
+        else{
+            resp.setErrorMessage("User Not Found");
+        }
+        return Response.ok(resp).build();
+    }
 
     @DELETE
     @Path("{userId}")
@@ -126,29 +162,6 @@ public class UserController extends BaseController {
         resp.setSuccessMessage("Deleted");
         return Response.ok(resp).build();
     }
-
-    /*
-    @POST
-    @Path("")
-    @ApiOperation(value = "Register as a New User", response = BaseResponse.class)
-    @RolesAllowed({"ADMIN"})
-    public Response addUser(User user) {
-
-        BaseResponse resp = new BaseResponse();
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
-        hbrSession.setFlushMode(FlushMode.ALWAYS);
-        try {
-            hbrSession.beginTransaction();
-            hbrSession.save(user);
-            hbrSession.getTransaction().commit();
-        }
-        catch (HibernateException | ConstraintViolationException  e) {
-            resp.setErrorMessage("Cannot add User - " + e.getMessage() + ", " +e.getCause().getMessage());
-        }
-
-        return Response.ok(resp).build();
-    }
-    */
 
     @POST
     @Path("")
