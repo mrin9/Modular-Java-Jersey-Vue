@@ -1,6 +1,7 @@
 package com.app.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
@@ -9,14 +10,14 @@ import java.security.Principal;
 
 
 @Entity
-@Immutable
+@Immutable //Indicates its a View not a table (cannot be updated)
 @Table(name = "user_view")
 public class UserViewModel implements Serializable, Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")  private String userId;
     @Column(name = "password") private String password;
-    private String role;
+    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER") private String role;
     @Column(name = "employee_id") private Integer employeeId;
     @Column(name = "customer_id") private Integer customerId;
     @Column(name = "full_name")   private String fullName;

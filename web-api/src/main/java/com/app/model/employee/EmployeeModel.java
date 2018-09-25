@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "employees")
 public class EmployeeModel {
 
-    @Id private Integer id;
+    @Id @GeneratedValue private Integer id;
     @Column(name = "last_name") private String  lastName;
     @Column(name = "first_name") private String  firstName;
     private String  email;
@@ -21,6 +21,25 @@ public class EmployeeModel {
     private String  state;
     @Column(name = "postal_code") private String  postalCode;
     private String  country;
+
+    //Constructors
+    public EmployeeModel(){}
+    public EmployeeModel(String lastName, String firstName, String email, String avatar, String jobTitle, String department, Integer managerId, String phone, String address1, String address2, String city, String state, String postalCode, String country) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.avatar = avatar;
+        this.jobTitle = jobTitle;
+        this.department = department;
+        this.managerId = managerId;
+        this.phone = phone;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
 
 
     // Getter and Setters

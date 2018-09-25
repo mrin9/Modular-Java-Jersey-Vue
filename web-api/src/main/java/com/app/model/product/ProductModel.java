@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "products")
 public class ProductModel {
-    @Id private Integer id;
+    @Id @GeneratedValue private Integer id;
     @Column(name = "product_code")      private String  productCode;
     @Column(name = "product_name")      private String  productName;
     @Column(name = "description")       private String  description;

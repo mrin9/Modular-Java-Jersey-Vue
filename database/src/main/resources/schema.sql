@@ -40,7 +40,7 @@ CREATE TABLE customers (
 
 /* Table: employees */
 CREATE TABLE employees (
-  id              INT NOT NULL,
+  id              INT NOT NULL AUTO_INCREMENT,
   last_name       VARCHAR(50) ,
   first_name      VARCHAR(50) ,
   email           VARCHAR(50) ,
@@ -60,7 +60,7 @@ CREATE TABLE employees (
 
 /* Table: orders */
 CREATE TABLE orders (
-  id              INT NOT NULL,
+  id              INT NOT NULL AUTO_INCREMENT,
   employee_id     INT ,
   customer_id     INT ,
   order_date      DATETIME ,
@@ -93,7 +93,7 @@ CREATE TABLE order_items (
 
 /* Table: products */
 CREATE TABLE products (
-  id              INT NOT NULL,
+  id              INT NOT NULL  AUTO_INCREMENT,
   product_code    VARCHAR(25) ,
   product_name    VARCHAR(50) ,
   description     VARCHAR(250),

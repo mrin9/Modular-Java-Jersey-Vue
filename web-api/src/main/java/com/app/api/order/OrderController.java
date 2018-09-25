@@ -91,7 +91,7 @@ public class OrderController extends BaseController {
 
     @DELETE
     @Path("orders/{orderId}")
-    @ApiOperation(value = "Delete an order and all its items", response = BaseResponse.class)
+    @ApiOperation(value = "Delete an order and all its line-items", response = BaseResponse.class)
     @RolesAllowed({"USER"})
     public Response deleteOrder(@ApiParam(value = "Order Id") @PathParam("orderId") int orderId) {
 
@@ -211,7 +211,7 @@ public class OrderController extends BaseController {
 
     @DELETE
     @Path("/order-item/{orderId}/{productId}")
-    @ApiOperation(value = "Get an order item", response = BaseResponse.class)
+    @ApiOperation(value = "Delete an order line-item", response = BaseResponse.class)
     @RolesAllowed({"USER"})
     public Response getOrderDetail(
         @ApiParam(value = "Order Id") @PathParam("orderId") int orderId,
@@ -244,8 +244,8 @@ public class OrderController extends BaseController {
 
     @POST
     @Path("/order-item")
-    @ApiOperation(value = "Add an Order item", response = BaseResponse.class)
-    @RolesAllowed({"ADMIN"})
+    @ApiOperation(value = "Add an Order line-item", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN", "CUSTOMER", "SUPPORT"})
     public Response addOrderItem(OrderItemModel orderItem) {
 
         BaseResponse resp = new BaseResponse();

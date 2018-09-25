@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Table(name = "orders")
 public class OrderModel {
 
-    @Id private Integer id;
+    @Id @GeneratedValue private Integer id;
     @Column(name = "employee_id")   private Integer employeeId;
     @Column(name = "customer_id")   private Integer customerId;
     @Column(name = "order_date")    private Date    orderDate;

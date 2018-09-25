@@ -6,8 +6,7 @@ import javax.persistence.*;
 @Table(name = "customers")
 public class CustomerModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue private Integer id;
     @Column(name = "last_name") private String lastName;
     @Column(name = "first_name") private String firstName;
     private String email;
@@ -19,6 +18,22 @@ public class CustomerModel {
     private String state;
     @Column(name = "postal_code") private String postalCode;
     private String country;
+
+    //Constructors
+    public CustomerModel(){}
+    public CustomerModel(String lastName, String firstName, String email, String company, String phone, String address1, String address2, String city, String state, String postalCode, String country) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.company = company;
+        this.phone = phone;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
 
     //Getters and Setters
 

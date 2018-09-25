@@ -2,6 +2,8 @@ package com.app.api.user;
 
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
+import com.app.model.customer.CustomerModel;
+import com.app.model.employee.EmployeeModel;
 import com.app.model.user.*;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
@@ -125,9 +127,10 @@ public class UserController extends BaseController {
         return Response.ok(resp).build();
     }
 
+    /*
     @POST
     @Path("")
-    @ApiOperation(value = "Add a User", response = BaseResponse.class)
+    @ApiOperation(value = "Register as a New User", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response addUser(User user) {
 
@@ -145,8 +148,67 @@ public class UserController extends BaseController {
 
         return Response.ok(resp).build();
     }
+    */
 
+    @POST
+    @Path("")
+    @ApiOperation(value = "Register as a New User", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN"})
+    public Response addUser(UserRegistrationModel registerObj) {
 
+        BaseResponse resp = new BaseResponse();
+        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        User user;
+        try {
+            hbrSession.beginTransaction();
+            if (registerObj.getRole().equalsIgnoreCase("CUSTOMER")){
+                CustomerModel cust = new CustomerModel(
+                    registerObj.getLastName(),
+                    registerObj.getFirstName(),
+                    registerObj.getEmail(),
+                    registerObj.getCompany(),
+                    registerObj.getPhone(),
+                    registerObj.getAddress1(),
+                    registerObj.getAddress2(),
+                    registerObj.getCity(),
+                    registerObj.getState(),
+                    registerObj.getPostalCode(),
+                    registerObj.getCountry()
+                );
+                hbrSession.save(cust);
+                user = new User(registerObj.getUserId(), registerObj.getPassword(), registerObj.getRole(), null, cust.getId());
+            }
+            else{
 
+                EmployeeModel emp = new EmployeeModel(
+                    registerObj.getLastName(),
+                    registerObj.getFirstName(),
+                    registerObj.getEmail(),
+                    "",
+                    "",
+                    registerObj.getDepartment(),
+                    registerObj.getManagerId(),
+                    registerObj.getPhone(),
+                    registerObj.getAddress1(),
+                    registerObj.getAddress2(),
+                    registerObj.getCity(),
+                    registerObj.getState(),
+                    registerObj.getPostalCode(),
+                    registerObj.getCountry()
+                );
+                hbrSession.save(emp);
+                user = new User(registerObj.getUserId(), registerObj.getPassword(), registerObj.getRole(), emp.getId(), null);
+            }
+            hbrSession.save(user);
+            hbrSession.getTransaction().commit();
+            resp.setSuccessMessage("User Registered Successfully");
+
+        }
+        catch (HibernateException | ConstraintViolationException  e) {
+            resp.setErrorMessage("Cannot add User - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+        }
+        return Response.ok(resp).build();
+    }
 
 }

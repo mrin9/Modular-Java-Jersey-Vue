@@ -2,6 +2,7 @@ package com.app.model.user;
 
 import com.app.util.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.security.Principal;
@@ -9,6 +10,7 @@ import java.security.Principal;
 
 public class UserOutputModel implements Serializable, Principal {
     private String userId;
+    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER")
     private String role;
     private String fullName;
     private String email;
