@@ -1,18 +1,24 @@
 package com.app.api.customer;
 
 import com.app.api.BaseController;
+import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.customer.CustomerResponse;
+import com.app.model.user.User;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -69,6 +75,27 @@ public class CustomerController extends BaseController {
         resp.setList(customerList);
         resp.setPageStats(rowCount, pageSize, page,"");
         resp.setSuccessMessage("List of customers");
+        return Response.ok(resp).build();
+    }
+
+    @POST
+    @Path("")
+    @ApiOperation(value = "Add a Customer", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN"})
+    public Response addCustomer(CustomerModel cust) {
+
+        BaseResponse resp = new BaseResponse();
+        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            hbrSession.beginTransaction();
+            hbrSession.save(cust);
+            hbrSession.getTransaction().commit();
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot add Customer - " + e.getMessage() + ", " +e.getCause().getMessage());
+        }
+
         return Response.ok(resp).build();
     }
 

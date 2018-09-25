@@ -2,10 +2,7 @@ package com.app.api.user;
 
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
-import com.app.model.user.LoginResponse;
-import com.app.model.user.User;
-import com.app.model.user.UserListResponse;
-import com.app.model.user.UserOutputModel;
+import com.app.model.user.*;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,15 +38,14 @@ public class UserController extends BaseController {
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
         @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
-        @ApiParam(value="Role", allowableValues="USER,ADMIN") @QueryParam("role") String role,
-        @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName
+        @ApiParam(value="Role", allowableValues="ADMIN, SUPPORT, CUSTOMER") @QueryParam("role") String role
     ) {
         // Fill hibernate search by example user (Hibernate Query-by-example way of searching )
         int recordFrom=0;
-        User searchUser = new User();
+        UserViewModel searchUser = new UserViewModel();
         if (StringUtils.isNotBlank(userId)){ searchUser.setUserId(userId); }
         if (StringUtils.isNotBlank(role)){ searchUser.setRole(role); }
-        if (StringUtils.isNotBlank(firstName)){ searchUser.setFirstName(firstName); }
+        //if (StringUtils.isNotBlank(firstName)){ searchUser.setFirstName(firstName); }
         if (page<=0){
             page = 1;
         }
@@ -60,15 +56,15 @@ public class UserController extends BaseController {
 
         // Execute the Hibernate Query
         Example userExample = Example.create(searchUser);
-        Criteria criteria = getSessionFactory().openSession().createCriteria(User.class);
+        Criteria criteria = getSessionFactory().openSession().createCriteria(UserViewModel.class);
         criteria.add(userExample);
         criteria.setFirstResult( (int) (long)recordFrom);
         criteria.setMaxResults(  (int) (long)pageSize);
-        List<User> userList = criteria.list();
+        List<UserViewModel> userList = criteria.list();
 
         // Fill the result into userOutput list
         List userFoundList = new ArrayList<UserOutputModel>();
-        for (User tmpUser : userList) {
+        for (UserViewModel tmpUser : userList) {
             UserOutputModel usrOutput = new UserOutputModel(tmpUser);
             userFoundList.add(usrOutput);
         }
@@ -89,7 +85,7 @@ public class UserController extends BaseController {
     @ApiOperation(value = "Get Details of Logged in User")
     public Response getLoggedInUser() {
 
-        User userFromToken = (User)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
         UserOutputModel userOutput = new UserOutputModel(userFromToken);
 
         LoginResponse resp = new LoginResponse();
@@ -106,6 +102,10 @@ public class UserController extends BaseController {
     public Response deleteUser(@ApiParam(value="User Id") @PathParam("userId") String userId) {
 
         BaseResponse resp = new BaseResponse();
+        if (userId.equals("admin") || userId.equals("support") || userId.equals("customer")){
+            resp.setErrorMessage("Cannot delete reserved User Ids - 'admin', 'support' or 'customer'");
+            return Response.ok(resp).build();
+        }
 
         if (StringUtils.isBlank(userId)){
             resp.setErrorMessage("Must provide a valid ID");

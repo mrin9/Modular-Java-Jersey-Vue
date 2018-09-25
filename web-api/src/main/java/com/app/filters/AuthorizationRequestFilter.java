@@ -51,7 +51,7 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
         String className = method.getDeclaringClass().getName();
         String path = reqContext.getUriInfo().getPath();
         BaseResponse resp = new BaseResponse();
-        final User user;
+        final UserViewModel userView;
 
         //Allow Access for @PermitAll or SwagerSpec
         if (reqContext.getMethod().equalsIgnoreCase("OPTIONS") ||  method == null || method.isAnnotationPresent(PermitAll.class) || className.equals("io.swagger.jaxrs.listing.ApiListingResource")) {
@@ -67,8 +67,8 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
 
         try {
             //IMPORTANT: You must create userAccount from token not from session
-            user = TokenUtil.getUserFromToken(jwtToken);
-            if (user==null) {
+            userView = TokenUtil.getUserFromToken(jwtToken);
+            if (userView==null) {
                 resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Invalid Token" );
                 reqContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(resp).build());
                 return;
@@ -85,7 +85,7 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
         final SecurityContext securityContext = reqContext.getSecurityContext();
         reqContext.setSecurityContext(new SecurityContext() {
             @Override
-            public Principal getUserPrincipal() {return user;}
+            public Principal getUserPrincipal() {return userView;}
 
             @Override
             public boolean isUserInRole(String role) {return securityContext.isUserInRole(role);}
@@ -99,7 +99,7 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
 
 
         // Everything is permitted for the role "admin"
-        if (user.getRole().equalsIgnoreCase(UserRoleConstants.ROLE_ADMIN)){
+        if (userView.getRole().equalsIgnoreCase(UserRoleConstants.ROLE_ADMIN)){
             return;
         }
 
@@ -107,15 +107,15 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
         if(method.isAnnotationPresent(RolesAllowed.class)) {
             RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
             Set<String> allowedRoleSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value() ));
-            if (allowedRoleSet.contains(user.getRole())){
+            if (allowedRoleSet.contains(userView.getRole())){
                 return;
             }
-            if (allowedRoleSet.contains(UserRoleConstants.ROLE_USER)){
-                // Any endpoint for role "user" is available to all authenticated users
+            if (allowedRoleSet.contains(UserRoleConstants.ROLE_CUSTOMER)){
+                // Any endpoint for role "CUSTOMER" is available to all authenticated users (ADMIN, SUPPORT)
                 return;
             }
             else{
-                resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Unauthorized for " +  user.getRole() + " role");
+                resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Unauthorized for " +  userView.getRole() + " role");
                 reqContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(resp).build());
                 return;
             }

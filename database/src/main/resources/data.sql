@@ -1,38 +1,38 @@
 /* User */
-insert into user (user_id, password, first_name, last_name, email, company, phone, address1, address2, country, postal, role) values
-('demo'      , 'demo'     , 'Mrinmoy'  , 'Majumdar', 'arivera2@joomla.org'    , 'Abshire Inc', '7-(740)701-4547', '80429 Garrison Crossing', '4967'               , 'USA'        , '64890', 'USER' ),
-('admin'     , 'admin'    , 'Theresa'  , 'Russell' , 'trussell1@about.me'     , 'Glover, Adams and Bins', '383-(779)851-3208', '30874 Graceland Terrace', '99152' , 'USA'        , '51065', 'ADMIN'),
-('user'      , 'user'     , 'Virginia' , 'Reynolds', 'vreynolds0@slashdot.org', 'Rippin, Osinski and Beatty', '84-(228)809-9998', '0118 Burrows Plaza', '496'     , 'USA'        , '94086', 'USER' ),
-('jowens3'   , 'jowens3'  , 'Judy'     , 'Owens'   , 'jowens3@hp.com'         , 'Altenwerth, Fisher and Heidenreich', '30-(772)268-8227', '98 Loeprich Way', '447', 'Greece'     , null   , 'USER' ),
-('kburns4'   , 'kburns4'  , 'Kelly'    , 'Burns'   , 'kburns4@icio.us'        , 'McCullough-Morar', '86-(857)185-5740', '1638 Basil Alley', '56297'               , 'China'      , null   , 'ADMIN'),
-('jshaw5'    , 'jshaw5'   , 'Julie'    , 'Shaw'    , 'jshaw5@opera.com'       , 'Steuber-Okuneva', '1-(871)375-6188', '389 Myrtle Pass', '41444'                  , 'Canada'     , null   , 'ADMIN'),
-('pgilbert6' , 'pgilbert6', 'Peter'    , 'Gilbert' , 'pgilbert6@eepurl.com'   , 'Robel Inc', '52-(372)555-4687', '11522 Fuller Avenue', '5'                       , 'Mexico'     , '39230', 'ADMIN'),
-('jjacobs7'  , 'jjacobs7' , 'Justin'   , 'Jacobs'  , 'jjacobs7@google.co.uk'  , 'Harris-Bashirian', '963-(199)359-2552', '95012 Hanover Street', '2377'           , 'India'      , null   , 'USER' ),
-('kbennett8' , 'kbennett8', 'Kevin'    , 'Bennett' , 'kbennett8@hostgator.com', 'Leannon Inc', '62-(892)710-5713', '459 Coleman Drive', '397'                     , 'Indonesia'  , null   , 'ADMIN'),
-('cmurphy9'  , 'cmurphy9' , 'Chris'    , 'Murphy'  , 'cmurphy9@over-blog.com' , 'Mosciski LLC', '64-(272)961-0086', '2 Ludington Point', '7'                      , 'New Zealand', null   , 'ADMIN');
+insert into user (user_id, password, role, employee_id, customer_id) values
+('admin'     , 'admin'    , 'ADMIN'   , 201 , null ),
+('customer'  , 'customer' , 'CUSTOMER', null, 1    ),
+('support'   , 'support'  , 'SUPPORT' , 205 , null ),
+('jowens3'   , 'jowens3'  , 'CUSTOMER', null, 7    ),
+('kburns4'   , 'kburns4'  , 'CUSTOMER', null, 65   ),
+('jshaw5'    , 'jshaw5'   , 'CUSTOMER', null, 42   ),
+('pgilbert6' , 'pgilbert6', 'SUPPORT' , 210 , null ),
+('jjacobs7'  , 'jjacobs7' , 'SUPPORT' , 220 , null ),
+('kbennett8' , 'kbennett8', 'CUSTOMER', null, 9    ),
+('cmurphy9'  , 'cmurphy9' , 'CUSTOMER', null, 99   );
 
 /* Employees */
 insert into employees (id, last_name, first_name, email, phone, address1, address2, city, state, postal_code, country, avatar, job_title, department, manager_id) values
- (201, 'Harris'  , 'George' , 'gharris0@pagesperso-orange.fr', '1-(210)270-8536', '2 Bayside Drive', null, 'San Antonio', 'Texas', '78240', 'United States', 'https://robohash.org/modilaboriosammolestiae.bmp?size=50x50&set=set1', 'Administrative Assistant I', 'Toys', null)
-,(202, 'Hayes'   , 'Rachel' , 'rhayes1@si.edu', '1-(971)797-2729', '30 Anhalt Street', null, 'Portland', 'Oregon', '97232', 'United States', 'https://robohash.org/seddistinctiodolorem.jpg?size=50x50&set=set1', 'Design Engineer', 'Books', null)
-,(203, 'Palmer'  , 'Anthony', 'apalmer2@posterous.com', '1-(702)984-2108', '02809 4th Pass', null, 'North Las Vegas', 'Nevada', '89036', 'United States', 'https://robohash.org/vitaererumdolore.png?size=50x50&set=set1', 'Health Coach II', 'Toys', null)
-,(204, 'Alvarez' , 'Laura'  , 'lalvarez3@time.com', '1-(518)328-2658', '647 Lakeland Road', null, 'Albany', 'New York', '12210', 'United States', 'https://robohash.org/nobisplaceatquisquam.jpg?size=50x50&set=set1', 'Computer Systems Analyst II', 'Health', null)
-,(205, 'Reynolds', 'Annie'  , 'areynolds4@nasa.gov', '1-(775)838-2203', '163 Carey Street', null, 'Reno', 'Nevada', '89550', 'United States', 'https://robohash.org/praesentiumdoloremrerum.png?size=50x50&set=set1', 'Senior Quality Engineer', 'Kids', null)
-,(206, 'Henry'   , 'Joe'    , 'jhenry5@bbb.org', '1-(682)563-2229', '1 Harper Circle', null, 'Fort Worth', 'Texas', '76178', 'United States', 'https://robohash.org/earumiurevoluptas.jpg?size=50x50&set=set1', 'Chief Design Engineer', 'Electronics', null)
-,(207, 'Willis'  , 'Willie' , 'wwillis6@berkeley.edu', '1-(317)654-6888', '641 Kropf Parkway', null, 'Indianapolis', 'Indiana', '46216', 'United States', 'https://robohash.org/suntsitnecessitatibus.png?size=50x50&set=set1', 'Structural Analysis Engineer', 'Shoes', null)
-,(208, 'Lawrence', 'Keith'  , 'klawrence7@discovery.com', '1-(501)583-8851', '2184 Melby Crossing', null, 'Little Rock', 'Arkansas', '72222', 'United States', 'https://robohash.org/delenitiomnisconsequatur.jpg?size=50x50&set=set1', 'VP Quality Control', 'Outdoors', null)
-,(209, 'Johnston', 'Tina'   , 'tjohnston8@alexa.com', '1-(901)128-9976', '72 Hauk Road', null, 'Memphis', 'Tennessee', '38114', 'United States', 'https://robohash.org/voluptasautmaiores.png?size=50x50&set=set1', 'Assistant Media Planner', 'Electronics', null)
-,(210, 'Burns'   , 'Lisa'   , 'lburns9@taobao.com', '1-(585)113-8402', '99 Manufacturers Drive', null, 'Rochester', 'New York', '14624', 'United States', 'https://robohash.org/illumsinttempore.jpg?size=50x50&set=set1', 'Operator', 'Industrial', null)
-,(211, 'Stone'   , 'Howard' , 'hstonea@ucsd.edu', '1-(202)958-2516', '03 Anthes Center', null, 'Washington', 'District of Columbia', '20425', 'United States', 'https://robohash.org/eautet.bmp?size=50x50&set=set1', 'Account Executive', 'Electronics', null)
-,(212, 'Brown'   , 'Julie'  , 'jbrownb@squidoo.com', '1-(217)741-6449', '37574 4th Drive', null, 'Springfield', 'Illinois', '62705', 'United States', 'https://robohash.org/laborumtotameveniet.png?size=50x50&set=set1', 'Analog Circuit Design manager', 'Electronics', null)
-,(213, 'Turner'  , 'Edward' , 'eturnerc@theatlantic.com', '1-(701)353-1996', '3 Bultman Circle', null, 'Fargo', 'North Dakota', '58122', 'United States', 'https://robohash.org/sedutporro.png?size=50x50&set=set1', 'Structural Engineer', 'Computers', null)
-,(214, 'Nichols' , 'Douglas', 'dnicholsd@fda.gov', '1-(302)771-6486', '5150 Holmberg Way', null, 'Wilmington', 'Delaware', '19805', 'United States', 'https://robohash.org/blanditiiscommodiet.png?size=50x50&set=set1', 'Editor', 'Outdoors', null)
-,(215, 'Gilbert' , 'Jessica', 'jgilberte@infoseek.co.jp', '1-(320)607-0289', '32 Summit Park', null, 'Saint Cloud', 'Minnesota', '56372', 'United States', 'https://robohash.org/providentaccusamussed.bmp?size=50x50&set=set1', 'Account Executive', 'Baby', null)
-,(216, 'Hernandez', 'Kathy' , 'khernandezf@shinystat.com', '1-(210)733-3380', '24 Merrick Way', null, 'San Antonio', 'Texas', '78225', 'United States', 'https://robohash.org/utfaciliset.png?size=50x50&set=set1', 'Junior Executive', 'Movies', null)
-,(217, 'Sullivan', 'Lillian', 'lsullivang@flavors.me', '1-(904)885-2053', '42 Manufacturers Pass', null, 'Jacksonville', 'Florida', '32215', 'United States', 'https://robohash.org/quiaetaut.jpg?size=50x50&set=set1', 'Engineer I', 'Sports', null)
-,(218, 'Jenkins' , 'Frances', 'fjenkinsh@huffingtonpost.com', '1-(512)764-3809', '69255 Dakota Plaza', null, 'Austin', 'Texas', '78769', 'United States', 'https://robohash.org/voluptatemnamaliquam.bmp?size=50x50&set=set1', 'Developer IV', 'Baby', null)
-,(219, 'Myers'   , 'Roger'  , 'rmyersi@alexa.com', '1-(480)583-9583', '3 Eagle Crest Place', null, 'Gilbert', 'Arizona', '85297', 'United States', 'https://robohash.org/consequaturutquo.png?size=50x50&set=set1', 'Account Executive', 'Beauty', null)
-,(220, 'Hunter'  , 'Bonnie' , 'bhunterj@ucsd.edu', '1-(320)933-5140', '99 Arapahoe Terrace', null, 'Saint Cloud', 'Minnesota', '56372', 'United States', 'https://robohash.org/etfacilisquo.bmp?size=50x50&set=set1', 'Analog Circuit Design manager', 'Baby', null);
+ (201, 'Majumdar', 'Mrinmoy' , 'mmajumdar0@example.com', '1-(210)270-8536', '2 Bayside Drive', null, 'Mountain View', 'California', '78240', 'United States', 'https://robohash.org/modilaboriosammolestiae.bmp?size=50x50&set=set1', 'Administrative Assistant I', 'Toys', null)
+,(202, 'Hayes'   , 'Rachel'  , 'rhayes1@si.edu', '1-(971)797-2729', '30 Anhalt Street', null, 'Portland', 'Oregon', '97232', 'United States', 'https://robohash.org/seddistinctiodolorem.jpg?size=50x50&set=set1', 'Design Engineer', 'Books', null)
+,(203, 'Palmer'  , 'Anthony' , 'apalmer2@posterous.com', '1-(702)984-2108', '02809 4th Pass', null, 'North Las Vegas', 'Nevada', '89036', 'United States', 'https://robohash.org/vitaererumdolore.png?size=50x50&set=set1', 'Health Coach II', 'Toys', null)
+,(204, 'Alvarez' , 'Laura'   , 'lalvarez3@time.com', '1-(518)328-2658', '647 Lakeland Road', null, 'Albany', 'New York', '12210', 'United States', 'https://robohash.org/nobisplaceatquisquam.jpg?size=50x50&set=set1', 'Computer Systems Analyst II', 'Health', null)
+,(205, 'Reynolds', 'Annie'   , 'areynolds4@nasa.gov', '1-(775)838-2203', '163 Carey Street', null, 'Reno', 'Nevada', '89550', 'United States', 'https://robohash.org/praesentiumdoloremrerum.png?size=50x50&set=set1', 'Senior Quality Engineer', 'Kids', null)
+,(206, 'Henry'   , 'Joe'     , 'jhenry5@bbb.org', '1-(682)563-2229', '1 Harper Circle', null, 'Fort Worth', 'Texas', '76178', 'United States', 'https://robohash.org/earumiurevoluptas.jpg?size=50x50&set=set1', 'Chief Design Engineer', 'Electronics', null)
+,(207, 'Willis'  , 'Willie'  , 'wwillis6@berkeley.edu', '1-(317)654-6888', '641 Kropf Parkway', null, 'Indianapolis', 'Indiana', '46216', 'United States', 'https://robohash.org/suntsitnecessitatibus.png?size=50x50&set=set1', 'Structural Analysis Engineer', 'Shoes', null)
+,(208, 'Lawrence', 'Keith'   , 'klawrence7@discovery.com', '1-(501)583-8851', '2184 Melby Crossing', null, 'Little Rock', 'Arkansas', '72222', 'United States', 'https://robohash.org/delenitiomnisconsequatur.jpg?size=50x50&set=set1', 'VP Quality Control', 'Outdoors', null)
+,(209, 'Johnston', 'Tina'    , 'tjohnston8@alexa.com', '1-(901)128-9976', '72 Hauk Road', null, 'Memphis', 'Tennessee', '38114', 'United States', 'https://robohash.org/voluptasautmaiores.png?size=50x50&set=set1', 'Assistant Media Planner', 'Electronics', null)
+,(210, 'Burns'   , 'Lisa'    , 'lburns9@taobao.com', '1-(585)113-8402', '99 Manufacturers Drive', null, 'Rochester', 'New York', '14624', 'United States', 'https://robohash.org/illumsinttempore.jpg?size=50x50&set=set1', 'Operator', 'Industrial', null)
+,(211, 'Stone'   , 'Howard'  , 'hstonea@ucsd.edu', '1-(202)958-2516', '03 Anthes Center', null, 'Washington', 'District of Columbia', '20425', 'United States', 'https://robohash.org/eautet.bmp?size=50x50&set=set1', 'Account Executive', 'Electronics', null)
+,(212, 'Brown'   , 'Julie'   , 'jbrownb@squidoo.com', '1-(217)741-6449', '37574 4th Drive', null, 'Springfield', 'Illinois', '62705', 'United States', 'https://robohash.org/laborumtotameveniet.png?size=50x50&set=set1', 'Analog Circuit Design manager', 'Electronics', null)
+,(213, 'Turner'  , 'Edward'  , 'eturnerc@theatlantic.com', '1-(701)353-1996', '3 Bultman Circle', null, 'Fargo', 'North Dakota', '58122', 'United States', 'https://robohash.org/sedutporro.png?size=50x50&set=set1', 'Structural Engineer', 'Computers', null)
+,(214, 'Nichols' , 'Douglas' , 'dnicholsd@fda.gov', '1-(302)771-6486', '5150 Holmberg Way', null, 'Wilmington', 'Delaware', '19805', 'United States', 'https://robohash.org/blanditiiscommodiet.png?size=50x50&set=set1', 'Editor', 'Outdoors', null)
+,(215, 'Gilbert' , 'Jessica' , 'jgilberte@infoseek.co.jp', '1-(320)607-0289', '32 Summit Park', null, 'Saint Cloud', 'Minnesota', '56372', 'United States', 'https://robohash.org/providentaccusamussed.bmp?size=50x50&set=set1', 'Account Executive', 'Baby', null)
+,(216, 'Hernandez', 'Kathy'  , 'khernandezf@shinystat.com', '1-(210)733-3380', '24 Merrick Way', null, 'San Antonio', 'Texas', '78225', 'United States', 'https://robohash.org/utfaciliset.png?size=50x50&set=set1', 'Junior Executive', 'Movies', null)
+,(217, 'Sullivan', 'Lillian' , 'lsullivang@flavors.me', '1-(904)885-2053', '42 Manufacturers Pass', null, 'Jacksonville', 'Florida', '32215', 'United States', 'https://robohash.org/quiaetaut.jpg?size=50x50&set=set1', 'Engineer I', 'Sports', null)
+,(218, 'Jenkins' , 'Frances' , 'fjenkinsh@huffingtonpost.com', '1-(512)764-3809', '69255 Dakota Plaza', null, 'Austin', 'Texas', '78769', 'United States', 'https://robohash.org/voluptatemnamaliquam.bmp?size=50x50&set=set1', 'Developer IV', 'Baby', null)
+,(219, 'Myers'   , 'Roger'   , 'rmyersi@alexa.com', '1-(480)583-9583', '3 Eagle Crest Place', null, 'Gilbert', 'Arizona', '85297', 'United States', 'https://robohash.org/consequaturutquo.png?size=50x50&set=set1', 'Account Executive', 'Beauty', null)
+,(220, 'Hunter'  , 'Bonnie'  , 'bhunterj@ucsd.edu', '1-(320)933-5140', '99 Arapahoe Terrace', null, 'Saint Cloud', 'Minnesota', '56372', 'United States', 'https://robohash.org/etfacilisquo.bmp?size=50x50&set=set1', 'Analog Circuit Design manager', 'Baby', null);
 
 /* Products */
 insert into products (id, product_code, product_name, description, standard_cost, list_price, target_level, reorder_level, minimum_reorder_quantity, quantity_per_unit, discontinued, category) values

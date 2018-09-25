@@ -5,24 +5,25 @@ USE NORTHWIND;
 
 /* Table: user (Application Users) */
 CREATE TABLE user (
-    user_id     NVARCHAR(20) NOT NULL,
-    password    NVARCHAR(20) NOT NULL,
-    first_name  NVARCHAR(50) ,
-    last_name   NVARCHAR(50) ,
-    email       NVARCHAR(70) ,
-    company     NVARCHAR(50) ,
-    phone       NVARCHAR(20) ,
-    address1    NVARCHAR(100),
-    address2    NVARCHAR(100),
-    country     NVARCHAR(20) ,
-    postal      NVARCHAR(20) ,
-    role        NVARCHAR(20) ,
+    user_id      NVARCHAR(20) NOT NULL,
+    password     NVARCHAR(20) NOT NULL,
+    role         NVARCHAR(20) ,
+    employee_id  INT NULL,
+    customer_id  INT NULL,
     CONSTRAINT user_id PRIMARY KEY(user_id)
+);
+
+/* Table: Shopping cart */
+CREATE TABLE cart (
+   user_id     NVARCHAR(20) NOT NULL,
+   product_id  INT NOT NULL,
+   quantity    DECIMAL(18,4) NOT NULL DEFAULT '0.0000',
+   PRIMARY KEY (user_id, product_id)
 );
 
 /* Table: customers */
 CREATE TABLE customers (
-  id              INT NOT NULL,
+  id              INT NOT NULL AUTO_INCREMENT,
   last_name       VARCHAR(50) ,
   first_name      VARCHAR(50) ,
   email           VARCHAR(50) ,
@@ -107,15 +108,41 @@ CREATE TABLE products (
   PRIMARY KEY (id)
 );
 
+/* Foreign Key: users */
+ALTER TABLE orders ADD CONSTRAINT fk_users__customers FOREIGN KEY (customer_id) REFERENCES customers(id);
+ALTER TABLE orders ADD CONSTRAINT fk_users__employees FOREIGN KEY (employee_id) REFERENCES employees(id);
 
 /* Foreign Key: orders */
 ALTER TABLE orders ADD CONSTRAINT fk_orders__customers FOREIGN KEY (customer_id) REFERENCES customers(id);
 ALTER TABLE orders ADD CONSTRAINT fk_orders__employees FOREIGN KEY (employee_id) REFERENCES employees(id);
+
 /* Foreign Key:  order_items */
 ALTER TABLE order_items ADD CONSTRAINT fk_order_items__orders      FOREIGN KEY (order_id) REFERENCES orders(id);
 ALTER TABLE order_items ADD CONSTRAINT fk_order_items__products    FOREIGN KEY (product_id) REFERENCES products(id);
 
 /* Views */
+CREATE OR REPLACE VIEW user_view AS
+select u.user_id
+ , u.password
+ , u.role
+ , u.employee_id
+ , u.customer_id
+ , concat(e.first_name, ' ', e.last_name) as full_name
+ , e.email as email
+ From user u, employees e where u.employee_id = e.id
+UNION
+select u.user_id
+ , u.password
+ , u.role
+ , u.employee_id
+ , u.customer_id
+ , concat(c.first_name, ' ', c.last_name) as full_name
+ , c.email as email
+ From user u, customers c where u.customer_id = c.id;
+
+
+
+
 CREATE OR REPLACE VIEW order_info AS
 select o.id as order_id
  , o.order_date
@@ -202,3 +229,4 @@ select o.order_date, o.order_status, o.paid_date, o.payment_type, o.shipping_fee
        , e.first_name employee_first_name, e.last_name  employee_last_name,  e.email employee_email, e.department
   from orders o,employees e
  where o.customer_id  = e.id;
+

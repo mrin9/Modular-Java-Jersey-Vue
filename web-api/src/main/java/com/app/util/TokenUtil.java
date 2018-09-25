@@ -1,5 +1,6 @@
 package com.app.util;
 
+import com.app.model.user.UserViewModel;
 import io.jsonwebtoken.ClaimJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -25,29 +26,34 @@ public class TokenUtil {
     private static String secret="mrin";
 
 
-    public static String createTokenForUser(User user)  {
-        if (user == null) {
+    public static String createTokenForUser(UserViewModel userView)  {
+        if (userView == null) {
             throw new NullPointerException("username or roles is illegal");
         }
+
         return Jwts.builder()
             .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_TIME_MS))
-            .setSubject(user.getEmail())
-            .claim("id"    , user.getUserId())
-            .claim("role"  , user.getRole())
-            .claim("fname" , user.getFirstName())
-            .claim("lname" , user.getLastName())
+            .claim("id"     , userView.getUserId())
+            .claim("role"   , userView.getRole())
+            .claim("custId" , userView.getCustomerId())
+            .claim("empId"  , userView.getEmployeeId())
+            .claim("name"   , userView.getFullName())
+            .claim("email"  , userView.getEmail())
             .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
     }
 
-    public static User getUserFromToken(String strToken) throws Exception {
+    public static UserViewModel getUserFromToken(String strToken) throws Exception {
         try {
             Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(strToken).getBody();
-            String id        = (String)claims.get("id");
-            String role      = (String)claims.get("role");
-            String firstName = (String)claims.get("fname");
-            String lastName  = (String)claims.get("lname");
-            return new User(id, role, firstName, lastName);
+            return new UserViewModel(
+                (String)claims.get("id"),
+                (String)claims.get("role"),
+                (String)claims.get("name"),
+                (String)claims.get("email"),
+                (Integer)claims.get("empId"),
+                (Integer)claims.get("custId")
+            ) ;
         }
         catch (ExpiredJwtException e){
             log.error("Token Expired");
@@ -59,7 +65,6 @@ public class TokenUtil {
         }
 
     }
-
 
     public static boolean isExpiringIn30Minutes(String strToken) {
         Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(strToken).getBody();

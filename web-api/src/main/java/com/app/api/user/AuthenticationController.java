@@ -5,14 +5,13 @@ import javax.servlet.http.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.container.ContainerRequestContext;
+
+import com.app.model.user.*;
+import com.app.util.Constants;
 import org.apache.commons.lang3.StringUtils;
 
 import io.swagger.annotations.*;
 import com.app.api.BaseController;
-import com.app.model.user.User;
-import com.app.model.user.UserOutputModel;
-import com.app.model.user.LoginModel;
-import com.app.model.user.LoginResponse;
 import com.app.model.BaseResponse;
 import com.app.util.HibernateUtil;
 
@@ -46,21 +45,21 @@ public class AuthenticationController extends BaseController {
 
         Session hbrSession = HibernateUtil.getSessionFactory().openSession();
 
-        String hql = "FROM User u WHERE u.userId = :uid and u.password = :pwd";
+        String hql = "FROM UserViewModel u WHERE u.userId = :uid and u.password = :pwd";
         Query q = hbrSession.createQuery(hql);
         q.setParameter("uid", uid);
         q.setParameter("pwd", pwd);
 
-        User user = (User)q.uniqueResult();  // can throw org.hibernate.NonUniqueResultException
-        if (user!=null){
-            String strToken = TokenUtil.createTokenForUser(user);
+        UserViewModel userView = (UserViewModel)q.uniqueResult();  // can throw org.hibernate.NonUniqueResultException
+        if (userView!=null){
+            String strToken = TokenUtil.createTokenForUser(userView);
             UserOutputModel usrOutput = new UserOutputModel(
-                user.getUserId(),
-                user.getRole(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getCompany(),
+                userView.getUserId(),
+                userView.getRole(),
+                userView.getFullName(),
+                userView.getEmail(),
+                userView.getEmployeeId(),
+                userView.getCustomerId(),
                 strToken
             );
             LoginResponse successResp = new LoginResponse(usrOutput);
@@ -72,36 +71,6 @@ public class AuthenticationController extends BaseController {
         return Response.status(Response.Status.UNAUTHORIZED).entity(resp).build();
     }
 
-
-    @GET
-    @ApiOperation(value = "Renew token with a new expiry time and also get updated licenses", response = LoginResponse.class)
-    @Path("/renew-token")
-    public Response renewToken() {
-
-        BaseResponse resp = new BaseResponse();
-
-        String newToken    = "";
-        User userFromToken = (User)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
-        String oldToken    = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION); //requestContext is defined in BaseController
-
-        if (TokenUtil.isExpiringIn30Minutes(oldToken)) {
-            newToken = TokenUtil.createTokenForUser(userFromToken);
-            UserOutputModel renewUser = new UserOutputModel(
-                userFromToken.getUserId(),
-                userFromToken.getRole(),
-                userFromToken.getFirstName(),
-                userFromToken.getLastName(),
-                userFromToken.getEmail(),
-                userFromToken.getCompany(),
-                newToken
-            );
-            LoginResponse successResp = new LoginResponse(renewUser);
-            return Response.status(Response.Status.OK).entity(successResp).build();
-        }
-
-        resp.setErrorMessage("Wont Renew token as the old token is still valid for more than 30 minutes");
-        return Response.ok(resp).build();
-    }
 
 
 
