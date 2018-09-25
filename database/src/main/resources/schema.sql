@@ -4,7 +4,7 @@ CREATE SCHEMA NORTHWIND;
 USE NORTHWIND;
 
 /* Table: user (Application Users) */
-CREATE TABLE user (
+CREATE TABLE users (
     user_id      NVARCHAR(20) NOT NULL,
     password     NVARCHAR(20) NOT NULL,
     role         NVARCHAR(20) ,
@@ -120,6 +120,11 @@ ALTER TABLE orders ADD CONSTRAINT fk_orders__employees FOREIGN KEY (employee_id)
 ALTER TABLE order_items ADD CONSTRAINT fk_order_items__orders      FOREIGN KEY (order_id) REFERENCES orders(id);
 ALTER TABLE order_items ADD CONSTRAINT fk_order_items__products    FOREIGN KEY (product_id) REFERENCES products(id);
 
+/* Foreign Key:  cart */
+ALTER TABLE cart ADD CONSTRAINT fk_cart_items__users       FOREIGN KEY (user_id) REFERENCES users(user_id);
+ALTER TABLE cart ADD CONSTRAINT fk_cart_items__products    FOREIGN KEY (product_id) REFERENCES products(id);
+
+
 /* Views */
 CREATE OR REPLACE VIEW user_view AS
 select u.user_id
@@ -129,7 +134,7 @@ select u.user_id
  , u.customer_id
  , concat(e.first_name, ' ', e.last_name) as full_name
  , e.email as email
- From user u, employees e where u.employee_id = e.id
+ From users u, employees e where u.employee_id = e.id
 UNION
 select u.user_id
  , u.password
@@ -138,9 +143,7 @@ select u.user_id
  , u.customer_id
  , concat(c.first_name, ' ', c.last_name) as full_name
  , c.email as email
- From user u, customers c where u.customer_id = c.id;
-
-
+ From users u, customers c where u.customer_id = c.id;
 
 
 CREATE OR REPLACE VIEW order_info AS

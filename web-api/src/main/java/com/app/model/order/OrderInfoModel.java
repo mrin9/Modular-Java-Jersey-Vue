@@ -2,10 +2,13 @@ package com.app.model.order;
 
 import javax.persistence.*;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.Immutable;
+
 import java.util.*;
 import java.math.*;
 
 @Entity
+@Immutable //Indicates its a View not a table (cannot be updated)
 @Table(name = "order_info")
 public class OrderInfoModel {
     @Id

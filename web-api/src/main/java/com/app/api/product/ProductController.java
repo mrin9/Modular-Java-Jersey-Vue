@@ -10,7 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -78,22 +80,18 @@ public class ProductController extends BaseController {
     public Response deleteProduct(@ApiParam(value="Product Id") @PathParam("productId") int id) {
 
         BaseResponse resp = new BaseResponse();
-
-        if (id <= 0){
-            resp.setErrorMessage("Must provide a valid ID");
-            return Response.ok(resp).build();
-        }
-
+        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
         String hql = "delete ProductModel where id = :id";
-        Query q = HibernateUtil.getSessionFactory().openSession().createQuery(hql).setParameter("id", id);
+        Query q = hbrSession.createQuery(hql).setParameter("id", id);
         try {
-            q.executeUpdate();
+            hbrSession.beginTransaction();
+            int i = q.executeUpdate();
+            resp.setSuccessMessage("Rows Deleted :" + i);
+            hbrSession.getTransaction().commit();
         }
-        catch (ConstraintViolationException e) {
-            resp.setErrorMessage("Cannot delete product - Database constraints are violated");
-            return Response.ok(resp).build();
+        catch (HibernateException | ConstraintViolationException  e) {
+            resp.setErrorMessage("Cannot delete product - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
         }
-        resp.setSuccessMessage("Deleted");
         return Response.ok(resp).build();
 
     }

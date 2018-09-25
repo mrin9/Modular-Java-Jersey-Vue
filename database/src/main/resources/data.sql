@@ -1,5 +1,5 @@
 /* User */
-insert into user (user_id, password, role, employee_id, customer_id) values
+insert into users (user_id, password, role, employee_id, customer_id) values
 ('admin'     , 'admin'    , 'ADMIN'   , 201 , null ),
 ('customer'  , 'customer' , 'CUSTOMER', null, 1    ),
 ('support'   , 'support'  , 'SUPPORT' , 205 , null ),
@@ -10,6 +10,8 @@ insert into user (user_id, password, role, employee_id, customer_id) values
 ('jjacobs7'  , 'jjacobs7' , 'SUPPORT' , 220 , null ),
 ('kbennett8' , 'kbennett8', 'CUSTOMER', null, 9    ),
 ('cmurphy9'  , 'cmurphy9' , 'CUSTOMER', null, 99   );
+
+
 
 /* Employees */
 insert into employees (id, last_name, first_name, email, phone, address1, address2, city, state, postal_code, country, avatar, job_title, department, manager_id) values
@@ -56,6 +58,12 @@ insert into products (id, product_code, product_name, description, standard_cost
 ,(618, 'P18', 'Samsung Galaxy S7'     , null, 538.44 , 562.34 , 75 , 15, 10, 54,  1, 'Phone' )
 ,(619, 'P19', 'Samasung Note'         , null, 547.58 , 481.83 , 75 , 15, 15, 58, 1, 'Tablet')
 ,(620, 'P20', 'Chromebook 11.6'       , null, 1078.81, 1008.61, 80 , 14, 10, 11, 1, 'Laptop');
+
+/* Shopping Cart */
+insert into cart (user_id, product_id, quantity) values
+('customer'  , 601 , 1),
+('customer'  , 612 , 4),
+('customer'  , 617 , 2);
 
 /* Customers */
 insert into customers (id, last_name, first_name, email, company, phone, address1, address2, city, state, postal_code, country) values

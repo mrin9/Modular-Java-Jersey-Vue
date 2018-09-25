@@ -1,8 +1,8 @@
 package com.app.util;
 
+import com.app.model.cart.CartModel;
 import com.app.model.order.OrderItemModel;
 import com.app.model.user.UserViewModel;
-import org.hibernate.FlushMode;
 import org.hibernate.SessionFactory;
 //import org.hibernate.boot.Metadata;
 //import org.hibernate.boot.MetadataSources;
@@ -48,6 +48,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(OrderModel.class);
             configuration.addAnnotatedClass(OrderItemModel.class);
             configuration.addAnnotatedClass(OrderInfoModel.class);
+            configuration.addAnnotatedClass(CartModel.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);

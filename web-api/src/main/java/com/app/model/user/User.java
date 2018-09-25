@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name = "users")
 public class User implements Serializable, Principal {
     @Id
     @Column(name = "user_id") private String userId;
