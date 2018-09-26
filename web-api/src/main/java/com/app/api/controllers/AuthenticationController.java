@@ -1,14 +1,14 @@
-package com.app.api.user;
+package com.app.api.controllers;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import com.app.api.BaseController;
 import com.app.model.user.*;
 import org.apache.commons.lang3.StringUtils;
 
 import io.swagger.annotations.*;
-import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.util.HibernateUtil;
 
@@ -40,7 +40,7 @@ public class AuthenticationController extends BaseController {
             return Response.status(Response.Status.UNAUTHORIZED).entity(resp).build();
         }
 
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        Session hbrSession = HibernateUtil.getSession();
 
         String hql = "FROM UserViewModel u WHERE u.userId = :uid and u.password = :pwd";
         Query q = hbrSession.createQuery(hql);

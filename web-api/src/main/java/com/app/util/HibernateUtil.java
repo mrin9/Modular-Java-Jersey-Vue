@@ -3,6 +3,7 @@ package com.app.util;
 import com.app.model.cart.CartModel;
 import com.app.model.order.OrderItemModel;
 import com.app.model.user.UserViewModel;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 //import org.hibernate.boot.Metadata;
 //import org.hibernate.boot.MetadataSources;
@@ -54,6 +55,10 @@ public class HibernateUtil {
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
         return sessionFactory;
+    }
+
+    public static Session getSession(){
+        return getSessionFactory().openSession();
     }
 
     /*

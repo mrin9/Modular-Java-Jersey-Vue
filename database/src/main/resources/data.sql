@@ -3,14 +3,13 @@ insert into users (user_id, password, role, employee_id, customer_id) values
 ('admin'     , 'admin'    , 'ADMIN'   , 201 , null ),
 ('customer'  , 'customer' , 'CUSTOMER', null, 1    ),
 ('support'   , 'support'  , 'SUPPORT' , 205 , null ),
-('jowens3'   , 'jowens3'  , 'CUSTOMER', null, 7    ),
-('kburns4'   , 'kburns4'  , 'CUSTOMER', null, 65   ),
-('jshaw5'    , 'jshaw5'   , 'CUSTOMER', null, 42   ),
-('pgilbert6' , 'pgilbert6', 'SUPPORT' , 210 , null ),
-('jjacobs7'  , 'jjacobs7' , 'SUPPORT' , 220 , null ),
-('kbennett8' , 'kbennett8', 'CUSTOMER', null, 9    ),
-('cmurphy9'  , 'cmurphy9' , 'CUSTOMER', null, 99   );
-
+('thanks'    , 'thanks'   , 'CUSTOMER', null, 7    ),
+('mdaniel'   , 'mdaniel'  , 'CUSTOMER', null, 65   ),
+('jshaw'     , 'jshaw'    , 'CUSTOMER', null, 42   ),
+('pgilbert'  , 'pgilbert' , 'SUPPORT' , 210 , null ),
+('jjacobs'   , 'jjacobs'  , 'SUPPORT' , 220 , null ),
+('kbennett'  , 'kbennett' , 'CUSTOMER', null, 9    ),
+('cmurphy'   , 'cmurphy'  , 'CUSTOMER', null, 99   );
 
 
 /* Employees */
@@ -63,7 +62,9 @@ insert into products (id, product_code, product_name, description, standard_cost
 insert into cart (user_id, product_id, quantity) values
 ('customer'  , 601 , 1),
 ('customer'  , 612 , 4),
-('customer'  , 617 , 2);
+('customer'  , 617 , 2),
+('thanks'    , 602 , 5),
+('thanks'    , 609 , 3),;
 
 /* Customers */
 insert into customers (id, last_name, first_name, email, company, phone, address1, address2, city, state, postal_code, country) values
@@ -73,7 +74,7 @@ insert into customers (id, last_name, first_name, email, company, phone, address
 ,(4 , 'Mcdonald', 'Michael'  , 'mmcdonald3@twitter.com'  , 'Feedfire' , '1-(419)743-7314', '85093 Jackson Park'   , null, 'Toledo', 'Ohio', '43610', 'United States')
 ,(5 , 'Tucker'  , 'Lori'     , 'ltucker4@etsy.com'       , 'Oyondu'   , '1-(202)381-2663', '0706 Heffernan Pass'  , null, 'Washington', 'District of Columbia', '20380', 'United States')
 ,(6 , 'Hansen'  , 'Lois'     , 'lhansen5@stumbleupon.com', 'Yozio'    , '1-(315)385-6866', '2 Ruskin Pass'        , null, 'Syracuse', 'New York', '13251', 'United States')
-,(7 , 'Grant'   , 'Frances'  , 'fgrant6@yale.edu'        , 'Eire'     , '1-(863)799-9068', '61402 Morning Court'  , null, 'Lakeland', 'Florida', '33811', 'United States')
+,(7 , 'Tom'     , 'Hanks'    , 'thanks@yale.edu'         , 'Eire'     , '1-(863)799-9068', '61402 Morning Court'  , null, 'Lakeland', 'Florida', '33811', 'United States')
 ,(8 , 'Lewis'   , 'Catherine', 'clewis7@unesco.org'      , 'Realpoint', '1-(915)208-4997', '775 Messerschmidt Junction', null, 'El Paso', 'Texas', '88563', 'United States')
 ,(9 , 'Rogers'  , 'Edward'   , 'erogers8@guardian.co.uk' , 'Quinu'    , '1-(971)934-2404', '7074 Montana Place'   , null, 'Portland', 'Oregon', '97271', 'United States')
 ,(10, 'Owens'   , 'Tina'     , 'towens9@earthlink.net'   , 'Blogtag'  , '1-(712)989-9002', '59039 Sachtjen Street', null, 'Sioux City', 'Iowa', '51105', 'United States')

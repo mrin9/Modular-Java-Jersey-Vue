@@ -1,4 +1,4 @@
-package com.app.api.product;
+package com.app.api.controllers;
 
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
@@ -42,7 +42,7 @@ public class ProductController extends BaseController {
     ) {
 
         int recordFrom=0;
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(ProductModel.class);
+        Criteria criteria = HibernateUtil.getSession().createCriteria(ProductModel.class);
 
         if (id > 0){
             criteria.add(Restrictions.eq("id",  id ));
@@ -80,7 +80,10 @@ public class ProductController extends BaseController {
     public Response deleteProduct(@ApiParam(value="Product Id") @PathParam("productId") int id) {
 
         BaseResponse resp = new BaseResponse();
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        Session hbrSession = HibernateUtil.getSession();
+        //TODO: Check if the product is in a Order or Cart table, Inform user they cant delete it
+
+
         String hql = "delete ProductModel where id = :id";
         Query q = hbrSession.createQuery(hql).setParameter("id", id);
         try {

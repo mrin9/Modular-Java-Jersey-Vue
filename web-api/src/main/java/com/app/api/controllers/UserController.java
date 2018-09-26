@@ -1,10 +1,9 @@
-package com.app.api.user;
+package com.app.api.controllers;
 
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
-import com.app.model.product.ProductModel;
 import com.app.model.user.*;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
@@ -170,7 +169,7 @@ public class UserController extends BaseController {
     public Response addUser(UserRegistrationModel registerObj) {
 
         BaseResponse resp = new BaseResponse();
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         User user;
         try {

@@ -1,4 +1,4 @@
-package com.app.api.cart;
+package com.app.api.controllers;
 
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
@@ -20,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.List;
+import com.app.dao.CartDao;
 
 
 @Path("cart")
@@ -35,17 +36,12 @@ public class CartController extends BaseController {
     @RolesAllowed({"ADMIN"})
     public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @PathParam("userId") String userId) {
 
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(CartModel.class);
-
-        // Execute the Hibernate Query
-        List<CartModel> cartItemList = criteria.list();
-        criteria.setProjection(Projections.rowCount());
-        int totalRows = Math.toIntExact((Long) criteria.uniqueResult());
-
+        Session hbrSession = HibernateUtil.getSession();
+        List<CartModel> cartItemList =  CartDao.getProductsInCart(hbrSession, userId);
         CartResponse resp = new CartResponse();
         resp.setList(cartItemList);
-        resp.setTotal(totalRows);
-        resp.setSuccessMessage("List of Cart Items");
+        resp.setTotal(cartItemList.size());
+        resp.setSuccessMessage("List of Cart Items for user :" + userId);
         return Response.ok(resp).build();
     }
 
@@ -57,9 +53,9 @@ public class CartController extends BaseController {
 
         BaseResponse resp = new BaseResponse();
         try {
-            Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+            Session hbrSession = HibernateUtil.getSession();
             hbrSession.beginTransaction();
-            int result = removeFromCart(hbrSession, userId, null);
+            int result = CartDao.removeFromCart(hbrSession, userId, null);
             hbrSession.getTransaction().commit();
             resp.setSuccessMessage(String.format("All the Items from cart are removed for user:%s (Items Removed:%s)", userId, result));
             return Response.ok(resp).build();
@@ -81,9 +77,9 @@ public class CartController extends BaseController {
 
         BaseResponse resp = new BaseResponse();
         try {
-            Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+            Session hbrSession = HibernateUtil.getSession();
             hbrSession.beginTransaction();
-            int result = removeFromCart(hbrSession, userId, productId);
+            int result = CartDao.removeFromCart(hbrSession, userId, productId);
             hbrSession.getTransaction().commit();
             resp.setSuccessMessage(String.format("Product:%s from cart is removed for user:%s (Items Removed:%s)", productId, userId, result));
             return Response.ok(resp).build();
@@ -116,9 +112,9 @@ public class CartController extends BaseController {
 
         //First Check if the product is already available in the cart, then just increase the quantity
         try {
-            Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+            Session hbrSession = HibernateUtil.getSession();
             hbrSession.setFlushMode(FlushMode.ALWAYS);
-            CartModel cartItem = getProductsInCart(hbrSession, userId, productId);
+            CartModel cartItem = CartDao.getProductsInCart(hbrSession, userId, productId);
 
             if (action.equalsIgnoreCase("add")){
                 String msg="";
@@ -132,7 +128,7 @@ public class CartController extends BaseController {
                     BigDecimal existingQuantity = cartItem.getQuantity();
                     BigDecimal newQuantity = existingQuantity.add(quantity);
                     hbrSession.beginTransaction();
-                    resultCount = updateProductQuantityInCart(hbrSession, userId, productId, newQuantity);
+                    resultCount = CartDao.updateProductQuantityInCart(hbrSession, userId, productId, newQuantity);
                     hbrSession.getTransaction().commit();
                     msg = "Quantities updated for a product that already exist in cart";
                 }
@@ -152,11 +148,11 @@ public class CartController extends BaseController {
                     BigDecimal newQuantity = existingQuantity.subtract(quantity);
                     hbrSession.beginTransaction();
                     if (newQuantity.intValue() <= 0){
-                        resultCount = removeFromCart(hbrSession, userId, productId);
+                        resultCount = CartDao.removeFromCart(hbrSession, userId, productId);
                         msg = "Product completely removed from cart";
                     }
                     else{
-                        resultCount = updateProductQuantityInCart(hbrSession, userId, productId, newQuantity);
+                        resultCount = CartDao.updateProductQuantityInCart(hbrSession, userId, productId, newQuantity);
                         msg = "Product quantity updated after removal";
                     }
                     hbrSession.getTransaction().commit();
@@ -170,7 +166,7 @@ public class CartController extends BaseController {
                 }
                 else{
                     hbrSession.beginTransaction();
-                    resultCount = updateProductQuantityInCart(hbrSession, userId, productId, quantity);
+                    resultCount = CartDao.updateProductQuantityInCart(hbrSession, userId, productId, quantity);
                     hbrSession.getTransaction().commit();
                     resp.setSuccessMessage("Product Quantity updated " );
                 }
@@ -186,41 +182,5 @@ public class CartController extends BaseController {
             return Response.ok(resp).build();
         }
     }
-
-    private CartModel getProductsInCart(Session hbrSession, String userId, Integer productId) throws HibernateException, ConstraintViolationException {
-        String hql = "From CartModel where userId = :userId and productId = :productId";
-        Query q = hbrSession.createQuery(hql);
-        q.setParameter("userId", userId);
-        q.setParameter("productId", productId);
-
-        CartModel cartItems = (CartModel)q.uniqueResult();  // can throw org.hibernate.NonUniqueResultException
-        return cartItems;
-    }
-
-    private int updateProductQuantityInCart(Session hbrSession, String userId, Integer productId, BigDecimal quantity)  throws HibernateException, ConstraintViolationException {
-        String hql = "Update CartModel set quantity = :quantity where userId = :userId and productId = :productId";
-        Query q = hbrSession.createQuery(hql);
-        q.setParameter("userId", userId);
-        q.setParameter("productId", productId);
-        q.setParameter("quantity", quantity);
-        return q.executeUpdate();
-    }
-
-    private int removeFromCart(Session hbrSession, String userId, Integer productId)  throws HibernateException, ConstraintViolationException {
-        String hql = "";
-        if (productId != null){
-            hql = "delete CartModel where userId = :userId and productId = :productId";
-        }
-        else{
-            hql = "delete CartModel where userId = :userId";
-        }
-        Query q = hbrSession.createQuery(hql);
-        q.setParameter("userId", userId);
-        if (productId != null) {
-            q.setParameter("productId", productId);
-        }
-        return q.executeUpdate();
-    }
-
 
 }

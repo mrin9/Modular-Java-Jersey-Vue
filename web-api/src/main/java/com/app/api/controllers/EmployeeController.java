@@ -1,6 +1,8 @@
-package com.app.api.employee;
+package com.app.api.controllers;
 
 import com.app.api.BaseController;
+import com.app.model.BaseResponse;
+import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
 import com.app.model.employee.EmployeeResponse;
 import com.app.util.HibernateUtil;
@@ -9,11 +11,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -70,4 +76,29 @@ public class EmployeeController extends BaseController {
         resp.setSuccessMessage("List of employees");
         return Response.ok(resp).build();
     }
+
+
+    @POST
+    @Path("")
+    @ApiOperation(value = "Add a employee", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN"})
+    public Response addEmployee(EmployeeModel emp) {
+
+        BaseResponse resp = new BaseResponse();
+        Session hbrSession = HibernateUtil.getSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            hbrSession.beginTransaction();
+            hbrSession.save(emp);
+            hbrSession.getTransaction().commit();
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot add employee - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+        }
+
+        return Response.ok(resp).build();
+    }
+
+
+
 }

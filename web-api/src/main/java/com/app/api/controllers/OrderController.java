@@ -1,10 +1,8 @@
-package com.app.api.order;
+package com.app.api.controllers;
 
-import com.app.TomcatStarter;
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.model.order.*;
-import com.app.model.user.User;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,8 +23,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.app.util.HibernateUtil.getSessionFactory;
 
 
 @Path("")
@@ -50,7 +46,7 @@ public class OrderController extends BaseController {
         @ApiParam(value = "Items in each page", example = "20") @DefaultValue("20") @QueryParam("page-size") int pageSize
     ) {
         int recordFrom = 0;
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(OrderModel.class);
+        Criteria criteria = HibernateUtil.getSession().createCriteria(OrderModel.class);
         if (orderId > 0) {
             criteria.add(Restrictions.eq("orderId", orderId));
         }
@@ -101,7 +97,7 @@ public class OrderController extends BaseController {
             return Response.ok(resp).build();
         }
 
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         String hql1 = "delete OrderItemModel where orderId = :orderId";
         String hql2 = "delete OrderModel where id = :orderId";
@@ -140,7 +136,7 @@ public class OrderController extends BaseController {
         if (orderId >= 0) {
             sql = String.format(sqlTemplate, orderId);
         }
-        SQLQuery query = HibernateUtil.getSessionFactory().openSession().createSQLQuery(sql);
+        SQLQuery query = HibernateUtil.getSession().createSQLQuery(sql);
         query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
         List rowList = query.list();
 
@@ -223,7 +219,7 @@ public class OrderController extends BaseController {
             resp.setErrorMessage("Must provide a valid Order-id and Product-id");
             return Response.ok(resp).build();
         }
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         String hql = "delete OrderItemModel where orderId = :orderId and productId = :productId";
         Query q = hbrSession.createQuery(hql);
@@ -249,7 +245,7 @@ public class OrderController extends BaseController {
     public Response addOrderItem(OrderItemModel orderItem) {
 
         BaseResponse resp = new BaseResponse();
-        Session hbrSession = HibernateUtil.getSessionFactory().openSession();
+        Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
             hbrSession.beginTransaction();
