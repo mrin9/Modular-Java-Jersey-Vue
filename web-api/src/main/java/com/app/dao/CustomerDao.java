@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class CustomerDao {
 
 
-    public static BigDecimal getCustomerReferenceCount(Session hbrSession, Integer customerId){
+    public static BigDecimal getReferenceCount(Session hbrSession, Integer customerId){
         String sql = "Select sum(cnt) from ("+
                 "   select count(*) as cnt from northwind.users where customer_id = :customerId "+
                 "   union "+
@@ -23,17 +23,18 @@ public class CustomerDao {
         return (BigDecimal) q.uniqueResult();
     }
 
-    public static int deleteCustomer(Session hbrSession, Integer customerId)  throws HibernateException, ConstraintViolationException {
-        Query q = hbrSession.createQuery("delete CustomerModel where id = :customerId");
-        q.setParameter("customerId", customerId);
-        return q.executeUpdate();
-    }
-
-    public static CustomerModel getCustomer(Session hbrSession, Integer customerId){
+    public static CustomerModel getById(Session hbrSession, Integer customerId){
         String hql = "from CustomerModel where id = :customerId";
         Query q = hbrSession.createQuery(hql);
         q.setParameter("customerId", customerId);
         return  (CustomerModel)q.uniqueResult();
     }
+
+    public static int delete(Session hbrSession, Integer customerId)  throws HibernateException, ConstraintViolationException {
+        Query q = hbrSession.createQuery("delete CustomerModel where id = :customerId");
+        q.setParameter("customerId", customerId);
+        return q.executeUpdate();
+    }
+
 
 }

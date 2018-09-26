@@ -1,7 +1,10 @@
 package com.app.api.controllers;
 
 import com.app.api.BaseController;
+import com.app.dao.CustomerDao;
+import com.app.dao.OrderDao;
 import com.app.model.BaseResponse;
+import com.app.model.customer.CustomerModel;
 import com.app.model.order.*;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
@@ -89,121 +92,57 @@ public class OrderController extends BaseController {
     @Path("orders/{orderId}")
     @ApiOperation(value = "Delete an order and all its line-items", response = BaseResponse.class)
     @RolesAllowed({"USER"})
-    public Response deleteOrder(@ApiParam(value = "Order Id") @PathParam("orderId") int orderId) {
+    public Response deleteOrder(@ApiParam(value = "Order Id", example="4002") @PathParam("orderId") Integer orderId) {
 
         BaseResponse resp = new BaseResponse();
         if (orderId <= 0 ) {
             resp.setErrorMessage("Must provide a valid Order-id ");
             return Response.ok(resp).build();
         }
-
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
-        String hql1 = "delete OrderItemModel where orderId = :orderId";
-        String hql2 = "delete OrderModel where id = :orderId";
-
-        Query q1 = hbrSession.createQuery(hql1).setParameter("orderId", orderId);
-        Query q2 = hbrSession.createQuery(hql2).setParameter("orderId", orderId);
-
         try {
-            hbrSession.beginTransaction();
-            q1.executeUpdate();
-            q2.executeUpdate();
-            hbrSession.getTransaction().commit();
+            OrderModel foundOrder  = OrderDao.getById(hbrSession, orderId);
+            if (foundOrder==null){
+                resp.setErrorMessage(String.format("Cannot delete order - Order do not exist (id:%s)", orderId));
+                return Response.ok(resp).build();
+            }
+            else {
+                hbrSession.beginTransaction();
+                OrderDao.delete(hbrSession, orderId);
+                hbrSession.getTransaction().commit();
+                resp.setSuccessMessage(String.format("Order deleted (id:%s)", orderId));
+                return Response.ok(resp).build();
+            }
         }
         catch (HibernateException | ConstraintViolationException e) {
-            resp.setErrorMessage("Cannot delete Order " + e.getMessage() + ", " +e.getCause().getMessage());
+            resp.setErrorMessage("Cannot delete Order - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
-        resp.setSuccessMessage("Deleted");
-        return Response.ok(resp).build();
-
-
     }
 
     @GET
     @Path("orders/{orderId}")
-    @ApiOperation(value = "Get Details of an order", response = OrderWithNestedDetailResponse.class)
+    @ApiOperation(value = "Get Details of an order with nested order-lines", response = OrderWithNestedDetailResponse.class)
     @RolesAllowed({"USER"})
-    public Response getOrderDetail(@ApiParam(value = "Order Id") @PathParam("orderId") int orderId) {
+    public Response getOrderDetail(@ApiParam(value = "Order Id", example="4001") @PathParam("orderId") Integer orderId) {
 
-        String sql = "";
-        String sqlTemplate = " select order_id, product_id   , customer_id   , order_date, order_status  , shipped_date    , employee_id , payment_type, paid_date, "
-                + " ship_name      , ship_address1, ship_address2 , ship_city , ship_state    , ship_postal_code, ship_country, "
-                + " product_code   , product_name , category      , quantity  , unit_price    , discount        , date_allocated, order_item_status, "
-                + " shipping_fee   , customer_name, customer_email, customer_company from northwind.order_details where order_id = %s order by order_id, product_id ";
-
-        if (orderId >= 0) {
-            sql = String.format(sqlTemplate, orderId);
-        }
-        SQLQuery query = HibernateUtil.getSession().createSQLQuery(sql);
-        query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-        List rowList = query.list();
-
-        long prevOrderId = -1, newOrderId;
-        int itemCount = 0;
         OrderWithNestedDetailResponse resp = new OrderWithNestedDetailResponse();
-        OrderWithNestedDetailModel orderDetail = new OrderWithNestedDetailModel();
-
-        for (Object object : rowList) {
-            Map row = (Map) object;
-            newOrderId = (int) row.get("ORDER_ID");
-            if (prevOrderId != newOrderId) {
-                itemCount++;
-
-                orderDetail = new OrderWithNestedDetailModel(
-                        (int) row.get("ORDER_ID"),
-                        (Date) row.get("ORDER_DATE"),
-                        (String) row.get("ORDER_STATUS"),
-                        (Date) row.get("SHIPPED_DATE"),
-                        (String) row.get("SHIP_NAME"),
-                        (String) row.get("SHIP_ADDRESS1"),
-                        (String) row.get("SHIP_ADDRESS2"),
-                        (String) row.get("SHIP_CITY"),
-                        (String) row.get("SHIP_STATE"),
-                        (String) row.get("SHIP_POSTAL_CODE"),
-                        (String) row.get("SHIP_COUNTRY"),
-                        (BigDecimal) row.get("SHIPPING_FEE"),
-                        (Integer) row.get("CUSTOMER_ID"),
-                        (String) row.get("CUSTOMER_NAME"),
-                        (String) row.get("CUSTOMER_EMAIL"),
-                        (String) row.get("COMPANY"),
-                        (String) row.get("PAYMENT_TYPE"),
-                        (Date) row.get("PAID_DATE"),
-                        (int) row.get("EMPLOYEE_ID")
-                );
-                orderDetail.addOrderLine(
-                        (int) row.get("PRODUCT_ID"),
-                        (String) row.get("PRODUCT_CODE"),
-                        (String) row.get("PRODUCT_NAME"),
-                        (String) row.get("CATEGORY"),
-                        (BigDecimal) row.get("QUANTITY"),
-                        (BigDecimal) row.get("UNIT_PRICE"),
-                        (BigDecimal) row.get("DISCOUNT"),
-                        (Date) row.get("DATE_ALLOCATED"),
-                        (String) row.get("ORDER_ITEM_STATUS")
-                );
-
-                resp.getList().add(orderDetail);
-                prevOrderId = newOrderId;
-            } else {
-                orderDetail.addOrderLine(
-                        (int) row.get("PRODUCT_ID"),
-                        (String) row.get("PRODUCT_CODE"),
-                        (String) row.get("PRODUCT_NAME"),
-                        (String) row.get("CATEGORY"),
-                        (BigDecimal) row.get("QUANTITY"),
-                        (BigDecimal) row.get("UNIT_PRICE"),
-                        (BigDecimal) row.get("DISCOUNT"),
-                        (Date) row.get("DATE_ALLOCATED"),
-                        (String) row.get("ORDER_ITEM_STATUS")
-                );
-            }
+        Session hbrSession = HibernateUtil.getSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            List<OrderWithNestedDetailModel> orderWithOrderLinesList = OrderDao.getWithOrderLines(hbrSession, orderId);
+            resp.setList(orderWithOrderLinesList);
+            resp.setTotal(orderWithOrderLinesList.size());
+            resp.setSuccessMessage("List of Orders and nested details");
+            return Response.ok(resp).build();
         }
-        resp.setSuccessMessage("List of Orders and neseted details");
-        resp.setTotal(itemCount);
-        return Response.ok(resp).build();
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot delete Order - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
     }
+
 
     @DELETE
     @Path("/order-item/{orderId}/{productId}")
@@ -221,13 +160,9 @@ public class OrderController extends BaseController {
         }
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
-        String hql = "delete OrderItemModel where orderId = :orderId and productId = :productId";
-        Query q = hbrSession.createQuery(hql);
-        q.setParameter("orderId", orderId);
-        q.setParameter("productId", productId);
         try {
             hbrSession.beginTransaction();
-            q.executeUpdate();
+            OrderDao.deleteOrderLine(hbrSession,orderId,productId);
             hbrSession.getTransaction().commit();
         }
         catch (HibernateException | ConstraintViolationException e) {
@@ -237,6 +172,7 @@ public class OrderController extends BaseController {
         resp.setSuccessMessage("Deleted");
         return Response.ok(resp).build();
     }
+
 
     @POST
     @Path("/order-item")

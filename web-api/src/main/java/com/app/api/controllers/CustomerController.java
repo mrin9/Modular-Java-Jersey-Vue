@@ -3,10 +3,8 @@ package com.app.api.controllers;
 import com.app.api.BaseController;
 import com.app.dao.CustomerDao;
 import com.app.model.BaseResponse;
-import com.app.model.cart.CartModel;
 import com.app.model.customer.CustomerModel;
 import com.app.model.customer.CustomerResponse;
-import com.app.model.user.User;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -111,7 +109,7 @@ public class CustomerController extends BaseController {
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
-            CustomerModel foundCust  = CustomerDao.getCustomer(hbrSession, cust.getId());
+            CustomerModel foundCust  = CustomerDao.getById(hbrSession, cust.getId());
             if (foundCust != null){
                 hbrSession.beginTransaction();
                 hbrSession.update(cust);
@@ -143,20 +141,20 @@ public class CustomerController extends BaseController {
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
-            BigDecimal referenceCount = CustomerDao.getCustomerReferenceCount(hbrSession, customerId);
+            BigDecimal referenceCount = CustomerDao.getReferenceCount(hbrSession, customerId);
             if (referenceCount.intValue() > 0){
                 resp.setErrorMessage("Cannot delete customer, Referenced in other tables");
                 return Response.ok(resp).build();
             }
             else {
-                CustomerModel foundCust  = CustomerDao.getCustomer(hbrSession, customerId);
+                CustomerModel foundCust  = CustomerDao.getById(hbrSession, customerId);
                 if (foundCust==null){
                     resp.setErrorMessage(String.format("Cannot delete customer - Customer do not exist (id:%s)", customerId));
                     return Response.ok(resp).build();
                 }
                 else{
                     hbrSession.beginTransaction();
-                    CustomerDao.deleteCustomer(hbrSession, customerId);
+                    CustomerDao.delete(hbrSession, customerId);
                     hbrSession.getTransaction().commit();
                     resp.setSuccessMessage(String.format("Customer deleted (id:%s)", customerId));
                     return Response.ok(resp).build();
