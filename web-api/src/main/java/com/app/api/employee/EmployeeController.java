@@ -33,9 +33,9 @@ public class EmployeeController extends BaseController {
     public Response getEmployeeList(
         @ApiParam(value="Employee Id") @QueryParam("id") int id,
         @ApiParam(value="Department")  @QueryParam("department") String dept,
-        @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName,
+        @ApiParam(value="Use % for wildcard like 'Steav%' ")    @QueryParam("first-name") String firstName,
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page")  int page,
-        @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize
+        @ApiParam(value="Items in each page", example="20")     @DefaultValue("20") @QueryParam("page-size") int pageSize
     ) {
 
         int recordFrom=0;

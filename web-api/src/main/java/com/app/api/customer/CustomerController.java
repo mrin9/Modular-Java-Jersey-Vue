@@ -93,7 +93,7 @@ public class CustomerController extends BaseController {
             hbrSession.getTransaction().commit();
         }
         catch (HibernateException | ConstraintViolationException e) {
-            resp.setErrorMessage("Cannot add Customer - " + e.getMessage() + ", " +e.getCause().getMessage());
+            resp.setErrorMessage("Cannot add Customer - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
         }
 
         return Response.ok(resp).build();

@@ -235,7 +235,7 @@ public class OrderController extends BaseController {
             hbrSession.getTransaction().commit();
         }
         catch (HibernateException | ConstraintViolationException e) {
-            resp.setErrorMessage("Cannot delete Order Item " + e.getMessage() + ", " +e.getCause().getMessage());
+            resp.setErrorMessage("Cannot delete Order-Item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
         resp.setSuccessMessage("Deleted");
@@ -257,7 +257,7 @@ public class OrderController extends BaseController {
             hbrSession.getTransaction().commit();
         }
         catch (HibernateException | ConstraintViolationException  e) {
-            resp.setErrorMessage("Cannot add Order-Item - " + e.getMessage() + ", " +e.getCause().getMessage());
+            resp.setErrorMessage("Cannot add Order-Item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
         }
 
         return Response.ok(resp).build();
