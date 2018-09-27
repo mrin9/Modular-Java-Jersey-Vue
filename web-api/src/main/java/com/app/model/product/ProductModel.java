@@ -6,8 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "products")
 public class ProductModel {
-    @Id @GeneratedValue private Integer id;
-    @Column(name = "product_code")      private String  productCode;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false) private Integer id;
+    @Column(name = "product_code")      @ApiModelProperty(example = "601") private String  productCode;
     @Column(name = "product_name")      private String  productName;
     @Column(name = "description")       private String  description;
     @Column(name = "standard_cost")     private Long    standardCost;

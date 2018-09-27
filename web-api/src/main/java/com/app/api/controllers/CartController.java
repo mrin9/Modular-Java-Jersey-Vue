@@ -4,6 +4,8 @@ import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.model.cart.CartModel;
 import com.app.model.cart.CartResponse;
+import com.app.model.user.UserViewModel;
+import com.app.util.Constants;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,19 +33,54 @@ public class CartController extends BaseController {
     private static Logger log = LoggerFactory.getLogger(CartController.class);
 
     @GET
-    @Path("{userId}")
+    @Path("")
     @ApiOperation(value = "Get cart Items of an User", response = CartResponse.class)
-    @RolesAllowed({"ADMIN"})
-    public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @PathParam("userId") String userId) {
+    @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
+    public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @QueryParam("user-id") String userId) {
+
+        CartResponse resp = new CartResponse();
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
+
+        //Customers can query their own cart only
+        if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
+            userId = userFromToken.getUserId();
+        }
 
         Session hbrSession = HibernateUtil.getSession();
         List<CartModel> cartItemList =  CartDao.getProductsInCart(hbrSession, userId);
-        CartResponse resp = new CartResponse();
         resp.setList(cartItemList);
         resp.setTotal(cartItemList.size());
         resp.setSuccessMessage("List of Cart Items for user :" + userId);
         return Response.ok(resp).build();
     }
+
+    @POST
+    @Path("")
+    @ApiOperation(value = "Add a new product to cart", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
+    public Response getCartItemsByUser(
+        @ApiParam(value="User Id"   , example="customer") @QueryParam("user-id")    String userId,
+        @ApiParam(value="Product Id", example="610")      @QueryParam("product-id") Integer productId,
+        @ApiParam(value="Quantity"  , example="2")        @QueryParam("customer")   BigDecimal quantity
+    ) {
+
+        BaseResponse resp = new BaseResponse();
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
+
+        //Customers can query their own cart only
+        if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
+            userId = userFromToken.getUserId();
+        }
+
+        Session hbrSession = HibernateUtil.getSession();
+        CartModel cart = new CartModel(userId,productId,quantity);
+        hbrSession.getTransaction().begin();
+        hbrSession.save(cart);
+        hbrSession.getTransaction().commit();
+        resp.setSuccessMessage(String.format("New product(%s) added to cart of user (%s)", productId, userId));
+        return Response.ok(resp).build();
+    }
+
 
     @DELETE
     @Path("{userId}")
@@ -92,7 +129,7 @@ public class CartController extends BaseController {
 
     @PUT
     @Path("{userId}/{productId}/quantity")
-    @ApiOperation(value = "Modify cart of a user (by adding, removing or updating) product quantities", response = CartResponse.class)
+    @ApiOperation(value = "Modify cart of a user (by adding, removing or updating) product quantities", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response addCartItemsForAnUser(
         @ApiParam(value="User Id"   , example="customer") @PathParam("userId") String userId,

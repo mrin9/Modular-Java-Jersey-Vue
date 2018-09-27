@@ -112,7 +112,7 @@ public class CustomerController extends BaseController {
             CustomerModel foundCust  = CustomerDao.getById(hbrSession, cust.getId());
             if (foundCust != null){
                 hbrSession.beginTransaction();
-                hbrSession.update(cust);
+                hbrSession.merge(cust);
                 hbrSession.getTransaction().commit();
                 resp.setSuccessMessage(String.format("Customer Updated (id:%s)", cust.getId()));
                 return Response.ok(resp).build();
@@ -135,7 +135,7 @@ public class CustomerController extends BaseController {
     @Path("{customerId}")
     @ApiOperation(value = "Delete a Customer", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
-    public Response deleteCustomer(@ApiParam(value="Customer Id") @PathParam("customerId") Integer customerId) {
+    public Response deleteCustomer(@ApiParam(value="Customer Id", example="1") @PathParam("customerId") Integer customerId) {
 
         BaseResponse resp = new BaseResponse();
         Session hbrSession = HibernateUtil.getSession();
