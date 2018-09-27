@@ -2,7 +2,7 @@ import login from '@/rest/_login';
 
 //Exported Class
 const Rest = {
-  login
+  ...login
 }
 
 export default Rest;

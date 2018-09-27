@@ -2,9 +2,10 @@
   <div class="sw-login">
       <div class="left">
       <div>
-        <!-- sw-logo color="#65656A" style="width:220px; margin-bottom:50px;"/ -->
-
-        <span class="sw-light-text-on-dark t2"> NORTHWIND Order Processing Login </span>
+        <span style="display=flex">
+          <mr-logo color="#65656A" style="display:inline-block;width:50px;height:50px; margin-bottom:50px;"></mr-logo>
+          <span class="sw-light-text-on-dark" style="font-size:32px">MRIN</span>
+        </span>
         <br/>
 
         <div class="sw-form-row">
@@ -25,8 +26,8 @@
         <div class="sw-row-width" style="height:1px; background-color:#777" />
 
         <div class="sw-row-width">
-            <el-button type="text" style="float:left; color:#47AFE8; padding-left:0" @click="helpClicked()">Login Help</el-button>
-            <el-dropdown   style="float:right; color:#47AFE8; padding:5px 0 0 0" size="small" placement="top-end" trigger="click" @command="changeLang" >
+            <el-button type="text" style="cursor:pointer;float:left; color:#47AFE8; padding-left:0" @click="helpClicked()">Login Help</el-button>
+            <el-dropdown   style="cursor:pointer;float:right; color:#47AFE8; padding:5px 0 0 0" size="small" placement="top-end" trigger="click" @command="changeLang" >
               <span style = "color:#47AFE8;" class="sw-dark p4"> {{$t('m.change_lang')}}<i style="color:orange" class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu class="sw-dark" slot="dropdown" >
                 <el-dropdown-item command="en" > English</el-dropdown-item>
@@ -45,14 +46,14 @@
       </svg>
       </div>
       <div class="right">
-        <img src="images/spider.png"/>
+        Content on RIGHT side
       </div>
   </div>
 </template>
 
 
 <script>
-  import SwLogo from '@/components/logo/Logo';
+  import MrLogo from '@/components/logo/Logo';
   import Rest from '@/rest/Rest';
   import RestUtil from '@/rest/RestUtil';
   import router from '@/router';
@@ -133,14 +134,11 @@
 
     },
     components: {
-      SwLogo
+      MrLogo
     },
 
     mounted(){
-      //this.$store.commit('baseUrl',location.host);
-      if (this.$lodash.isEmpty(this.$store.state.baseUrl)){
-        this.$store.commit('baseUrl','http://10.21.83.83:8080');
-      }
+      this.$store.commit('baseUrl',location.host);
       this.$data.baseUrl = this.$store.state.baseUrl;
       this.$store.commit('user','');
       this.$store.commit('role','');

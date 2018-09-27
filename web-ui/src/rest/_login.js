@@ -1,7 +1,6 @@
 import axios from 'axios';
 import store from '@/store';
 import RestUtil from '@/rest/RestUtil';
-import Rest from '@/rest/Rest';
 
 export default {
   login(username, password, domain){
