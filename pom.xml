@@ -14,7 +14,8 @@
     </repositories>
 
     <!-- Build order of these modules is evaluated based of dependency graph -->
-    <modules> 
+    <modules>
+        <module>web-ui</module>  <!-- Build web-ui first so that the static files can be copied into the final jar -->
         <module>database</module>
         <module>web-api</module>
     </modules>

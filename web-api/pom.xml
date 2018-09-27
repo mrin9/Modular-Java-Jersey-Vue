@@ -18,6 +18,10 @@
         <swagger-version>1.5.17</swagger-version>
         <jackson-version>2.9.6</jackson-version>
         <hibernate-version>4.3.11.Final</hibernate-version> <!-- Hibernate 5 and above gives a classCastException -->
+        <maven-jar-plugin-version>3.1.0</maven-jar-plugin-version>
+        <maven-dependency-plugin-version>3.1.1</maven-dependency-plugin-version>
+        <jackson-version>2.9.6</jackson-version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
   
@@ -192,7 +196,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>${maven-jar-plugin-version}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -208,7 +212,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>${maven-dependency-plugin-version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -224,6 +228,39 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Copy frontend builds to resources folder -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy Vue.js frontend content</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>src/main/webapp/ui</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${project.parent.basedir}/web-ui/dist</directory>
+                                    <includes>
+                                        <include>css/</include>
+                                        <include>fonts/</include>
+                                        <include>images/</include>
+                                        <include>js/</include>
+                                        <include>scripts/</include>
+                                        <include>index.html</include>
+                                        <include>favicon.ico</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
   

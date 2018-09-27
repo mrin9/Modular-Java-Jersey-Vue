@@ -9,6 +9,10 @@
 apache-tomcat*
 **/apache-tomcat*/
 **/.vscode
+**/.babelrc
+**/.postcssrc
 **/*.iml
 **/node_modules/
 **/dist/
+**/webapp/ui
+**/web-ui/node
