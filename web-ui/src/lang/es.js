@@ -1,6 +1,6 @@
 export default {
   "m": {
-    es: "電子メールセキュリティ",
+    product_name: "電子メールセキュリティ",
     change_lang:'言語を変えてください',
     login:'ログイン',
     username:'ユーザー名',

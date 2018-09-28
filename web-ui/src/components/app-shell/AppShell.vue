@@ -7,10 +7,7 @@
     </transition>  
     <div class="sw-main-container" >
         <div class="sw-app-header-container" ref="headerContainer">
-          WELCOME
-          <!--
-          <app-header :label="$t('m.es')" :items="AppMenu.getHeaderItems()" />
-          -->
+          <app-header :label="$t('m.product_name')" :items="TopNav.USER" />
         </div>
         <div class="sw-page-container" ref="pageContainer">
           <transition name="fade" mode="out-in">
@@ -25,14 +22,14 @@
 
 import SideNav from '@/components/app-shell/SideNav';
 import AppHeader from '@/components/app-shell/AppHeader';
-import AppMenu  from '@/menu/AppMenu';
+import TopNav  from '@/menu/TopNav';
 
 export default {
 
   name: 'sw-app-shell',
   data:function(){
     return{
-      AppMenu
+      TopNav
     }
   },
   components: {
@@ -51,7 +48,8 @@ export default {
     }
   },
   mounted(){
-    console.log("Mounted:App Shell");
+
+    console.log("Mounted:App Shell %o", TopNav.ADMIN);
   }
 }
 </script>
@@ -118,6 +116,7 @@ export default {
     .sw-app-header-container{
       display:flex;
       width:100%;
+      background-color: #333;
       //height:$sw-header-height;
       flex-direction:column;
       flex-wrap: nowrap;

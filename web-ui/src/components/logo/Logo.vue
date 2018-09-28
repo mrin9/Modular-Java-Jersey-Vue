@@ -13,7 +13,6 @@
 
 <script>
   export default {
-    name: 'mr-logo',
     props: {
       color: {type:String, default:"#333" }
     }

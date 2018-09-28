@@ -14,7 +14,7 @@ import router from '@/router';
 import store from '@/store';
 import Rest from '@/rest/Rest';
 import RestUtil from '@/rest/RestUtil';
-import AppMenu from '@/menu/AppMenu';
+import AppMenu from '@/menu/TopNav';
 import i18n, {loadLang} from '@/lang/index';
 
 import App from '@/App.vue';
@@ -49,7 +49,7 @@ new Vue({
     loadLang(this.$store.state.lang);
     //Set the header Item
     if (this.$store.state.currentHeaderItem === undefined) {
-      this.$store.commit('currentHeaderItem',AppMenu.items[0]);
+      //this.$store.commit('currentHeaderItem',TopNav.items[0]);
     }
 
     //Set Axios Defaults and  global response Interceptor

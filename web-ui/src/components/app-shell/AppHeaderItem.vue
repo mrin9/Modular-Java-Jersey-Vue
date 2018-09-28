@@ -43,7 +43,7 @@
     font-size:18px;
     margin-left:5px;
     line-height: 50px;
-    color:$sw-dark-text;
+    color:$sw-light-text;
   }
 }
 .sw-circle{

@@ -1,6 +1,6 @@
 export default {
   "m": {
-    es: "ईमेल सुरक्षा",
+    product_name: "मृन",
     change_lang:'भाषा बदलो',
     login:'लॉग इन करें',
     username:'उपयोगकर्ता नाम',

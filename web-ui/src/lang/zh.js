@@ -1,6 +1,6 @@
 export default {
   "m": {
-    es: "邮件安全",
+    product_name: "姆琳",
     change_lang:'改变语言',
     login:'登录',
     username:'用户名',

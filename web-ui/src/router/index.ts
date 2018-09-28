@@ -4,29 +4,13 @@ import { RouterOptions, Location, RouteConfig, Route } from 'vue-router'
 import store from '@/store/index'
 
 import AppShell from '@/components/app-shell/AppShell.vue'
-import appMenuUtil from '@/menu/AppMenu'
+import TopNav from '@/menu/TopNav'
 
 //login
 import LoginPage from '@/views/LoginPage.vue'
 
 //Charts
 import Dashboard from '@/views/dashboard/Dashboard.vue'
-
-//import SamplePage from '@/views/sample/SamplePage.vue'
-import VuexTest from '@/views/sample/VuexTest.vue'
-import ButtonPage from '@/views/sample/ButtonPage.vue'
-import TabPage from '@/views/sample/TabPage.vue'
-import NotifyPage from '@/views/sample/NotifyPage.vue'
-import FontPage from '@/views/sample/FontPage.vue'
-import FormPage from '@/views/sample/FormPage.vue'
-import UnderConstructionPage from '@/views/sample/UnderConstructionPage.vue'
-import TablePage from '@/views/sample/TablePage.vue'
-import FrameworkPage from '@/views/sample/FrameworkPage.vue'
-import DropdownPage from '@/views/sample/DropdownPage.vue'
-import LogoPage from '@/views/sample/LogoPage.vue'
-import HeaderPage from '@/views/sample/HeaderPage.vue'
-import SideNavPage from '@/views/sample/SideNavPage.vue'
-
 
 Vue.use(Router)
 
@@ -65,25 +49,6 @@ const router =  new Router({
             { path: 'network-mta'          , component: {template: '<div> Networks MTA </div>'}  },
             { path: 'report-networks'   , component:{template: '<div> Known Network Reports </div>'}  },
           ]
-        },
-        {
-          path: 'components', redirect:'/home/components/button', component: {render (c) { return c('router-view') } },
-          children: [
-            { path: 'sample' , component:{template: '<div>Under Construction</div>'} },
-            { path: 'button' , component:ButtonPage },
-            { path: 'tab'    , component:TabPage },
-            { path: 'notify' , component:NotifyPage },
-            { path: 'font'   , component:FontPage },
-            { path: 'form'   , component:FormPage },
-            { path: 'vuex'   , component:VuexTest },
-            { path: 'uc'     , component:UnderConstructionPage },
-            { path: 'table'  , component:TablePage },
-            { path: 'frameworks', component:FrameworkPage },
-            { path: 'dd'     , component:DropdownPage },
-            { path: 'logo'   , component:LogoPage },
-            { path: 'header' , component:HeaderPage },
-            { path: 'sidenav', component:SideNavPage },
-          ]
         }
       ]
     }
@@ -108,10 +73,8 @@ router.beforeEach((to:Route, from:Route, next:Function) => {
 })
 
 router.afterEach((to:Route, from:Route) => {
-  //After navigation set currentHeaderItem
-  //AppMenu.search() also expands the group if a matching path is found
-  let navSection = appMenuUtil.search(to.path,'route');
-  store.commit('currentHeaderItem',navSection.headerItem);
+  //let navSection = appMenuUtil.search(to.path,'route');
+  //store.commit('currentHeaderItem',navSection.headerItem);
 })
 
 export default router;

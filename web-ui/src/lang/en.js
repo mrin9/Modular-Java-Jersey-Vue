@@ -1,6 +1,6 @@
 export default {
   "m": {
-    es: "Email Security",
+    product_name: "MRIN",
     change_lang:'Change Language',
     login:'LOGIN',
     username:'User Name',

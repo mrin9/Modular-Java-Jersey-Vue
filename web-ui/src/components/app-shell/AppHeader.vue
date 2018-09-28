@@ -1,7 +1,7 @@
 <template>
   <div class="sw-app-header">
     <div class="sw-app-header-row1">
-      <sw-es-logo style="width:45px;margin-left:5px"/>
+      <mr-logo style="height:45px;width:45px;margin-left:5px"></mr-logo>
       <h2 class="sw-app-header-label">
         {{label}}
       </h2>
@@ -26,7 +26,7 @@
   import SwAppHeaderItem from '@/components/app-shell/AppHeaderItem'
   import SwLogoutButton from '@/components/logout/LogoutButton'
   import {loadLang} from '@/lang'
-  import SwEsLogo from '@/components/logo/EsLogo';
+  import MrLogo from '@/components/logo/Logo';
 
   export default {
     name: 'sw-app-header',
@@ -46,7 +46,7 @@
     components: {
       SwAppHeaderItem,
       SwLogoutButton,
-      SwEsLogo
+      MrLogo
     }
   }
 </script>
@@ -104,6 +104,7 @@
 
   h2.sw-app-header-label{
     display:inline-block;
+    color:#fff;
     line-height: $sw-header-row1-height;
     width:200px;
     padding:0px 8px;
