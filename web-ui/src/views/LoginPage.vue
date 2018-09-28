@@ -87,16 +87,19 @@
         Rest.login(this.userName, this.password)
         .then(function(respData){
           me.$data.disableLogin=false;
+
+            //These are the default routes where the user will be taken once he/she logs in 
             let landingPage = {
-              'ADMIN'   : '/home/monitor/dashboard',
-              'CUSTOMER': 'home/user/junkbox',
-              'SUPPORT' : 'home/components/button',
+              'CUSTOMER': '/home/my-cart',
+              'ADMIN'   : '/home/manage/dashboard',
+              'SUPPORT' : '/home/manage/user',
             }
+
             if (landingPage[respData.role]){
               router.push(landingPage[respData.role]);
             }
             else{
-              router.push("/home")
+              router.push("/register")  
             }
         })
         .catch(function(err){

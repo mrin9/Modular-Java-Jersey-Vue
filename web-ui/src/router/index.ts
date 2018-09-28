@@ -22,37 +22,25 @@ const router =  new Router({
         return '/login';
       }
     },
-    { path: '/login'     , component: LoginPage    , meta: { permitAll: true } },
-    { path: '/home'      , redirect:  '/home/monitor/dashboard', component:AppShell,
+    { path: '/login'      , component: LoginPage                           , meta: { permitAll: true} },
+    { path: '/register'   , component: { template: '<div>Register</div>'  }, meta: { permitAll: true} },
+    { path: '/home'       , redirect:  '/home/manage/dashboard', component:AppShell,
       children: [
-        {
-          path: 'monitor', redirect:'/home/monitor/dashboard', component: {render (c) { return c('router-view') } },
+        { path: 'my-order'   , component:{ template: '<div>My Order</div>'   }},
+        { path: 'my-profile' , component:{ template: '<div>My Profile</div>' }},
+        { path: 'my-cart'    , component:{ template: '<div>My Cart</div>'    }},
+        { path: 'manage'     , redirect:  '/manage/dashboard', component: { render(c) { return c('router-view') } },
           children: [
-            { path: 'dashboard'    , component:Dashboard  },
-            { path: 'connections'  , component:{template: '<div>connections</div>'}  },
-          ]
-        },
-        {
-          path: 'investigate', redirect:'/home/investigate/junkbox', component: {render (c) { return c('router-view') } },
-          children: [
-            { path: 'connection-logs' , component:{template: '<div>Connection Logs</div>'}  },
-            { path: 'capture-atp-logs', component:{template: '<div>Capture ATP Logs</div>'}  },
-            { path: 'dmarc'           , component:{template: '<div>DMARC Report</div>'}  },
-            { path: 'audit-trail'     , component:{template: '<div>Audit Trail</div>'}  },
-            { path: 'diag'            , component:{template: '<div>Diagnostics</div>'}  },
-          ]
-        },
-        {
-          path: 'manage', redirect:'/home/manage/license',  component: {render (c) { return c('router-view') } },
-          children: [
-            { path: 'users'          , component:{template: '<div> Users </div>'}  },
-            { path: 'network-mta'          , component: {template: '<div> Networks MTA </div>'}  },
-            { path: 'report-networks'   , component:{template: '<div> Known Network Reports </div>'}  },
+            { path: 'dashboard', component: Dashboard },
+            { path: 'user'     , component:{ template: '<div>Manage Users</div>'    }},
+            { path: 'customer' , component:{ template: '<div>Manage Customers</div>'}},
+            { path: 'product'  , component:{ template: '<div>Manage Products</div>' }},
+            { path: 'employee' , component:{ template: '<div>Manage Employees</div>' }},
+            { path: 'cart'     , component:{ template: '<div>Manage Carts</div>' }}
           ]
         }
       ]
     }
-
   ]
 })
 

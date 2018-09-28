@@ -12,7 +12,8 @@ export default {
   "ADMIN":[
     { id:'0',  label:'Dashboard', icon:'line-chart', to:"/home/profile"},
     { id:'1',  label:'Manage'   , icon:'wrench', to:"/home/manage", sideMenu:[]},
-  ]
+  ],
+  "DEFAULT":[]
 };
 
 
