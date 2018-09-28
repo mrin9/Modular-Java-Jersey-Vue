@@ -1,11 +1,16 @@
 <template>
   <div id="sw-app-shell" class="sw-app-shell">
     <transition name="wipe" mode="out-in">
+      <!--
       <side-nav v-if="$store.state.currentHeaderItem.sideMenu.type==='full'" class="sw-app-side-nav"/>
+      -->
     </transition>  
     <div class="sw-main-container" >
         <div class="sw-app-header-container" ref="headerContainer">
+          WELCOME
+          <!--
           <app-header :label="$t('m.es')" :items="AppMenu.getHeaderItems()" />
+          -->
         </div>
         <div class="sw-page-container" ref="pageContainer">
           <transition name="fade" mode="out-in">

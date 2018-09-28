@@ -26,7 +26,6 @@
         <div class="sw-row-width" style="height:1px; background-color:#777" />
 
         <div class="sw-row-width">
-            <el-button type="text" style="cursor:pointer;float:left; color:#47AFE8; padding-left:0" @click="helpClicked()">Login Help</el-button>
             <el-dropdown   style="cursor:pointer;float:right; color:#47AFE8; padding:5px 0 0 0" size="small" placement="top-end" trigger="click" @command="changeLang" >
               <span style = "color:#47AFE8;" class="sw-dark p4"> {{$t('m.change_lang')}}<i style="color:orange" class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu class="sw-dark" slot="dropdown" >
@@ -65,19 +64,13 @@
       return {
         baseUrl:'',
         userName:'admin',
-        password:'password',
-        domain:'',
+        password:'admin',
         loginErrMsg:'',
         disableLogin:false
       }
     },
 
     methods:{
-      setBaseUrl(){
-        let me = this;
-        this.$store.commit('baseUrl',this.baseUrl);
-        //me.$store.commit('baseUrl', "");
-      },
 
       changeLang(lang){
         let me = this;
@@ -91,17 +84,13 @@
         this.$data.disableLogin= true;
         this.$data.loginErrMsg='';
 
-        Rest.login(this.userName, this.password, this.domain)
+        Rest.login(this.userName, this.password)
         .then(function(respData){
           me.$data.disableLogin=false;
-          if (respData.serialNumber.trim()=="" || respData.licenseCodes.trim()==""){
-            router.push("/register");
-          }
-          else{
             let landingPage = {
-              'admin'  : '/home/monitor/dashboard',
-              'user'   : 'home/user/junkbox',
-              'ouadmin': 'home/components/button',
+              'ADMIN'   : '/home/monitor/dashboard',
+              'CUSTOMER': 'home/user/junkbox',
+              'SUPPORT' : 'home/components/button',
             }
             if (landingPage[respData.role]){
               router.push(landingPage[respData.role]);
@@ -109,7 +98,6 @@
             else{
               router.push("/home")
             }
-          }
         })
         .catch(function(err){
           me.$data.loginErrMsg="Unable to login";
@@ -137,13 +125,6 @@
       MrLogo
     },
 
-    mounted(){
-      this.$store.commit('baseUrl',location.host);
-      this.$data.baseUrl = this.$store.state.baseUrl;
-      this.$store.commit('user','');
-      this.$store.commit('role','');
-      this.$store.commit('jwt' ,'');
-    }
   }
 </script>
 

@@ -27,9 +27,8 @@ setToken(tokenValue:string){
 },
 
 getBasePath(){
-  //console.log("BASE URL:" + store.state.baseUrl.replace(/\/$/, ""));
-  return store.state.baseUrl.replace(/\/$/, "") + restServiceRoot;
-  //return "http://10.5.59.180/esservice"
+  //return window.location.origin + restServiceRoot;
+  return "http://localhost:8080" + restServiceRoot;
 },
 
 globalErrorParser(err:AxiosError){

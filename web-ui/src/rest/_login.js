@@ -3,20 +3,22 @@ import store from '@/store';
 import RestUtil from '@/rest/RestUtil';
 
 export default {
-  login(username, password, domain){
+  login(username, password){
     
     let loginPath = RestUtil.getBasePath() + "/authenticate";
 
-    return axios.post(loginPath+"/user", {username,password,domain}).then(function(resp){
+    return axios.post(loginPath+"/user", {username,password}).then(function(resp){
       if (resp.data.data){
         var respData = resp.data.data;
         console.log(respData);
         RestUtil.setToken(respData.token)
-        store.commit('serialNumber', respData.serialNumber )
-        store.commit('licenseCodes', respData.licenseCodes )
-        store.commit('user', respData.username )
-        store.commit('role', respData.role )
-        store.commit('org' , respData.orgUnit )
+        store.commit('user'      , respData.userId )
+        store.commit('userName'  , respData.fullName )
+        store.commit('role'      , respData.role )
+        store.commit('email'     , respData.email )
+        store.commit('customerId', respData.customerId )
+        store.commit('employeeId', respData.employeeId )
+        store.commit('jwt'       , respData.token )
         return respData;
       }
       else{
