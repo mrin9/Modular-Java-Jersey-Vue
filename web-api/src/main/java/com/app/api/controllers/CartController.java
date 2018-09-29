@@ -4,6 +4,8 @@ import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.model.cart.CartModel;
 import com.app.model.cart.CartResponse;
+import com.app.model.cart.CartViewModel;
+import com.app.model.cart.CartViewResponse;
 import com.app.model.user.UserViewModel;
 import com.app.util.Constants;
 import com.app.util.HibernateUtil;
@@ -34,11 +36,11 @@ public class CartController extends BaseController {
 
     @GET
     @Path("")
-    @ApiOperation(value = "Get cart Items of an User", response = CartResponse.class)
+    @ApiOperation(value = "Get cart Items of an User", response = CartViewResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
     public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @QueryParam("user-id") String userId) {
 
-        CartResponse resp = new CartResponse();
+        CartViewResponse resp = new CartViewResponse();
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
 
         //Customers can query their own cart only
@@ -47,7 +49,7 @@ public class CartController extends BaseController {
         }
 
         Session hbrSession = HibernateUtil.getSession();
-        List<CartModel> cartItemList =  CartDao.getProductsInCart(hbrSession, userId);
+        List<CartViewModel> cartItemList =  CartDao.listCartItemsOfUser(hbrSession, userId);
         resp.setList(cartItemList);
         resp.setTotal(cartItemList.size());
         resp.setSuccessMessage("List of Cart Items for user :" + userId);
@@ -61,7 +63,7 @@ public class CartController extends BaseController {
     public Response getCartItemsByUser(
         @ApiParam(value="User Id"   , example="customer") @QueryParam("user-id")    String userId,
         @ApiParam(value="Product Id", example="610")      @QueryParam("product-id") Integer productId,
-        @ApiParam(value="Quantity"  , example="2")        @QueryParam("customer")   BigDecimal quantity
+        @ApiParam(value="Quantity"  , example="2")        @QueryParam("customer")   Long quantity
     ) {
 
         BaseResponse resp = new BaseResponse();
@@ -134,7 +136,7 @@ public class CartController extends BaseController {
     public Response addCartItemsForAnUser(
         @ApiParam(value="User Id"   , example="customer") @PathParam("userId") String userId,
         @ApiParam(value="Product Id", example="603")      @PathParam("productId") int productId,
-        @ApiParam(value="Quantity"  , example="2")        @QueryParam("quantity") BigDecimal quantity,
+        @ApiParam(value="Quantity"  , example="2")        @QueryParam("quantity") Long quantity,
         @ApiParam(value="action"    , example="add", allowableValues = "add, remove, update") @QueryParam("action") String action
 
     ) {
@@ -162,8 +164,8 @@ public class CartController extends BaseController {
                     msg = "Product Added with specified quantities";
                 }
                 else {
-                    BigDecimal existingQuantity = cartItem.getQuantity();
-                    BigDecimal newQuantity = existingQuantity.add(quantity);
+                    Long existingQuantity = cartItem.getQuantity();
+                    Long newQuantity = existingQuantity + quantity;
                     hbrSession.beginTransaction();
                     resultCount = CartDao.updateProductQuantityInCart(hbrSession, userId, productId, newQuantity);
                     hbrSession.getTransaction().commit();
@@ -181,8 +183,8 @@ public class CartController extends BaseController {
                     return Response.ok(resp).build();
                 }
                 else{
-                    BigDecimal existingQuantity = cartItem.getQuantity();
-                    BigDecimal newQuantity = existingQuantity.subtract(quantity);
+                    Long existingQuantity = cartItem.getQuantity();
+                    Long newQuantity = existingQuantity- quantity;
                     hbrSession.beginTransaction();
                     if (newQuantity.intValue() <= 0){
                         resultCount = CartDao.removeFromCart(hbrSession, userId, productId);

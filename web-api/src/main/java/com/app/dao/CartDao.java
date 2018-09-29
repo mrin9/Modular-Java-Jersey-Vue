@@ -1,6 +1,7 @@
 package com.app.dao;
 
 import com.app.model.cart.CartModel;
+import com.app.model.cart.CartViewModel;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,7 +29,7 @@ public class CartDao {
     }
 
 
-    public static int updateProductQuantityInCart(Session hbrSession, String userId, Integer productId, BigDecimal quantity)  throws HibernateException, ConstraintViolationException {
+    public static int updateProductQuantityInCart(Session hbrSession, String userId, Integer productId, Long quantity)  throws HibernateException, ConstraintViolationException {
         Query q = hbrSession.createQuery("Update CartModel set quantity = :quantity where userId = :userId and productId = :productId");
         q.setParameter("userId", userId);
         q.setParameter("productId", productId);
@@ -51,5 +52,12 @@ public class CartDao {
         }
         return q.executeUpdate();
     }
+
+    public static List<CartViewModel> listCartItemsOfUser(Session hbrSession, String userId) throws HibernateException, ConstraintViolationException {
+        Query q = hbrSession.createQuery("From CartViewModel where userId = :userId");
+        q.setParameter("userId", userId);
+        return q.list();
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.app.util;
 
 import com.app.model.cart.CartModel;
+import com.app.model.cart.CartViewModel;
 import com.app.model.order.OrderItemModel;
 import com.app.model.user.UserViewModel;
 import org.hibernate.Session;
@@ -50,6 +51,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(OrderItemModel.class);
             configuration.addAnnotatedClass(OrderInfoModel.class);
             configuration.addAnnotatedClass(CartModel.class);
+            configuration.addAnnotatedClass(CartViewModel.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);

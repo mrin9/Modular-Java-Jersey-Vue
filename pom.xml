@@ -17,7 +17,7 @@
     <modules>
         <module>web-ui</module>  <!-- Build web-ui first so that the static files can be copied into the final jar -->
         <module>database</module>
-        <module>web-api</module>
+        <module>web-api</module> <!-- to exclude web-ui during build >>> mvn -pl '!web-ui' install -->
     </modules>
     
     <!-- Common Properties for all modules -->
@@ -25,7 +25,8 @@
         <log4j-version>2.11.1</log4j-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
+
     <!-- Jars added in Parent POM will auto included in children -->
     <dependencies> 
         <!-- Log4J -->
@@ -80,6 +81,7 @@
             </plugin>
         </plugins>
     </build>
+
 
 
     

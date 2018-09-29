@@ -32,7 +32,7 @@
     padding:0 5px;
   }
   .sw-role{
-    color:#ccc;
+    color:#999;
     font-weight:bold;
     text-transform: uppercase;
   }

@@ -10,7 +10,11 @@ import TopNav from '@/menu/TopNav'
 import LoginPage from '@/views/LoginPage.vue'
 
 //Charts
-import Dashboard from '@/views/dashboard/Dashboard.vue'
+import Dashboard from '@/views/Dashboard.vue'
+
+//My Cart
+import MyCart from '@/views/MyCart.vue'
+
 
 Vue.use(Router)
 
@@ -26,9 +30,9 @@ const router =  new Router({
     { path: '/register'   , component: { template: '<div>Register</div>'  }, meta: { permitAll: true} },
     { path: '/home'       , component: AppShell,
       children: [
-        { path: 'my-orders'   , component:{ template: '<div>My Order</div>'   }},
-        { path: 'my-profile' , component:{ template: '<div>My Profile</div>' }},
-        { path: 'my-cart'    , component:{ template: '<div>My Cart</div>'    }},
+        { path: 'my-orders'  , component: { template: '<div>My Order</div>'   }},
+        { path: 'my-profile' , component: { template: '<div>My Profile</div>' }},
+        { path: 'my-cart'    , component: MyCart },
         { path: 'manage'     , redirect:  '/manage/dashboard', component: { render(c) { return c('router-view') } },
           children: [
             { path: 'dashboard' , component: Dashboard },

@@ -96,7 +96,6 @@ import TimeBarChart from '@/charts/TimeBarChart'
 import SwLegend from '@/components/legend/Legend'
 import Rest from '@/rest/Rest';
 import VueSlideoutPanel from 'vue-slideout-panel/src/VueSlideoutPanel'
-import SwChartTableData from '@/views/dashboard/ChartTableData'
 
 
 
@@ -607,7 +606,6 @@ export default {
     TimeBarChart,
     SwLegend,
     VueSlideoutPanel,
-    SwChartTableData,
   }
 
 }
