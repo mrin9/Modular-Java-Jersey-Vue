@@ -12,6 +12,7 @@ import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class CartController extends BaseController {
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
 
         //Customers can query their own cart only
-        if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
+        if (StringUtils.isBlank(userId) || userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
             userId = userFromToken.getUserId();
         }
 
@@ -52,6 +53,7 @@ public class CartController extends BaseController {
         List<CartViewModel> cartItemList =  CartDao.listCartItemsOfUser(hbrSession, userId);
         resp.setList(cartItemList);
         resp.setTotal(cartItemList.size());
+
         resp.setSuccessMessage("List of Cart Items for user :" + userId);
         return Response.ok(resp).build();
     }

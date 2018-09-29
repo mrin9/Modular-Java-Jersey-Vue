@@ -128,15 +128,16 @@ ALTER TABLE cart ADD CONSTRAINT fk_cart_items__products    FOREIGN KEY (product_
 /* Views */
 
 CREATE OR REPLACE VIEW cart_view AS
-select c.user_id
- , c.product_id
- , c.quantity
- , p.product_code
- , p.product_name
- , p.description
- , p.standard_cost
- , p.list_price
- From cart c, products p where c.product_id = p.id;
+select c.user_id  as user_id
+ , c.product_id   as product_id
+ , c.quantity     as quantity
+ , p.product_code as product_code
+ , p.product_name as product_name
+ , p.description  as description
+ , p.standard_cost as standard_cost
+ , p.list_price   as list_price
+ From cart c, products p
+ where c.product_id = p.id;
 
 
 CREATE OR REPLACE VIEW user_view AS

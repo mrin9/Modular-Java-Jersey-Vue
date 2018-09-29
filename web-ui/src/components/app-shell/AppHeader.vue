@@ -15,7 +15,7 @@
 
       </div>
       <div style="flex:1"></div>
-      <sw-logout-button></sw-logout-button>
+      <mr-logout-button></mr-logout-button>
           
     </div>
     <div class="sw-app-header-row sw-row2">
@@ -27,8 +27,7 @@
 </template>
 
 <script>
-  import SwAppHeaderItem from '@/components/app-shell/AppHeaderItem'
-  import SwLogoutButton from '@/components/logout/LogoutButton'
+  import MrLogoutButton from '@/components/logout/LogoutButton'
   import {loadLang} from '@/lang'
   import MrLogo from '@/components/logo/Logo';
 
@@ -48,8 +47,7 @@
     },
 
     components: {
-      SwAppHeaderItem,
-      SwLogoutButton,
+      MrLogoutButton,
       MrLogo
     }
   }

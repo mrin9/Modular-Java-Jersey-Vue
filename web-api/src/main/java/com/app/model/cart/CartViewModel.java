@@ -1,27 +1,22 @@
 package com.app.model.cart;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Immutable;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.security.Principal;
 
 @Entity
 @Immutable //Indicates its a View not a table (cannot be updated)
+@IdClass(CartModel.CartPrimaryKeys.class)
 @Table(name = "cart_view")
 public class CartViewModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")       private String userId;
-    @Column(name = "product_id")    private Integer productId;
-    @Column(name = "product_code")  private String productCode;
-    @Column(name = "product_name")  private String productName;
-    @Column(name = "description")   private String description;
-    @Column(name = "quantity")      private Long quantity;
-    @Column(name = "standard_cost") private Long standardCost;
-    @Column(name = "list_price")    private Long listPrice;
+
+    @Id @Column(name = "user_id")    private String userId;
+    @Id @Column(name = "product_id") private Integer productId;
+    @Column(name = "product_code")   private String productCode;
+    @Column(name = "product_name")   private String productName;
+    @Column(name = "description")    private String description;
+    @Column(name = "quantity")       private Long quantity;
+    @Column(name = "standard_cost")  private Long standardCost;
+    @Column(name = "list_price")     private Long listPrice;
 
     public CartViewModel(){}
 
@@ -33,9 +28,6 @@ public class CartViewModel {
         this.standardCost = standardCost;
         this.listPrice = listPrice;
     }
-
-    @JsonIgnore // This getter is duplicate of getId but is must for all classes that implements java.security.Principal
-    public String getName() {return userId;}
 
     public String getUserId() {return userId;}
     public void setUserId(String userId) { this.userId = userId; }
