@@ -1,6 +1,7 @@
 package com.app.model.order;
+import java.math.BigDecimal;
 import java.util.*;
-import java.math.*;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -15,6 +16,8 @@ public class OrderWithNestedDetailModel  extends OrderModel {
     private String customerName;
     private String customerEmail;
     private String customerCompany;
+    private long orderTotal;
+
     private List<OrderLine> orderLine;
 
     public OrderWithNestedDetailModel(){}
@@ -41,10 +44,10 @@ public class OrderWithNestedDetailModel  extends OrderModel {
             Integer employeeId
     ){
         super(orderId, employeeId, customerId, orderDate, orderStatus, shippedDate ,shipName, shipAddress1,shipAddress2, shipCity, shipState, shipPostalCode, shipCountry, shippingFee, paymentType, paidDate);
-        this.customerName = customerName;
-        this.customerEmail     = customerEmail;
-        this.customerCompany   = customerCompany;
-        this.orderLine         = new ArrayList<OrderLine>();
+        this.customerName     = customerName;
+        this.customerEmail    = customerEmail;
+        this.customerCompany  = customerCompany;
+        this.orderLine        = new ArrayList<OrderLine>();
     }
 
     public void addOrderLine(int productId, String productCode, String productName, String category, BigDecimal quantity, BigDecimal unitPrice, BigDecimal discount, Date dateAllocated, String orderItemStatus){
@@ -62,6 +65,9 @@ public class OrderWithNestedDetailModel  extends OrderModel {
 
     public String getCustomerCompany() { return customerCompany; }
     public void setCustomerCompany(String customerCompany) { this.customerCompany = customerCompany; }
+
+    public long getOrderTotal() { return orderTotal; }
+    public void setOrderTotal(long orderTotal) { this.orderTotal = orderTotal; }
 
     public List<OrderLine> getOrderLine() { return orderLine; }
     public void setOrderLine(List<OrderLine> orderLine) { this.orderLine = orderLine; }

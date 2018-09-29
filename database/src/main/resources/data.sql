@@ -779,11 +779,9 @@ insert into orders (id, employee_id, customer_id, order_date, shipped_date, ship
 
 /* Order details */
 insert into order_items (order_id, product_id, quantity, unit_price, discount, order_item_status, date_allocated) values
- (4001, 608, 1 , 97.34, 8.73, 'Allocated', '2017-01-15')
-,(4001, 611, 2 , 58.46, 4.36, 'No Stock' , '2016-09-21')
-,(4001, 616, 2 , 58.46, 4.36, 'No Stock' , '2016-09-21')
-,(4001, 613, 2 , 58.46, 4.36, 'No Stock' , '2016-09-21')
-,(4001, 615, 2 , 58.46, 4.36, 'No Stock' , '2016-09-21')
+ (4001, 608, 1 , 20   , 5   , 'Allocated', '2017-01-15')
+,(4001, 611, 2 , 10   , 4.36, 'No Stock' , '2016-09-21')
+,(4001, 616, 2 , 5    , 4.36, 'No Stock' , '2016-09-21')
 ,(4002, 604, 3 , 88.97, 2.86, 'On Order' , '2016-12-15')
 ,(4002, 610, 4 , 37.19, 8.65, 'Allocated', '2016-10-12')
 ,(4002, 615, 4 , 37.19, 8.65, 'Allocated', '2016-10-12')

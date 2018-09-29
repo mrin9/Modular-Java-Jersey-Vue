@@ -28,7 +28,7 @@
               </el-dropdown-menu>
             </el-dropdown>
         </div>
-        <div class="p2 sw-row-width" style="color:#ED4337;height:100px; padding:10px 0">
+        <div class="p2 sw-row-width" style="color:#ED4337;height:80px; padding:10px 0">
             {{loginErrMsg}}
         </div>
         
@@ -42,6 +42,10 @@
           <el-button class="sw-green" size="small" @click="userName='admin';password='admin'"       :loading="disableLogin">ADMIN</el-button>
           <el-button class="sw-yellow" size="small" @click="userName='customer';password='customer'" :loading="disableLogin">CUSTOMER</el-button>
           <el-button class="sw-orange"  size="small" @click="userName='support';password='support'"   :loading="disableLogin">SUPPORT</el-button>
+        </div>
+        <div class="sw-login-as-buttons sw-row-width">
+          <el-button style="width:135px" class="sw-gray" size="small" @click="win.location=(win.location.origin+'/api-docs/index.html')">API DOCS</el-button>
+          <el-button style="width:135px" class="sw-gray" size="small" @click="userName='customer';password='customer'">DB WEB CONSOLE</el-button>
         </div>
 
       </div>
@@ -73,7 +77,8 @@
         userName:'admin',
         password:'admin',
         loginErrMsg:'',
-        disableLogin:false
+        disableLogin:false,
+        win:window
       }
     },
 
@@ -191,8 +196,9 @@
   .sw-row-width{
     width:275px;
   }
+
   .sw-login-as-buttons{
-    padding:10px 0px;
+    padding:2px 0px;
     display:flex;
     justify-content:center;
   }
@@ -205,7 +211,8 @@
     &.sw-yellow{background-color: #ffc73b;}
     &.sw-orange{background-color: #ff903e;}
     &.sw-blue{background-color: #47AFE8;}
-  }
+    &.sw-gray{background-color: #777;}
+}
 
   .sw-login-help{
     border:1px solid gray;

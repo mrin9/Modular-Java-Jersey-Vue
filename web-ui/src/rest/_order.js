@@ -4,14 +4,13 @@ import RestUtil from '@/rest/RestUtil';
 
 export default {
 
-
-  getCartItems( userId ){
+  getOrder( customerId ){
     let qsParams={};
     if (userId){
-      qsParams['user-id']=userId;
+      qsParams['customer-id']=customerId;
     }
     
-    return axios.get(RestUtil.getBasePath() + "/cart",{
+    return axios.get(RestUtil.getBasePath() + "/orders",{
       headers: {'Authorization': RestUtil.getToken()},
       params:qsParams
     });

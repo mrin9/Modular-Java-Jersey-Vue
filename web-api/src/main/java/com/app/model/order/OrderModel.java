@@ -29,8 +29,8 @@ public class OrderModel {
     //Constructors
     public OrderModel(){}
     public OrderModel(Integer id, Integer employeeId  , Integer customerId  , Date   orderDate   , String orderStatus,
-         Date       shippedDate , String  shipName    , String  shipAddress1, String shipAddress2, String shipCity   , String shipState, String shipPostalCode, String shipCountry,
-         BigDecimal shippingFee , String  paymentType , Date    paidDate
+                      Date       shippedDate , String  shipName    , String  shipAddress1, String shipAddress2, String shipCity   , String shipState, String shipPostalCode, String shipCountry,
+                      BigDecimal shippingFee , String  paymentType , Date    paidDate
     ){
         this.id=id;
         this.employeeId  = employeeId ;

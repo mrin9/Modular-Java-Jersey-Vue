@@ -42,8 +42,8 @@ public class CartController extends BaseController {
     public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @QueryParam("user-id") String userId) {
 
         CartViewResponse resp = new CartViewResponse();
-        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
 
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
         //Customers can query their own cart only
         if (StringUtils.isBlank(userId) || userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
             userId = userFromToken.getUserId();
