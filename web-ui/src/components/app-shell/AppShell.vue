@@ -7,7 +7,7 @@
     </transition>  
     <div class="sw-main-container" >
         <div class="sw-app-header-container" ref="headerContainer">
-          <app-header :label="$t('m.product_name')" :items="TopNav.USER" />
+          <app-header :label="$t('m.product_name')" :items="TopNav[$store.state.role]" />
         </div>
         <div class="sw-page-container" ref="pageContainer">
           <transition name="fade" mode="out-in">
@@ -20,7 +20,6 @@
 
 <script>
 
-import SideNav from '@/components/app-shell/SideNav';
 import AppHeader from '@/components/app-shell/AppHeader';
 import TopNav  from '@/menu/TopNav';
 
@@ -33,7 +32,6 @@ export default {
     }
   },
   components: {
-    SideNav,
     AppHeader
   },
 
@@ -57,16 +55,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "~@/assets/styles/_vars.scss";
-
-.wipe-enter-active,
-.wipe-leave-active {
-    transition: all 0.3s ease-in-out;
-}
-
-.wipe-enter,
-.wipe-leave-to{
-    transform: translateX(-100%);
-}
 
 //.fade-enter-active,
 .fade-leave-active 

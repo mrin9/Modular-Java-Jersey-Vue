@@ -24,19 +24,20 @@ const router =  new Router({
     },
     { path: '/login'      , component: LoginPage                           , meta: { permitAll: true} },
     { path: '/register'   , component: { template: '<div>Register</div>'  }, meta: { permitAll: true} },
-    { path: '/home'       , redirect:  '/home/manage/dashboard', component:AppShell,
+    { path: '/home'       , component: AppShell,
       children: [
-        { path: 'my-order'   , component:{ template: '<div>My Order</div>'   }},
+        { path: 'my-orders'   , component:{ template: '<div>My Order</div>'   }},
         { path: 'my-profile' , component:{ template: '<div>My Profile</div>' }},
         { path: 'my-cart'    , component:{ template: '<div>My Cart</div>'    }},
         { path: 'manage'     , redirect:  '/manage/dashboard', component: { render(c) { return c('router-view') } },
           children: [
-            { path: 'dashboard', component: Dashboard },
-            { path: 'user'     , component:{ template: '<div>Manage Users</div>'    }},
-            { path: 'customer' , component:{ template: '<div>Manage Customers</div>'}},
-            { path: 'product'  , component:{ template: '<div>Manage Products</div>' }},
-            { path: 'employee' , component:{ template: '<div>Manage Employees</div>' }},
-            { path: 'cart'     , component:{ template: '<div>Manage Carts</div>' }}
+            { path: 'dashboard' , component: Dashboard },
+            { path: 'users'     , component:{ template: '<div>Manage Users</div>'    }},
+            { path: 'customers' , component:{ template: '<div>Manage Customers</div>'}},
+            { path: 'orders'    , component:{ template: '<div>Manage Orders</div>'}},
+            { path: 'products'  , component:{ template: '<div>Manage Products</div>' }},
+            { path: 'employees' , component:{ template: '<div>Manage Employees</div>' }},
+            { path: 'carts'     , component:{ template: '<div>Manage Carts</div>' }}
           ]
         }
       ]

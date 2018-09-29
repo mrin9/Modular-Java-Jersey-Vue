@@ -45,7 +45,23 @@
       </svg>
       </div>
       <div class="right">
-        Content on RIGHT side
+        
+        <table class="sw-login-help" style="border-spacing:10px 10px">
+          <tr><td colspan="3"> Title</td></tr>
+          <tr style="height:550px">
+            <td style="border-radius:6px;background:#adc165;border:3px solid #99aa52;">Option1</td>
+            <td style="background:#ffc73b;border:3px solid #efb025;">Option2</td>
+            <td style="background:#ff903e;border:3px solid #e87425;">Option3</td>
+          </tr>
+
+
+
+        </table>
+
+
+
+
+
       </div>
   </div>
 </template>
@@ -92,7 +108,7 @@
             let landingPage = {
               'CUSTOMER': '/home/my-cart',
               'ADMIN'   : '/home/manage/dashboard',
-              'SUPPORT' : '/home/manage/user',
+              'SUPPORT' : '/home/manage/users',
             }
 
             if (landingPage[respData.role]){
@@ -117,11 +133,8 @@
           }
           me.$data.disableLogin=false;
         });
-      },
-
-      helpClicked(){
-        Rest.getMessages();
       }
+
 
     },
     components: {
@@ -186,6 +199,12 @@
   }
   .sw-row-width{
     width:275px;
+  }
+
+  .sw-login-help{
+    border:1px solid gray;
+    width:600px;
+    height:600px;
   }
 
 }

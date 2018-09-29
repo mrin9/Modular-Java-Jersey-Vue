@@ -6,39 +6,9 @@
 
   <div class="sw-row1">
 
-    <div class="sw-chart-card sw-db-interval" style="width:200px">
-      <el-dropdown size="small" @command="onIntervalChange" class="sw-align-center" style="width:100%">
-        <el-button style="width:100%">
-          {{intervalDesc}}<i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="1_day">1 Day</el-dropdown-item>
-          <el-dropdown-item command="2_day">2 Day</el-dropdown-item>
-          <el-dropdown-item command="3_day">3 Day</el-dropdown-item>
-          <el-dropdown-item command="4_day">4 Day</el-dropdown-item>
-          <el-dropdown-item command="5_day">5 Day</el-dropdown-item>
-          <el-dropdown-item command="1_week" divided>1 Week</el-dropdown-item>
-          <el-dropdown-item command="2_week">2 Week</el-dropdown-item>
-          <el-dropdown-item command="1_month" divided>1 Month</el-dropdown-item>
-          <el-dropdown-item command="2_month">2 Month</el-dropdown-item>
-          <el-dropdown-item command="3_month">3 Month</el-dropdown-item>
-          <el-dropdown-item command="6_month">6 Month</el-dropdown-item>
-          <el-dropdown-item command="1_year" divided>1 Year</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-radio-group class="sw-align-center" v-model="showFor">
-        <el-radio label="all" >All</el-radio>
-        <el-radio label="ou">OU</el-radio>
-        <el-radio label="domain">Domain</el-radio>
-      </el-radio-group>
-      <input class="sw-align-center" type="text" v-model="domainOrOuName" style="margin-bottom:0; margin-top:0"/>
-
-    </div>
-
-
     <div class="sw-chart-card">
-      <div class="p1" style="display:inline-block; margin-bottom:12px;color:#777"> Incomming </div>
-      <i class="el-icon-download" style="font-size:20px;float:right"></i>
+      <div class="p1" style="display:inline-block; margin-bottom:12px;color:#777"> Orders by Status </div>
+      <clr-icon shape="flag" style="width:20px; height:20px; color:mediumseagreen;float:right"></clr-icon>
       <doughnut-chart
         :chartData="inGoodJunkData"
         :options="$_miniDonutOptions"
@@ -50,8 +20,8 @@
     </div>
 
     <div class="sw-chart-card">
-      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777"> Outgoing </div>
-      <i class="el-icon-upload2" style="font-size:20px;float:right"></i>
+      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777"> Orders by Payment Type </div>
+      <clr-icon shape="wallet" style="width:20px; height:20px; color:mediumseagreen;float:right"></clr-icon>
       <doughnut-chart
         :chartData="outGoodJunkData"
         :options="$_miniDonutOptions"
@@ -63,7 +33,7 @@
     </div>
 
     <div class="sw-chart-card sw-mini-bar-chart">
-      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777">Threats Blocked </div>
+      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777">Top Customers </div>
       <clr-icon shape="shield-check" style="width:20px; height:20px; color:mediumseagreen;float:right"></clr-icon>
       <base-horizontal-bar-chart
         :chartData="inBreakdownData"
@@ -113,72 +83,6 @@
     </div>
   </div>
 
-  <div class="sw-row1">
-    <div class="sw-chart-card sw-time-bar-chart">
-      <time-bar-chart
-          ref="inVsOut"
-          :chartData="inAndOutGroupedData"
-          :options="timeChartOptions"
-          :width="1075"
-          :height="160"
-          :buttons="['Table Data']"
-          @button-click="onChartButtonClick($refs.inVsOut, ...arguments)"
-          title="Incomming Vs Outgoing"
-          interval=""
-          style="width:100%;"
-        >
-      </time-bar-chart>
-    </div>
-  </div>
-
-  <div class="sw-row1">
-    <div class="sw-chart-card sw-time-bar-chart">
-      <time-bar-chart
-          ref="spamVsLikeySpam"
-          :chartData="inSpamGroupedData"
-          :options="timeChartOptions"
-          :width="1075"
-          :height="160"
-          :buttons="['Table Data']"
-          @button-click="onChartButtonClick($refs.spamVsLikeySpam, ...arguments)"
-          title="Spam Vs Likely Spam"
-          interval=""
-          style="width:100%;"
-        >
-      </time-bar-chart>
-    </div>
-  </div>
-
-
-  <div class="sw-row1">
-    <div class="sw-chart-card" style="margin-top:20px">
-      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777">Top Connecting IP </div>
-      <clr-icon shape="cloud-traffic" style="width:20px; height:20px; color:cornflowerblue;float:right"></clr-icon>
-      <base-horizontal-bar-chart
-        :chartData="topConnectingIpData"
-        :options="$_miniBarOptions"
-        :width="505"
-        :height="210"
-        style="width:100%;"
-      >
-      </base-horizontal-bar-chart>
-    </div>
-
-    <div class="sw-chart-card" style="margin-top:20px">
-      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777">Top Inbound Viruses </div>
-      <clr-icon shape="bug" style="color:#E45641; width:20px; height:20px; float:right"></clr-icon>
-      <base-horizontal-bar-chart
-        :chartData="topVirusData"
-        :options="$_miniBarOptions"
-        :width="505"
-        :height="210"
-        style="width:100%;"
-      >
-      </base-horizontal-bar-chart>
-    </div>
-
-
-  </div>
 
 </div>
 </template>
@@ -694,7 +598,7 @@ export default {
   },
 
   mounted(){
-    this.refreshAllChartData();
+    //this.refreshAllChartData();
   },
   components:{
     GoodJunk,
@@ -721,21 +625,14 @@ export default {
 
   padding:10px;
   margin:5px 20px 0 0;
-  min-width:225px;
-  &.sw-db-interval{
-    min-width:225px;
-    width:225px;
-    .sw-align-center{
-      display:table;
-      margin:0px auto 10px auto;
-    }
-  }
+  min-width:320px;
   &.sw-mini-bar-chart{
     padding:10px 5px 0 5px;
     margin:5px 0 0 0;
   }
+
   &.sw-time-bar-chart{
-    width:1062px;
+    width:1044px;
     padding:0 5px 0 5px;
     margin:20px 0 0 0;
   }

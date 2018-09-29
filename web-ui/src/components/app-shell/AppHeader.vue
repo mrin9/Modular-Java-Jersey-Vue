@@ -1,21 +1,25 @@
 <template>
   <div class="sw-app-header">
-    <div class="sw-app-header-row1">
-      <mr-logo style="height:45px;width:45px;margin-left:5px"></mr-logo>
-      <h2 class="sw-app-header-label">
+    <div class="sw-app-header-row sw-row1">
+      <mr-logo style="height:36px;width:36px;margin-left:5px"></mr-logo>
+      <div class="sw-app-header-label">
         {{label}}
-      </h2>
+      </div>
       <div class="sw-app-header-item-group">
-        <template v-if="items.length > 1">
-        <sw-app-header-item v-for="(item, i) of items" :key="i" :item="item" />
-        </template>
-      </div>
-      <div class="sw-app-header-info-group">
-          <sw-logout-button style="align-self:flex-end;"></sw-logout-button>
-      </div>
-    </div>
-    <div class="sw-app-header-row2">
 
+        <template v-if="items.length > 1">
+          <router-link v-for="(item, i) of items" :key="i" tag="span" :to="item.to" class="sw-app-header-item">
+            <a> {{item.label}}</a>
+          </router-link>
+        </template>
+
+      </div>
+      <div style="flex:1"></div>
+      <sw-logout-button></sw-logout-button>
+          
+    </div>
+    <div class="sw-app-header-row sw-row2">
+        Order Processing System
     </div>
   </div>
 
@@ -63,61 +67,74 @@
     overflow: hidden;
   }
 
-  .sw-app-header-row1{
+  .sw-app-header-row{
     width:100%;
     display:flex;
-    flex-basis:$sw-header-row1-height;
-    flex-direction: row;
-    align-items:center;
     flex-wrap: nowrap;
     overflow: hidden;
-
-  }
-
-  .sw-app-header-row2{
-    width:100%;
-    display:flex;
-    flex: 1;
-    align-self:stretch;
     flex-direction: row;
-    flex-wrap: nowrap;
-    overflow: hidden;
+    &.sw-row1{
+      align-items:center;
+      padding:0 8px;
+      background-color: #444;
+      height:60px;
+      .sw-app-header-item-group{
+        display:flex;
+        flex-direction: row;
+        .sw-app-header-item{
+          cursor: pointer;
+          color  :#fff;
+          border : 0;
+          margin : 0 3px;
+          padding: 0 16px;
+          height : 60px;
+          line-height: 60px;
+          font-size:20px;
+          &:hover{
+            background-color: #000;
+            a {
+              color:#fff;
+            }
+          }
+          &.router-link-exact-active{
+            a{color:$sw-primary-color;}
+          }
+        }
+      }
+    }
+    &.sw-row2{
+      padding: 5px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-width:0 0 1px;
+      font-size:14px;
+      font-weight: bold;
+      padding: 5px;
+      &:empty {
+        display: none;
+      }
+
+    }
+
   }
 
-  .sw-app-header-item-group,
-  .sw-app-header-info-group{
-    display:flex;
-    height:100%;
-    flex-wrap: nowrap;
-    overflow: hidden;
-  }
-  .sw-app-header-item-group{
-    flex-direction: row;
-    flex:1;
-  }
-  .sw-app-header-info-group{
-    flex-direction:column;
-    width:200px;
-    padding-right:16px;
-  }
-
-
-  h2.sw-app-header-label{
+  .sw-app-header-label{
     display:inline-block;
     color:#fff;
     line-height: $sw-header-row1-height;
     width:200px;
     padding:0px 8px;
+    font-size:36px;
   }
 
-  .sw-app-header-row2{
-    border: 1px solid #ddd;
-    border-width:0 0 1px;
-    background-color: #fff;
-    &:empty {
-      display: none;
+  a{
+    color:$sw-light-text;
+    text-decoration: none;
+    &.router-link-exact-active{
+      color:$sw-primary-color;
+      //background-color: rgba(0,0,0,0.3);
     }
-}
-
+  }
+  
 </style>
 
