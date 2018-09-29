@@ -76,7 +76,7 @@
     &.sw-row1{
       align-items:center;
       padding:0 8px;
-      background-color: #444;
+      background-color: #333;
       height:60px;
       .sw-app-header-item-group{
         display:flex;

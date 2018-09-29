@@ -6,7 +6,6 @@
           <mr-logo color="#65656A" style="display:inline-block;width:50px;height:50px; margin-bottom:50px;"></mr-logo>
           <span class="sw-light-text-on-dark" style="font-size:32px">MRIN</span>
         </span>
-        <br/>
 
         <div class="sw-form-row">
           <label class="sw-light-text-on-dark t2" style="width:100%"> {{$t('m.username')}} </label><br/>
@@ -18,15 +17,8 @@
           <input type="password" class="sw-large sw-dark sw-row-width" placeholder="password" v-model="password" @keyup="loginErrMsg=''" @keyup.enter="loginClicked()">
           <span  class="icon icon-lock sw-placeholder-icon"></span>
         </div>
-        <div class="p2 sw-row-width" style="color:#ED4337;height:50px; padding:10px 0">
-            {{loginErrMsg}}
-        </div>
-
-        <el-button class="sw-dark sw-row-width" style="margin:60px 0 20px 0;" type="primary"  @click="loginClicked()" :loading="disableLogin">{{$t('m.login')}}</el-button>
-        <div class="sw-row-width" style="height:1px; background-color:#777" />
-
         <div class="sw-row-width">
-            <el-dropdown   style="cursor:pointer;float:right; color:#47AFE8; padding:5px 0 0 0" size="small" placement="top-end" trigger="click" @command="changeLang" >
+            <el-dropdown   style="cursor:pointer;float:right; color:#47AFE8; padding:5px 0 0 0" size="small" placement="bottom-end" trigger="click" @command="changeLang" >
               <span style = "color:#47AFE8;" class="sw-dark p4"> {{$t('m.change_lang')}}<i style="color:orange" class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu class="sw-dark" slot="dropdown" >
                 <el-dropdown-item command="en" > English</el-dropdown-item>
@@ -35,8 +27,23 @@
                 <el-dropdown-item command="es" > Spanish</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-
         </div>
+        <div class="p2 sw-row-width" style="color:#ED4337;height:100px; padding:10px 0">
+            {{loginErrMsg}}
+        </div>
+        
+        <el-button class="sw-blue sw-row-width" style="margin:60px 0 20px 0;" @click="loginClicked()" :loading="disableLogin">{{$t('m.login')}}</el-button>
+
+        <div class="sw-row-width" style="border-width:1px 0 0 0; border-color:#aaa; border-style:solid; padding:5px 0px; color:#aaa">
+            Use buttons bellow to login as different roles
+        </div>
+
+        <div class="sw-login-as-buttons sw-row-width">
+          <el-button class="sw-green" size="small" @click="userName='admin';password='admin'"       :loading="disableLogin">ADMIN</el-button>
+          <el-button class="sw-yellow" size="small" @click="userName='customer';password='customer'" :loading="disableLogin">CUSTOMER</el-button>
+          <el-button class="sw-orange"  size="small" @click="userName='support';password='support'"   :loading="disableLogin">SUPPORT</el-button>
+        </div>
+
       </div>
       </div>
       <div class="sw-arc">
@@ -45,22 +52,6 @@
       </svg>
       </div>
       <div class="right">
-        
-        <table class="sw-login-help" style="border-spacing:10px 10px">
-          <tr><td colspan="3"> Title</td></tr>
-          <tr style="height:550px">
-            <td style="border-radius:6px;background:#adc165;border:3px solid #99aa52;">Option1</td>
-            <td style="background:#ffc73b;border:3px solid #efb025;">Option2</td>
-            <td style="background:#ff903e;border:3px solid #e87425;">Option3</td>
-          </tr>
-
-
-
-        </table>
-
-
-
-
 
       </div>
   </div>
@@ -192,13 +183,28 @@
     vertical-align:middle;
   }
   .sw-form-row{
-    margin-top:20px;
+    margin-top:10px;
     label{
       line-height: 1.8;
     }
   }
   .sw-row-width{
     width:275px;
+  }
+  .sw-login-as-buttons{
+    padding:10px 0px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .el-button{
+    width:90px;
+    border:0;
+    color:#000;
+    &.sw-green{background-color:  #adc165;}
+    &.sw-yellow{background-color: #ffc73b;}
+    &.sw-orange{background-color: #ff903e;}
+    &.sw-blue{background-color: #47AFE8;}
   }
 
   .sw-login-help{
