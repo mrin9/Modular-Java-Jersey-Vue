@@ -4,14 +4,17 @@
 
     <h3> My Cart </h3>
 
-    <div class="sw-toolbar">
-      <el-button type="primary" size="small" @click="onShopMore()" class="sw-toolbar-item">Shop more...</el-button>
+    <div class="sw-toolbar" style="width:600px;">
+      <el-button type="primary" size="small" @click="onContinueShopping()" class="sw-toolbar-item">CONTINUE SHOPPING</el-button>
+      <span style="flex:1"></span>
+      <span>CART TOTAL:</span> <span style="font-weight:bold;margin-left:5px">{{orderTotal}}</span>
     </div>
 
-    <el-table :data="tableData" style="width:600px;" empty-text="No Data">
-      <el-table-column prop="productName"  label="Product"/>
-      <el-table-column prop="listPrice"    label="Price"     width="80"/>
-      <el-table-column prop="quantity"     label="Quantity"  width="80"/>
+    <el-table :data="computedTableData" style="width:600px;" empty-text="No Data">
+      <el-table-column prop="productName"   label="Product"/>
+      <el-table-column prop="listPrice"     label="Price"     width="80"/>
+      <el-table-column prop="quantity"      label="Quantity"  width="80"/>
+      <el-table-column prop="productTotal"  label="Total"     width="80"/>
       <el-table-column label="" width="40">
         <template slot-scope="scope">
           <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered" @click="onDelete(scope.row)"></i>
@@ -62,12 +65,28 @@ export default {
       });
     },
 
-    onShopMore(){
-
+    onContinueShopping(){
+      console.log("Continue Shopping clicked...")
     },
 
   },
+  computed:{
+      computedTableData(){
+        return this.tableData.map(function(v){
+          return {
+            ...v,
+            productTotal:(parseInt(v.listPrice) * parseInt(v.quantity))
+          }
+        });
+      },
+      orderTotal(){
+        return this.tableData.reduce(function(total, v){
+          return (parseInt(total) + (parseInt(v.listPrice) * parseInt(v.quantity)))
+        },0);
+      }
 
+      
+  },
   mounted(){
     this.getData();
   }

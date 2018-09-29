@@ -8,8 +8,8 @@ CREATE TABLE users (
     user_id      NVARCHAR(20) NOT NULL,
     password     NVARCHAR(20) NOT NULL,
     role         NVARCHAR(20) ,
-    employee_id  INT NULL,
-    customer_id  INT NULL,
+    employee_id  INT NULL ,
+    customer_id  INT NULL ,
     CONSTRAINT user_id PRIMARY KEY(user_id)
 );
 
@@ -61,8 +61,8 @@ CREATE TABLE employees (
 /* Table: orders */
 CREATE TABLE orders (
   id              INT NOT NULL AUTO_INCREMENT,
-  employee_id     INT ,
-  customer_id     INT ,
+  employee_id     INT NULL,
+  customer_id     INT NULL,
   order_date      DATETIME ,
   shipped_date    DATETIME ,
   ship_name       VARCHAR(50) ,
@@ -74,7 +74,7 @@ CREATE TABLE orders (
   ship_country    VARCHAR(50) ,
   shipping_fee    DECIMAL(19,4) NULL DEFAULT '0.0000',
   payment_type    VARCHAR(50) ,
-  paid_date       DATETIME ,
+  paid_date       DATETIME NULL,
   order_status    VARCHAR(25),
   PRIMARY KEY (id)
 );
