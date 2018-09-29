@@ -65,7 +65,7 @@ public class CartController extends BaseController {
     public Response getCartItemsByUser(
         @ApiParam(value="User Id"   , example="customer") @QueryParam("user-id")    String userId,
         @ApiParam(value="Product Id", example="610")      @QueryParam("product-id") Integer productId,
-        @ApiParam(value="Quantity"  , example="2")        @QueryParam("customer")   Long quantity
+        @ApiParam(value="Quantity"  , example="2")        @QueryParam("quantity")   Long quantity
     ) {
 
         BaseResponse resp = new BaseResponse();
