@@ -45,7 +45,7 @@ public class CartController extends BaseController {
 
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
         //Customers can query their own cart only
-        if (StringUtils.isBlank(userId) || userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
+        if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
             userId = userFromToken.getUserId();
         }
 

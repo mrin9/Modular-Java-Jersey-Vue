@@ -48,7 +48,7 @@ public class OrderDao {
             from = 1;
         }
         if (limit <= 0 || limit > 1000) {
-            limit = 20;
+            limit = 1000;
         }
         from = (from - 1) * limit;
 

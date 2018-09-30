@@ -2,19 +2,16 @@
 
   <div style="display:flex;flex-direction:column" v-loading="loading" >
 
-    <h3> My Cart </h3>
-
-    <div class="sw-toolbar" style="width:600px;">
-      <el-button type="primary" size="small" @click="onContinueShopping()" class="sw-toolbar-item">CONTINUE SHOPPING</el-button>
-      <span style="flex:1"></span>
-      <span>CART TOTAL:</span> <span style="font-weight:bold;margin-left:5px">{{orderTotal}}</span>
+    <div class="sw-toolbar" style="width:850px;">
     </div>
 
-    <el-table :data="computedTableData" style="width:600px;" empty-text="No Data">
-      <el-table-column prop="productName"   label="Order ID"/>
-      <el-table-column prop="listPrice"     label="Order Date"     width="80"/>
-      <el-table-column prop="quantity"      label="Ship To"  width="80"/>
-      <el-table-column prop="productTotal"  label="Total"     width="80"/>
+    <el-table :data="tableData" style="width:750px; height:400px" empty-text="No Data">
+      <el-table-column prop="id"          label="ORDER#" width="70"/>
+      <el-table-column prop="orderDate"   label="DATE"  width="120"/>
+      <el-table-column prop="shipName"    label="SHIP TO" />
+      <el-table-column prop="orderStatus" label="STATUS"    width="90"/>
+      <el-table-column prop="paymentType" label="PAYMENT"   width="80"/>
+      <el-table-column prop="orderTotal"  label="TOTAL"     width="80"/>
       <el-table-column label="" width="40">
         <template slot-scope="scope">
           <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered" @click="onDelete(scope.row)"></i>
@@ -41,7 +38,7 @@ export default {
     getData(val){
       let me = this;
       me.$data.loading=true;
-      Rest.getOrder().then(function(resp){
+      Rest.getOrder(0,1000).then(function(resp){
         me.$data.tableData = resp.data.list;
         me.$data.loading=false;
       })

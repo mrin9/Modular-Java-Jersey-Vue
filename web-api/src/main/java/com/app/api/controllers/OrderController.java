@@ -37,6 +37,43 @@ import java.util.Map;
 public class OrderController extends BaseController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
 
+    @GET
+    @Path("orders")
+    @ApiOperation(value = "Get Details of an order with nested order-lines", response = OrderWithNestedDetailResponse.class)
+    @RolesAllowed({"ADMIN", "CUSTOMER", "SUPPORT"})
+    public Response getOrderDetail(
+        @ApiParam(value = "Order Id") @QueryParam("order-id") int orderId,
+        @ApiParam(value = "Customer Id") @QueryParam("customer-id") int customerId,
+        @ApiParam(value = "Payment Type", allowableValues = "Check, Cash, Card") @QueryParam("payment-type") String paymentType,
+        @ApiParam(value = "Order Status", allowableValues = "On Hold, Shipped, Complete, New") @QueryParam("order-status") String orderStatus,
+        @ApiParam(value = "Page No, Starts from 1 ", example = "1") @DefaultValue("1") @QueryParam("page") int page,
+        @ApiParam(value = "Items in each page", example = "20") @DefaultValue("20") @QueryParam("page-size") int pageSize
+    ) {
+
+        OrderWithNestedDetailResponse resp = new OrderWithNestedDetailResponse();
+        Session hbrSession = HibernateUtil.getSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
+        //Customers can query their own cart only
+        if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
+            customerId = userFromToken.getCustomerId();
+        }
+
+
+        try {
+            List<OrderWithNestedDetailModel> orderWithOrderLinesList = OrderDao.getWithOrderLines(hbrSession, page,pageSize, orderId, customerId, paymentType, orderStatus);
+            resp.setList(orderWithOrderLinesList);
+            resp.setTotal(orderWithOrderLinesList.size());
+            resp.setSuccessMessage("List of Orders and nested details " + (customerId>0 ? "- Customer:"+customerId:""));
+            return Response.ok(resp).build();
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot delete Order - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
+    }
+
     @DELETE
     @Path("orders/{orderId}")
     @ApiOperation(value = "Delete an order and all its line-items", response = BaseResponse.class)
@@ -70,34 +107,7 @@ public class OrderController extends BaseController {
         }
     }
 
-    @GET
-    @Path("orders")
-    @ApiOperation(value = "Get Details of an order with nested order-lines", response = OrderWithNestedDetailResponse.class)
-    @RolesAllowed({"ADMIN", "CUSTOMER", "SUPPORT"})
-    public Response getOrderDetail(
-        @ApiParam(value = "Order Id") @QueryParam("order-id") int orderId,
-        @ApiParam(value = "Customer Id") @QueryParam("customer-id") int customerId,
-        @ApiParam(value = "Payment Type", allowableValues = "Check, Cash, Card") @QueryParam("payment-type") String paymentType,
-        @ApiParam(value = "Order Status", allowableValues = "On Hold, Shipped, Complete, New") @QueryParam("order-status") String orderStatus,
-        @ApiParam(value = "Page No, Starts from 1 ", example = "1") @DefaultValue("1") @QueryParam("page") int page,
-        @ApiParam(value = "Items in each page", example = "20") @DefaultValue("20") @QueryParam("page-size") int pageSize
-    ) {
 
-        OrderWithNestedDetailResponse resp = new OrderWithNestedDetailResponse();
-        Session hbrSession = HibernateUtil.getSession();
-        hbrSession.setFlushMode(FlushMode.ALWAYS);
-        try {
-            List<OrderWithNestedDetailModel> orderWithOrderLinesList = OrderDao.getWithOrderLines(hbrSession, page,pageSize, orderId, customerId, paymentType, orderStatus);
-            resp.setList(orderWithOrderLinesList);
-            resp.setTotal(orderWithOrderLinesList.size());
-            resp.setSuccessMessage("List of Orders and nested details ");
-            return Response.ok(resp).build();
-        }
-        catch (HibernateException | ConstraintViolationException e) {
-            resp.setErrorMessage("Cannot delete Order - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
-            return Response.ok(resp).build();
-        }
-    }
 
 
     @DELETE

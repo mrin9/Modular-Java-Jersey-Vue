@@ -15,6 +15,9 @@ import Dashboard from '@/views/Dashboard.vue'
 //My Cart
 import MyCart from '@/views/MyCart.vue'
 
+//Order
+import Order from '@/views/Order.vue'
+
 
 Vue.use(Router)
 
@@ -30,7 +33,7 @@ const router =  new Router({
     { path: '/register'   , component: { template: '<div>Register</div>'  }, meta: { permitAll: true} },
     { path: '/home'       , component: AppShell,
       children: [
-        { path: 'my-orders'  , component: { template: '<div>My Order</div>'   }},
+        { path: 'my-orders'  , component: Order },
         { path: 'my-profile' , component: { template: '<div>My Profile</div>' }},
         { path: 'my-cart'    , component: MyCart },
         { path: 'manage'     , redirect:  '/manage/dashboard', component: { render(c) { return c('router-view') } },
@@ -38,7 +41,7 @@ const router =  new Router({
             { path: 'dashboard' , component: Dashboard },
             { path: 'users'     , component:{ template: '<div>Manage Users</div>'    }},
             { path: 'customers' , component:{ template: '<div>Manage Customers</div>'}},
-            { path: 'orders'    , component:{ template: '<div>Manage Orders</div>'}},
+            { path: 'orders'    , component: Order },
             { path: 'products'  , component:{ template: '<div>Manage Products</div>' }},
             { path: 'employees' , component:{ template: '<div>Manage Employees</div>' }},
             { path: 'carts'     , component:{ template: '<div>Manage Carts</div>' }}
