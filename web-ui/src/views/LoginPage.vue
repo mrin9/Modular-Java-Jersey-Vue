@@ -31,9 +31,11 @@
         <div class="p2 sw-row-width" style="color:#ED4337;height:80px; padding:10px 0">
             {{loginErrMsg}}
         </div>
-        
-        <el-button class="sw-blue sw-row-width" style="margin:60px 0 20px 0;" @click="loginClicked()" :loading="disableLogin">{{$t('m.login')}}</el-button>
-
+        <div class="sw-row-width" style="display:flex">
+          <el-button class="sw-blue sw-row-width" style="margin:60px 0 20px 0;" @click="loginClicked()" :loading="disableLogin">{{$t('m.login')}}</el-button>
+          <div style="flex:1"></div>
+          <el-button class="sw-blue sw-row-width" style="margin:60px 0 20px 0;" @click="goToRegister()">SIGN UP</el-button>
+        </div>
         <div class="sw-row-width" style="border-width:1px 0 0 0; border-color:#aaa; border-style:solid; padding:5px 0px; color:#aaa">
             Use buttons bellow to login as different roles
         </div>
@@ -90,6 +92,9 @@
           me.$store.commit('lang',lang);
         });
       },
+      goToRegister(){
+
+      },
 
       loginClicked(){
         let me = this;
@@ -131,7 +136,18 @@
         });
       }
 
+    },
+    mounted(){
+      let me = this;
 
+      //When login page is monted remove all the user info state
+      me.$store.commit('user', "" );
+      me.$store.commit('userName'  , "" );
+      me.$store.commit('role'      , "" );
+      me.$store.commit('email'     , "" );
+      me.$store.commit('customerId', "" );
+      me.$store.commit('employeeId', "" );
+      me.$store.commit('jwt'       , "" );
     },
     components: {
       MrLogo

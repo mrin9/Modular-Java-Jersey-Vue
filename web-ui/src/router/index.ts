@@ -9,6 +9,9 @@ import TopNav from '@/menu/TopNav'
 //login
 import LoginPage from '@/views/LoginPage.vue'
 
+//Register
+import Register from '@/views/Register.vue'
+
 //Charts
 import Dashboard from '@/views/Dashboard.vue'
 
@@ -29,8 +32,8 @@ const router =  new Router({
         return '/login';
       }
     },
-    { path: '/login'      , component: LoginPage                           , meta: { permitAll: true} },
-    { path: '/register'   , component: { template: '<div>Register</div>'  }, meta: { permitAll: true} },
+    { path: '/login'      , component: LoginPage , meta: { permitAll: true} },
+    { path: '/register'   , component: Register  , meta: { permitAll: true} },
     { path: '/home'       , component: AppShell,
       children: [
         { path: 'my-orders'  , component: Order },

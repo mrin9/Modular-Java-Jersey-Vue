@@ -1,10 +1,10 @@
-import login from '@/rest/_login';
+import user from '@/rest/_user';
 import cart from '@/rest/_cart';
 import order from '@/rest/_order';
 
 //Exported Class
 const Rest = {
-  ...login,
+  ...user,
   ...cart,
   ...order
 }

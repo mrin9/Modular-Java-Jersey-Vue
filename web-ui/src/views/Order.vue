@@ -5,7 +5,7 @@
     <div class="sw-toolbar" style="width:850px;">
     </div>
 
-    <el-table :data="tableData" style="width:750px; height:400px" empty-text="No Data">
+    <el-table :data="tableData" style="width:750px;" height="400" empty-text="No Data">
       <el-table-column prop="id"          label="ORDER#" width="70"/>
       <el-table-column prop="orderDate"   label="DATE"  width="120"/>
       <el-table-column prop="shipName"    label="SHIP TO" />

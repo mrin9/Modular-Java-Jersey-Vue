@@ -5,9 +5,7 @@ import RestUtil from '@/rest/RestUtil';
 export default {
   login(username, password){
     
-    let loginPath = RestUtil.getBasePath() + "/authenticate";
-
-    return axios.post(loginPath+"/user", {username,password}).then(function(resp){
+    return axios.post(RestUtil.getBasePath()+"/authenticate/user", {username,password}).then(function(resp){
       if (resp.data.data){
         var respData = resp.data.data;
         console.log(respData);
@@ -29,6 +27,24 @@ export default {
       console.log("REST ERROR: %O", err.response?err.response:err);
       return Promise.reject(err);
     })
-  }
+  },
+
+  registerUser(userObj){
+    
+    return axios.post(RestUtil.getBasePath()+"users", userObj ).then(function(resp){
+      if (resp.data.data){
+        var respData = resp.data.data;
+        console.log(respData);
+        return respData;
+      }
+      else{
+        return resp;
+      }
+    })
+    .catch(function(err){
+      console.log("REST ERROR: %O", err.response?err.response:err);
+      return Promise.reject(err);
+    })
+  },
 
 }
