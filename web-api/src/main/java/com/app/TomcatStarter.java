@@ -12,6 +12,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
+import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.slf4j.*;
 import org.hibernate.SessionFactory;
 
@@ -60,8 +61,12 @@ public class TomcatStarter {
             webContentFolder = Files.createTempDirectory("default-doc-base").toFile();
         }
         StandardContext ctx = (StandardContext) tomcat.addWebapp("", webContentFolder.getAbsolutePath());
-        //Set execution independent of current thread context classloader (compatibility with exec:java mojo)
-        ctx.setParentClassLoader(TomcatStarter.class.getClassLoader());
+
+        //Disable Jar Scanner
+        StandardJarScanner scanner=new StandardJarScanner();
+        scanner.setScanClassPath(false);
+        scanner.setScanManifest(false);
+        ctx.setJarScanner(scanner);
 
         System.out.println("configuring app with basedir: " + webContentFolder.getAbsolutePath());
 
