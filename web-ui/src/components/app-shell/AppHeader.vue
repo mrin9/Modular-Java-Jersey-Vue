@@ -6,13 +6,11 @@
         {{label}}
       </div>
       <div class="sw-app-header-item-group">
-
         <template v-if="items.length > 1">
           <router-link v-for="(item, i) of items" :key="i" tag="span" :to="item.to" class="sw-app-header-item">
              {{item.label}}
           </router-link>
         </template>
-
       </div>
       <div style="flex:1"></div>
       <mr-logout-button></mr-logout-button>
@@ -121,6 +119,7 @@
     width:200px;
     padding:0px 8px;
     font-size:36px;
+    font-weight: 100;
   }
 
   a{

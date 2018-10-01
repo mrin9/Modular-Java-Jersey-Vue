@@ -4,7 +4,7 @@ import RestUtil from '@/rest/RestUtil';
 
 export default {
 
-  getOrder( page, pageSize, orderId, customerId, paymentType, orderStatus ){
+  getOrders( page, pageSize, orderId, customerId, paymentType, orderStatus ){
     let qsParams={};
     if (page)        { qsParams['page']=page;}
     if (pageSize)    { qsParams['page-size']=pageSize;}

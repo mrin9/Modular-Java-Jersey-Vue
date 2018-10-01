@@ -21,6 +21,8 @@ import MyCart from '@/views/MyCart.vue'
 //Order
 import Order from '@/views/Order.vue'
 
+//Product
+import Product from '@/views/Product.vue'
 
 Vue.use(Router)
 
@@ -44,8 +46,8 @@ const router =  new Router({
             { path: 'dashboard' , component: Dashboard },
             { path: 'users'     , component:{ template: '<div>Manage Users</div>'    }},
             { path: 'customers' , component:{ template: '<div>Manage Customers</div>'}},
-            { path: 'orders'    , component: Order },
-            { path: 'products'  , component:{ template: '<div>Manage Products</div>' }},
+            { path: 'orders'    , component: Order   },
+            { path: 'products'  , component: Product },
             { path: 'employees' , component:{ template: '<div>Manage Employees</div>' }},
             { path: 'carts'     , component:{ template: '<div>Manage Carts</div>' }}
           ]

@@ -60,6 +60,13 @@ globalErrorParser(err:AxiosError){
       });
       return;
     }
+    if (err.response.status===500){
+      me.$alert('Internal Server Error', 'Error', {
+        confirmButtonText: 'OK',
+      });
+      return Promise.reject(err);
+    }
+
   }
   return Promise.reject(err);
 },

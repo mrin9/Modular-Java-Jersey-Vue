@@ -1,19 +1,20 @@
 <template>
 
   <div style="display:flex;flex-direction:column" v-loading="loading" >
-
-    <div class="sw-toolbar" style="width:850px;">
+    <h3> Manage Products </h3>
+    <div class="sw-toolbar" style="width:600px;">
+      <el-button type="primary" size="small" @click="onOpenAddProduct()" class="sw-toolbar-item">ADD</el-button>
     </div>
-
     <el-table :data="tableData" style="width:750px;" height="400" empty-text="No Data">
-      <el-table-column prop="id"          label="ORDER#" width="70"/>
-      <el-table-column prop="orderDate"   label="DATE"  width="120"/>
-      <el-table-column prop="shipName"    label="SHIP TO" />
-      <el-table-column prop="orderStatus" label="STATUS"    width="90"/>
-      <el-table-column prop="paymentType" label="PAYMENT"   width="80"/>
-      <el-table-column prop="orderTotal"  label="TOTAL"     width="80"/>
-      <el-table-column label="" width="40">
+      <el-table-column prop="id"           label="PRODUCT #" width="85"/>
+      <el-table-column prop="productName"  label="NAME"  />
+      <el-table-column prop="standardCost" label="COST"        width="80"/>
+      <el-table-column prop="listPrice"    label="LIST PRICE"  width="100"/>
+      <el-table-column prop="reorderLevel" label="REORDER"     width="80"/>
+      <el-table-column prop="category"     label="CATEGORY"    width="100"/>
+      <el-table-column label="" width="80">
         <template slot-scope="scope">
+          <i class="el-icon-edit" style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
           <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered" @click="onDelete(scope.row)"></i>
         </template>
       </el-table-column>
@@ -38,7 +39,7 @@ export default {
     getData(val){
       let me = this;
       me.$data.loading=true;
-      Rest.getOrders(0,1000).then(function(resp){
+      Rest.getProducts(0,1000).then(function(resp){
         me.$data.tableData = resp.data.list;
         me.$data.loading=false;
       })
@@ -55,13 +56,25 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
-        alert("Do Delete");
+        return Rest.deleteProduct(rec.id);
+      }).then((resp) => {
+        if (resp.data.msgType==="SUCCESS"){
+          me.$message({message: 'Successfully deleted', type:'success'});
+        }
+        else{
+          me.$message({message: 'Unable to delete, this could be due to the product being reffered in existing orders', type:'error', showClose:true, duration:6000});
+        }
       })
-      .catch(() => {
+      .catch((resp) => {
         me.$message({type:'info',message: 'Delete canceled'});          
       });
     },
+    onEdit(rec){
 
+    },
+    onOpenAddProduct(){
+
+    },
     onContinueShopping(){
       console.log("Continue Shopping clicked...")
     },
