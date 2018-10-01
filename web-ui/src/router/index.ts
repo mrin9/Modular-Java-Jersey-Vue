@@ -51,7 +51,10 @@ const router =  new Router({
           ]
         }
       ]
-    }
+    },
+    // the default route, when none of the above matches:
+    { path: "*", component: LoginPage , meta: { permitAll: true} }
+
   ]
 })
 

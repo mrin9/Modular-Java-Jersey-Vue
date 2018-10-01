@@ -31,7 +31,7 @@ export default {
 
   registerUser(userObj){
     
-    return axios.post(RestUtil.getBasePath()+"users", userObj ).then(function(resp){
+    return axios.post(RestUtil.getBasePath()+"/users", userObj ).then(function(resp){
       if (resp.data.data){
         var respData = resp.data.data;
         console.log(respData);

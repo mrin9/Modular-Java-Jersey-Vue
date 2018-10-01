@@ -107,9 +107,6 @@ public class OrderController extends BaseController {
         }
     }
 
-
-
-
     @DELETE
     @Path("/order-item/{orderId}/{productId}")
     @ApiOperation(value = "Delete an order line-item", response = BaseResponse.class)

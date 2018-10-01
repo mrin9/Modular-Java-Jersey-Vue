@@ -34,7 +34,7 @@
         <div class="sw-row-width" style="display:flex">
           <el-button class="sw-blue sw-row-width" style="margin:60px 0 20px 0;" @click="loginClicked()" :loading="disableLogin">{{$t('m.login')}}</el-button>
           <div style="flex:1"></div>
-          <el-button class="sw-blue sw-row-width" style="margin:60px 0 20px 0;" @click="goToRegister()">SIGN UP</el-button>
+          <el-button class="sw-gray sw-row-width" style="margin:60px 0 20px 0;" @click="goToRegister()">SIGN UP</el-button>
         </div>
         <div class="sw-row-width" style="border-width:1px 0 0 0; border-color:#aaa; border-style:solid; padding:5px 0px; color:#aaa">
             Use buttons bellow to login as different roles
@@ -93,7 +93,7 @@
         });
       },
       goToRegister(){
-
+        router.push("/register")  
       },
 
       loginClicked(){
@@ -104,19 +104,17 @@
         Rest.login(this.userName, this.password)
         .then(function(respData){
           me.$data.disableLogin=false;
-
             //These are the default routes where the user will be taken once he/she logs in 
             let landingPage = {
               'CUSTOMER': '/home/my-cart',
               'ADMIN'   : '/home/manage/dashboard',
               'SUPPORT' : '/home/manage/users',
             }
-
             if (landingPage[respData.role]){
               router.push(landingPage[respData.role]);
             }
             else{
-              router.push("/register")  
+              router.push("/register");  
             }
         })
         .catch(function(err){

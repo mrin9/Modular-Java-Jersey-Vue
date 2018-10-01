@@ -17,7 +17,7 @@
     "chart.js": "^2.7.2",
     "circular-json": "^0.5.5",
     "debounce": "^1.2.0",
-    "element-ui": "^2.4.7",
+    "element-ui": "^2.4.8",
     "global": "^4.3.2",
     "lodash": "^4.17.11",
     "vue": "^2.5.17",
@@ -27,7 +27,7 @@
     "vue-router": "^3.0.1",
     "vue-slideout-panel": "^3.0.0",
     "vuex": "^3.0.1",
-    "vuex-persist": "^1.5.3"
+    "vuex-persist": "^1.7.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.116",
@@ -36,7 +36,7 @@
     "@vue/cli-service": "^3.0.4",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
-    "typescript": "^3.0.3",
+    "typescript": "^3.1.1",
     "vue-template-compiler": "^2.5.17"
   },
   "browserslist": [

@@ -5,6 +5,7 @@ import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
 import com.app.model.user.*;
+import com.app.util.Constants;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -163,14 +164,27 @@ public class UserController extends BaseController {
     }
 
     @POST
+    @PermitAll
     @Path("")
     @ApiOperation(value = "Register as a New User", response = BaseResponse.class)
-    @RolesAllowed({"ADMIN"})
     public Response addUser(UserRegistrationModel registerObj) {
 
         BaseResponse resp = new BaseResponse();
+
+        UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
+        //Customers can query their own cart only
+        if (userFromToken==null || userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_ADMIN)==false ){
+            if (registerObj.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_ADMIN)) {
+                resp.setErrorMessage("Role cannot be ADMIN ");
+                return Response.ok(resp).build();
+            }
+        }
+
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
+
+
+
         User user;
         try {
             hbrSession.beginTransaction();

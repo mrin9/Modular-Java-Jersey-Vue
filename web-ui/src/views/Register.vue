@@ -8,7 +8,7 @@
     </div>
     <div style="padding:10px">
       <span class="sw-section-heading">
-        REGISTRATION
+        USER DETAILS
       </span> 
       <span class="sw-gray-text">Provide some fake details, the data will be refreshed every 1 hour</span>
       <br/>
@@ -80,7 +80,7 @@
 
 <script>
 import Rest from '@/rest/Rest';
-//import store from '@/store';
+import router from '@/router';
 import MrLogo from '@/components/logo/Logo';
 
 
@@ -92,20 +92,20 @@ export default {
       isEmployee:false,
       role:this.$store.state.role,
       userObj:{
-        "userId": "",
-        "password": "",
+        "userId": "test",
+        "password": "test",
         "role": "CUSTOMER",
-        "lastName": "",
-        "firstName": "",
-        "email": "",
+        "lastName": "First",
+        "firstName": "Last",
+        "email": "abc@example,com",
         "company": "",
-        "phone": "",
-        "address1": "",
-        "address2": "",
-        "city": "",
-        "state": "",
-        "postalCode": "",
-        "country": "",
+        "phone": "1234",
+        "address1": "add1",
+        "address2": "add2",
+        "city": "Sunnyvale",
+        "state": "CA",
+        "postalCode": "94086",
+        "country": "USA",
         "department": "",
         "managerId":0
       }
@@ -113,8 +113,32 @@ export default {
   },
 
   methods:{
+    
     onRegister(){
+      let me = this;
+      Rest.registerUser(me.$data.userObj).then(function(resp){
+        me.$data.loading=false;
+        if (resp.data.msgType==="ERROR"){
+          me.$message.error('Unable to register the user with id: '+ me.$data.userObj.userId)
+        }
+        else{
+          router.push("/login");
+          me.$message.success('User ID created :' + me.$data.userObj.userId);
+        }
+      })
+      .catch(function(err){
+        console.log("REST ERROR: %O", err.response?err.response:err);
+        me.$data.loading=false;
+      });
+
+
+
+
     },
+
+    onCancel(){
+      router.push("/login");
+    }
 
 
   },
@@ -141,6 +165,7 @@ export default {
 .sw-register-form{
   margin: 16px auto;
   border: 1px solid #333;
+  border-top-width: 3px;
   width:600px;
   display:flex;
   flex-direction:column;
