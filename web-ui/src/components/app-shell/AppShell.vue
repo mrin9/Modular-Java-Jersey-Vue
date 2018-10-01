@@ -1,18 +1,11 @@
 <template>
   <div id="sw-app-shell" class="sw-app-shell">
-    <transition name="wipe" mode="out-in">
-      <!--
-      <side-nav v-if="$store.state.currentHeaderItem.sideMenu.type==='full'" class="sw-app-side-nav"/>
-      -->
-    </transition>  
     <div class="sw-main-container" >
         <div class="sw-app-header-container" ref="headerContainer">
           <app-header :label="$t('m.product_name')" :items="TopNav[$store.state.role]" />
         </div>
         <div class="sw-page-container" ref="pageContainer">
-          <transition name="fade" mode="out-in">
-            <router-view></router-view>
-          </transition>  
+          <router-view></router-view>
         </div>
     </div>
   </div>
@@ -56,18 +49,6 @@ export default {
 <style scoped lang="scss">
 @import "~@/assets/styles/_vars.scss";
 
-//.fade-enter-active,
-.fade-leave-active 
-{
-  transition: opacity .3s;
-}
-.fade-enter, 
-.fade-leave-to {
-  opacity: 0;
-}
-
-
-
 .sw-app-shell {
   height:100%;
   display:flex;
@@ -75,21 +56,6 @@ export default {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-content:stretch;
-  .sw-app-side-nav{
-    order:0;
-    width:$sw-side-nav-width;
-    background: $sw-dark-bg2;
-    color:$sw-light-text;
-    padding:0;
-    overflow-y:auto;
-    overflow-x:hidden;
-    &::-webkit-scrollbar {width: 8px;}
-    &::-webkit-scrollbar-track {background-color: transparent;}
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba(0,0,0,0.4);
-      border-radius:3px;
-    }
-  }
 
   .sw-main-container{
     display:flex;

@@ -9,7 +9,7 @@
 
         <template v-if="items.length > 1">
           <router-link v-for="(item, i) of items" :key="i" tag="span" :to="item.to" class="sw-app-header-item">
-            <a> {{item.label}}</a>
+             {{item.label}}
           </router-link>
         </template>
 
@@ -81,7 +81,7 @@
         flex-direction: row;
         .sw-app-header-item{
           cursor: pointer;
-          color  :#fff;
+          color  :#ccc;
           border : 0;
           margin : 0 3px;
           padding: 0 16px;
@@ -90,12 +90,10 @@
           font-size:20px;
           &:hover{
             background-color: #000;
-            a {
-              color:#fff;
-            }
+            color:#fff;
           }
           &.router-link-exact-active{
-            a{color:$sw-primary-color;}
+            color:$sw-primary-color;
           }
         }
       }
