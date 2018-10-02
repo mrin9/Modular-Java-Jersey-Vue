@@ -5,9 +5,9 @@
 
     <!-- The slider shows a single-order-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
-      <order-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </order-details>
+      <order-details :rec="selectedRec" @changed="getData();"> </order-details>
     </vue-slideout-panel>
-
+    <h3> Manage Orders </h3>
     <div class="sw-toolbar" style="width:850px;">
 
     </div>
@@ -47,7 +47,7 @@ export default {
   },
 
   methods:{
-    getData(val){
+    getData(){
       let me = this;
       me.$data.loading=true;
       Rest.getOrders(0,1000).then(function(resp){
@@ -62,14 +62,22 @@ export default {
 
     onDelete(rec){
       let me = this;
-      this.$confirm('Are you sure to remove it from the cart?', 'Confirm', {
+      this.$confirm('Are you sure delete?', 'Confirm', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
-        alert("Do Delete");
+        return Rest.deleteOrder(rec.id);
+      }).then((resp) => {
+        if (resp.data.msgType==="SUCCESS"){
+          me.$message({message: 'Successfully deleted', type:'success'});
+          me.getData()
+        }
+        else{
+          me.$message({message: 'Unable to delete', type:'error', showClose:true, duration:6000});
+        }
       })
-      .catch(() => {
+      .catch((resp) => {
         me.$message({type:'info',message: 'Delete canceled'});          
       });
     },
@@ -94,6 +102,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "~@/assets/styles/_vars.scss";
 .sw-text{
   line-height:24px;
 }

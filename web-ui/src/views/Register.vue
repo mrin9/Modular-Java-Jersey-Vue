@@ -162,6 +162,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "~@/assets/styles/_vars.scss";
 .sw-register-form{
   margin: 16px auto;
   border: 1px solid #333;

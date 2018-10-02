@@ -65,9 +65,9 @@
                 <version>3.8.0</version>
                 <configuration>
                     <!-- Source & target are not necessary, but intelliJ depends on it to set the Java compiler settings  -->
-                    <source>10</source>
-                    <target>10</target>
-                    <release>10</release>
+                    <source>11</source>
+                    <target>11</target>
+                    <release>11</release>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>

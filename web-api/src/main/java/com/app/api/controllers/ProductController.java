@@ -32,7 +32,6 @@ import java.util.List;
 public class ProductController extends BaseController {
 
     @GET
-    @Path("")
     @ApiOperation(value = "Get list of products", response = ProductResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getProductList(
@@ -77,7 +76,6 @@ public class ProductController extends BaseController {
 
 
     @POST
-    @Path("")
     @ApiOperation(value = "Add a Product", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response addCustomer(ProductModel prod) {
@@ -100,7 +98,6 @@ public class ProductController extends BaseController {
     }
 
     @PUT
-    @Path("")
     @ApiOperation(value = "Update a Product", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response updateProduct(ProductModel prod) {

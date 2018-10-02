@@ -62,7 +62,7 @@ export default {
 
     onDelete(rec){
       let me = this;
-      this.$confirm('Are you sure to remove it from the cart?', 'Confirm', {
+      this.$confirm('Are you sure delete?', 'Confirm', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -81,6 +81,7 @@ export default {
         me.$message({type:'info',message: 'Delete canceled'});          
       });
     },
+
     onEdit(rec){
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = rec;
@@ -104,6 +105,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "~@/assets/styles/_vars.scss";
 .sw-text{
   line-height:24px;
 }

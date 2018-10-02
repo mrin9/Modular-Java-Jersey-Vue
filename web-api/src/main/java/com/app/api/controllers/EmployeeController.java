@@ -33,7 +33,6 @@ import java.util.List;
 public class EmployeeController extends BaseController {
 
     @GET
-    @Path("")
     @ApiOperation(value = "Get list of employees", response = EmployeeResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getEmployeeList(
@@ -79,7 +78,6 @@ public class EmployeeController extends BaseController {
 
 
     @POST
-    @Path("")
     @ApiOperation(value = "Add a employee", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response addEmployee(EmployeeModel emp) {

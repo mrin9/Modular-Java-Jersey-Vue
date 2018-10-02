@@ -99,11 +99,6 @@ export default {
 
     },
 
-    onCancel(){
-      
-    }
-
-
   },
 
   mounted(){
@@ -122,6 +117,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "~@/assets/styles/_vars.scss";
 .sw-medium{
   margin-top:2px;
   width:120px;

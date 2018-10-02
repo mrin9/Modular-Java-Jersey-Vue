@@ -101,8 +101,6 @@ CREATE TABLE products (
   list_price      DECIMAL(19,4) NOT NULL DEFAULT '0.0000',
   target_level    INT ,
   reorder_level   INT ,
-  minimum_reorder_quantity INT ,
-  quantity_per_unit VARCHAR(50) ,
   discontinued    TINYINT NOT NULL DEFAULT '0',
   category        VARCHAR(50),
   PRIMARY KEY (id)

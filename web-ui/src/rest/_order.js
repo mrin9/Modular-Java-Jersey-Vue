@@ -4,7 +4,7 @@ import RestUtil from '@/rest/RestUtil';
 
 export default {
 
-  getOrders( page, pageSize, orderId, customerId, paymentType, orderStatus ){
+  getOrders(page, pageSize, orderId, customerId, paymentType, orderStatus ){
     let qsParams={};
     if (page)        { qsParams['page']=page;}
     if (pageSize)    { qsParams['page-size']=pageSize;}
@@ -17,6 +17,19 @@ export default {
       headers: {'Authorization': RestUtil.getToken()},
       params:qsParams
     });
-  }
+  },
+
+  deleteOrder(orderId){
+    return axios.delete(RestUtil.getBasePath() + "/orders/" + orderId,{
+      headers: {'Authorization': RestUtil.getToken()}
+    });
+  },
+
+  deleteOrderLine(orderId, productId){
+    return axios.delete(RestUtil.getBasePath() + "/order-item/" + orderId +"/"+productId,{
+      headers: {'Authorization': RestUtil.getToken()}
+    });
+  },
+
 
 }

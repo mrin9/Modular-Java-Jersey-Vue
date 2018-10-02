@@ -36,7 +36,6 @@ public class CartController extends BaseController {
     private static Logger log = LoggerFactory.getLogger(CartController.class);
 
     @GET
-    @Path("")
     @ApiOperation(value = "Get cart Items of an User", response = CartViewResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
     public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @QueryParam("user-id") String userId) {
@@ -59,7 +58,6 @@ public class CartController extends BaseController {
     }
 
     @POST
-    @Path("")
     @ApiOperation(value = "Add a new product to cart", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
     public Response getCartItemsByUser(

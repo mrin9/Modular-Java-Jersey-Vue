@@ -93,6 +93,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "~@/assets/styles/_vars.scss";
 .sw-text{
   line-height:24px;
 }

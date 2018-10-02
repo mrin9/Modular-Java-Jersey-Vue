@@ -35,7 +35,6 @@ import static com.app.util.HibernateUtil.getSessionFactory;
 public class UserController extends BaseController {
 
     @GET
-    @Path("")
     @ApiOperation(value = "Get list of users")
     @RolesAllowed({"ADMIN"})
     public Response getUserList(
@@ -165,7 +164,6 @@ public class UserController extends BaseController {
 
     @POST
     @PermitAll
-    @Path("")
     @ApiOperation(value = "Register as a New User", response = BaseResponse.class)
     public Response addUser(UserRegistrationModel registerObj) {
 
