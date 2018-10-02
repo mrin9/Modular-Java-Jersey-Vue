@@ -67,7 +67,7 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
-        return Rest.deleteUser(rec.id);
+        return Rest.deleteUser(rec.userId);
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
@@ -88,7 +88,7 @@ export default {
     },
     onOpenAddProduct(){
       this.$data.showSlideOut = true;
-      this.$data.selectedRec  = {id:0};
+      this.$data.selectedRec  = {userId:0};
     },
     onContinueShopping(){
       console.log("Continue Shopping clicked...")

@@ -5,7 +5,7 @@ export default {
 
   getProducts( page, pageSize, productId, category ){
     let qsParams={};
-    if (page)        { qsParams['page']=page;}
+    if (page)      { qsParams['page']=page;}
     if (pageSize)  { qsParams['page-size']=pageSize;}
     if (productId) { qsParams['id']=productId;}
     if (category)  { qsParams['category']=category;}
