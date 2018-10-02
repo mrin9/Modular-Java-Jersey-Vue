@@ -20,8 +20,8 @@
       <el-table-column prop="category"     label="CATEGORY"    width="100"/>
       <el-table-column label="" width="80">
         <template slot-scope="scope">
-          <i class="el-icon-edit" style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
-          <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered" @click="onDelete(scope.row)"></i>
+          <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
+          <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
         </template>
       </el-table-column>
     </el-table>
@@ -88,7 +88,6 @@ export default {
     onOpenAddProduct(){
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = {id:0};
-
     },
     onContinueShopping(){
       console.log("Continue Shopping clicked...")
