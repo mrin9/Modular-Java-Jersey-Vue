@@ -1,6 +1,12 @@
 <template>
 
   <div style="display:flex;flex-direction:column" v-loading="loading" >
+    
+    <!-- The slider shows a single-product-details panel -->
+    <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
+      <product-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </product-details>
+    </vue-slideout-panel>
+
     <h3> Manage Products </h3>
     <div class="sw-toolbar" style="width:600px;">
       <el-button type="primary" size="small" @click="onOpenAddProduct()" class="sw-toolbar-item">ADD</el-button>
@@ -26,18 +32,23 @@
 <script>
 import Rest from '@/rest/Rest';
 import store from '@/store';
+import VueSlideoutPanel from 'vue-slideout-panel/src/VueSlideoutPanel'
+import ProductDetails from '@/views/ProductDetails'
 
 export default {
   data:function(){
     return {
+      loading:false,
+      showSlideOut:false,
       tableData:[],
-      loading:false
+      selectedRec:{}
     }
   },
 
   methods:{
-    getData(val){
+    getData(){
       let me = this;
+      console.log("Loaded Data");
       me.$data.loading=true;
       Rest.getProducts(0,1000).then(function(resp){
         me.$data.tableData = resp.data.list;
@@ -60,6 +71,7 @@ export default {
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
+          me.getData()
         }
         else{
           me.$message({message: 'Unable to delete, this could be due to the product being reffered in existing orders', type:'error', showClose:true, duration:6000});
@@ -70,9 +82,12 @@ export default {
       });
     },
     onEdit(rec){
-
+      this.$data.showSlideOut = true;
+      this.$data.selectedRec  = rec;
     },
     onOpenAddProduct(){
+      this.$data.showSlideOut = true;
+      this.$data.selectedRec  = {id:0};
 
     },
     onContinueShopping(){
@@ -82,7 +97,11 @@ export default {
   },
   mounted(){
     this.getData();
-  }
+  },
+  components: {
+    ProductDetails,
+    VueSlideoutPanel
+  },
 }
 </script>
 <style lang="scss" scoped>

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import store from '@/store';
 import RestUtil from '@/rest/RestUtil';
 
 export default {
@@ -18,11 +17,21 @@ export default {
   },
 
   deleteProduct(productId){
-    
     return axios.delete(RestUtil.getBasePath() + "/products/" + productId,{
       headers: {'Authorization': RestUtil.getToken()}
     });
-  }
+  },
 
+  addProduct(productObj){
+    return axios.post(RestUtil.getBasePath() + "/products", productObj, {
+      headers: {'Authorization': RestUtil.getToken()}
+    });
+  },
+
+  updateProduct(productObj){
+    return axios.put(RestUtil.getBasePath() + "/products", productObj, {
+      headers: {'Authorization': RestUtil.getToken()}
+    });
+  }
 
 }
