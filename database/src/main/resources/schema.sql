@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 DROP SCHEMA IF EXISTS northwind;
 
 CREATE SCHEMA NORTHWIND;

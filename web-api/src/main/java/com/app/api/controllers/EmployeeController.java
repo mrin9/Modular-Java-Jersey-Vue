@@ -1,6 +1,8 @@
 package com.app.api.controllers;
 
 import com.app.api.BaseController;
+import com.app.dao.CustomerDao;
+import com.app.dao.EmployeeDao;
 import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
@@ -23,6 +25,7 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -97,6 +100,73 @@ public class EmployeeController extends BaseController {
         return Response.ok(resp).build();
     }
 
+    @PUT
+    @ApiOperation(value = "Update a Employee", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN", "SUPPORT"})
+    public Response updateEmployee(EmployeeModel emp) {
+
+        BaseResponse resp = new BaseResponse();
+        Session hbrSession = HibernateUtil.getSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            EmployeeModel foundEmp  = EmployeeDao.getById(hbrSession, emp.getId());
+            if (foundEmp != null){
+                hbrSession.beginTransaction();
+                hbrSession.merge(emp);
+                hbrSession.getTransaction().commit();
+                resp.setSuccessMessage(String.format("Employee Updated (id:%s)", emp.getId()));
+                return Response.ok(resp).build();
+            }
+            else{
+                resp.setErrorMessage(String.format("Cannot Update - Employee not found (id:%s)", emp.getId()));
+                return Response.ok(resp).build();
+            }
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot update Employee - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
+
+    }
+
+
+    @DELETE
+    @Path("{employeeId}")
+    @ApiOperation(value = "Delete a Employee", response = BaseResponse.class)
+    @RolesAllowed({"ADMIN", "SUPPORT"})
+    public Response deleteEmployee(@ApiParam(value="Employee Id", example="1") @PathParam("employeeId") Integer employeeId) {
+
+        BaseResponse resp = new BaseResponse();
+        Session hbrSession = HibernateUtil.getSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            BigDecimal referenceCount = CustomerDao.getReferenceCount(hbrSession, employeeId);
+            if (referenceCount.intValue() > 0){
+                resp.setErrorMessage("Cannot delete Employee, Referenced in other tables");
+                return Response.ok(resp).build();
+            }
+            else {
+                CustomerModel foundCust  = CustomerDao.getById(hbrSession, employeeId);
+                if (foundCust==null){
+                    resp.setErrorMessage(String.format("Cannot delete - Employee do not exist (id:%s)", employeeId));
+                    return Response.ok(resp).build();
+                }
+                else{
+                    hbrSession.beginTransaction();
+                    CustomerDao.delete(hbrSession, employeeId);
+                    hbrSession.getTransaction().commit();
+                    resp.setSuccessMessage(String.format("Employee deleted (id:%s)", employeeId));
+                    return Response.ok(resp).build();
+
+                }
+            }
+
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot delete Customer - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
+    }
 
 
 }

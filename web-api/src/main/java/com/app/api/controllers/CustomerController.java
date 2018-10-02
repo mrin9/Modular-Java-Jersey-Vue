@@ -127,7 +127,6 @@ public class CustomerController extends BaseController {
     }
 
 
-
     @DELETE
     @Path("{customerId}")
     @ApiOperation(value = "Delete a Customer", response = BaseResponse.class)

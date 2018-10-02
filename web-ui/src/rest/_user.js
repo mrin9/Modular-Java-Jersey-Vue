@@ -47,4 +47,26 @@ export default {
     })
   },
 
+  getUsers(page, pageSize, userId, role){
+    let qsParams={};
+    if (page)     { qsParams['page']=page;}
+    if (pageSize) { qsParams['page-size']=pageSize;}
+    if (userId)   { qsParams['user-id']=userId;}
+    if (role)     { qsParams['role']=role;}
+    
+    return axios.get(RestUtil.getBasePath() + "/users",{
+      headers: {'Authorization': RestUtil.getToken()},
+      params:qsParams
+    });
+  },
+
+  deleteUser(userId){
+    return axios.delete(RestUtil.getBasePath() + "/users/" + userId,{
+      headers: {'Authorization': RestUtil.getToken()}
+    });
+  },
+
+
+
+
 }

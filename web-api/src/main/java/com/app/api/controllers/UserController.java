@@ -35,7 +35,7 @@ import static com.app.util.HibernateUtil.getSessionFactory;
 public class UserController extends BaseController {
 
     @GET
-    @ApiOperation(value = "Get list of users")
+    @ApiOperation(value = "Get list of users", response = UserListResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getUserList(
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
@@ -85,7 +85,7 @@ public class UserController extends BaseController {
     @GET
     @Path("/logged-user")
     @RolesAllowed({"CUSTOMER", "SUPPORT"})
-    @ApiOperation(value = "Get Details of Logged in User")
+    @ApiOperation(value = "Get Details of Logged in User", response = LoginResponse.class)
     public Response getLoggedInUser() {
 
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
@@ -100,7 +100,7 @@ public class UserController extends BaseController {
     @GET
     @Path("{userId}")
     @RolesAllowed({"CUSTOMER", "SUPPORT"})
-    @ApiOperation(value = "Get Details of a User by id")
+    @ApiOperation(value = "Get Details of a User by id" , response = UserResponse.class)
     public Response getUserDetailsById(@ApiParam(value="User Id") @PathParam("userId") String userId) {
         Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(UserViewModel.class);
 
