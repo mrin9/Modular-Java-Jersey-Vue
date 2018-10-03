@@ -18,9 +18,8 @@ import org.slf4j.*;
 import org.hibernate.SessionFactory;
 
 import java.io.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.concurrent.*;
 
 
 public class TomcatStarter {
@@ -95,19 +94,20 @@ public class TomcatStarter {
         String asciiArt = FigletFont.convertOneLine("Mrin >>>") + " Version 1.0.0";
         log.info(asciiArt);
 
-        // Schedule Refresh DB Task
-        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(3);
+        //Schedule Refresh DB Task
+        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
         RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
         long period = 1;
         TimeUnit timeUnit = TimeUnit.HOURS;
 
-        scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
+        Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
         log.info(String.format("\n\nRefreshDB Task Scheduled (The task refreshes the Database every %s %s)", period, timeUnit.toString()));
 
         // Start Web API Server
         tomcat.setPort(port);
         tomcat.start();
         tomcat.getConnector(); // Trigger the creation of the default connector
+
         tomcat.getServer().await();
 
     }
