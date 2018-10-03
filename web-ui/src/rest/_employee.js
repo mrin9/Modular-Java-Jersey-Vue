@@ -3,33 +3,34 @@ import RestUtil from '@/rest/RestUtil';
 
 export default {
 
-  getProducts( page, pageSize, productId, category ){
+  getEmployees( page, pageSize, employeeId, firstName, department ){
     let qsParams={};
-    if (page)      { qsParams['page']=page;}
-    if (pageSize)  { qsParams['page-size']=pageSize;}
-    if (productId) { qsParams['id']=productId;}
-    if (category)  { qsParams['category']=category;}
+    if (page)       { qsParams['page']=page;}
+    if (pageSize)   { qsParams['page-size']=pageSize;}
+    if (employeeId) { qsParams['id']=employeeId;}
+    if (firstName)  { qsParams['first-name']=firstName;}
+    if (department) { qsParams['id']=department;}
     
-    return axios.get(RestUtil.getBasePath() + "/products",{
+    return axios.get(RestUtil.getBasePath() + "/employees",{
       headers: {'Authorization': RestUtil.getToken()},
       params:qsParams
     });
   },
 
-  deleteProduct(productId){
-    return axios.delete(RestUtil.getBasePath() + "/products/" + productId,{
+  deleteEmployee(employeeId){
+    return axios.delete(RestUtil.getBasePath() + "/employees/" + employeeId,{
       headers: {'Authorization': RestUtil.getToken()}
     });
   },
 
-  addProduct(productObj){
-    return axios.post(RestUtil.getBasePath() + "/products", productObj, {
+  addEmployee(employeeObj){
+    return axios.post(RestUtil.getBasePath() + "/employees", employeeObj, {
       headers: {'Authorization': RestUtil.getToken()}
     });
   },
 
-  updateProduct(productObj){
-    return axios.put(RestUtil.getBasePath() + "/products", productObj, {
+  updateEmployee(employeeObj){
+    return axios.put(RestUtil.getBasePath() + "/employees", employeeObj, {
       headers: {'Authorization': RestUtil.getToken()}
     });
   }

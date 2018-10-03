@@ -13,6 +13,7 @@
 
     <!-- Properties -->
     <properties>
+
         <tomcat-version>9.0.12</tomcat-version>
         <jersey-version>2.27</jersey-version>
         <swagger-version>1.5.17</swagger-version>
@@ -36,7 +37,7 @@
             <scope>provided</scope>
         </dependency>
 
-
+        <!-- Tomcat -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>

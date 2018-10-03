@@ -28,7 +28,6 @@ public class TomcatStarter {
 
     public static int port=8080;
     private static Tomcat tomcat;
-    public static SessionFactory sessionFactory;
 
     private static File getRootFolder() {
         try {
@@ -71,6 +70,9 @@ public class TomcatStarter {
         StandardJarScanner scanner=new StandardJarScanner();
         scanner.setScanClassPath(false);
         scanner.setScanManifest(false);
+        scanner.setScanAllDirectories(false);
+        scanner.setScanAllFiles(false);
+
         ctx.setJarScanner(scanner);
 
         // Declare an alternative location for your "WEB-INF/classes" dir
@@ -90,7 +92,7 @@ public class TomcatStarter {
         ctx.setResources(resources);
 
         // ASCII ART Banner...
-        String asciiArt = FigletFont.convertOneLine("Mrin >>>")+" Version 1.0.0";
+        String asciiArt = FigletFont.convertOneLine("Mrin >>>") + " Version 1.0.0";
         log.info(asciiArt);
 
         // Schedule Refresh DB Task
