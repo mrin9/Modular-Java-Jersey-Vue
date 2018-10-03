@@ -4,6 +4,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.app.task.RefreshDBTask;
 import com.github.lalyos.jfiglet.FigletFont;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
@@ -17,6 +18,9 @@ import org.slf4j.*;
 import org.hibernate.SessionFactory;
 
 import java.io.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class TomcatStarter {
@@ -33,10 +37,11 @@ public class TomcatStarter {
             int lastIndexOf = runningJarPath.lastIndexOf("/target/");
             if (lastIndexOf < 0) {
                 root = new File("");
-            } else {
+            }
+            else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            System.out.println("application resolved root folder: " + root.getAbsolutePath());
+            //System.out.println("application resolved root folder: " + root.getAbsolutePath());
             return root;
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -44,7 +49,7 @@ public class TomcatStarter {
     }
 
     public static void main(String[] args) throws Exception {
-        log.info("\n\n\n Starting ...\n ");
+        log.info("\n\n\nStarting Tomcat...\n ");
         File root = getRootFolder();
         System.setProperty("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE", "true");
         System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
@@ -68,8 +73,6 @@ public class TomcatStarter {
         scanner.setScanManifest(false);
         ctx.setJarScanner(scanner);
 
-        System.out.println("configuring app with basedir: " + webContentFolder.getAbsolutePath());
-
         // Declare an alternative location for your "WEB-INF/classes" dir
         // Servlet 3.0 annotation will work
         File additionWebInfClassesFolder = new File(root.getAbsolutePath(), "target/classes");
@@ -78,7 +81,7 @@ public class TomcatStarter {
         WebResourceSet resourceSet;
         if (additionWebInfClassesFolder.exists()) {
             resourceSet = new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClassesFolder.getAbsolutePath(), "/");
-            System.out.println("loading WEB-INF resources from as '" + additionWebInfClassesFolder.getAbsolutePath() + "'");
+            //System.out.println("loading WEB-INF resources from as '" + additionWebInfClassesFolder.getAbsolutePath() + "'");
         }
         else {
             resourceSet = new EmptyResourceSet(resources);
@@ -87,24 +90,23 @@ public class TomcatStarter {
         ctx.setResources(resources);
 
         // ASCII ART Banner...
-        try {
-            String asciiArt = FigletFont.convertOneLine("Mrin >>>");
-            System.out.println(asciiArt);
-        }
-        catch(Exception e){
-            System.out.println("Mrin >>>");
-        }
+        String asciiArt = FigletFont.convertOneLine("Mrin >>>")+" Version 1.0.0";
+        log.info(asciiArt);
 
-        //Start The database Server, execute initial script files and open web console;
-        DatabaseService.initDB();
+        // Schedule Refresh DB Task
+        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(3);
+        RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
+        long period = 1;
+        TimeUnit timeUnit = TimeUnit.HOURS;
 
+        scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
+        log.info(String.format("\n\nRefreshDB Task Scheduled (The task refreshes the Database every %s %s)", period, timeUnit.toString()));
 
         // Start Web API Server
         tomcat.setPort(port);
         tomcat.start();
         tomcat.getConnector(); // Trigger the creation of the default connector
         tomcat.getServer().await();
-
 
     }
 

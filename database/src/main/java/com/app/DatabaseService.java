@@ -16,9 +16,8 @@ public class DatabaseService {
     private static final String DB_PASSWORD = "sa";
     private static Server dbWebServer = null;
 
-
-
     public static void initDB() {
+
         try {
             getDBConnection();
             dbWebServer = Server.createWebServer("-webAllowOthers","-webPort","8082").start();
@@ -26,7 +25,14 @@ public class DatabaseService {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        log.info("\n\n *** Database Initiated  ***\n Browser URL: " + dbWebServer.getURL()  +"\n JDBC URL   : jdbc:h2:mem:test\n User       : sa\n Password   : sa\n *** *** *** *** *** \n");
+        log.info("\n\n *** Database Initiated  ***"+
+            "\n DB Console : " + dbWebServer.getURL()  +
+            "\n JDBC URL   : jdbc:h2:mem:test" +
+            "\n User       : "+DB_USER +
+            "\n Password   : "+DB_PASSWORD +
+            "\n *** *** *** *** *** \n"
+        );
+
     }
 
     private static Connection getDBConnection() {
