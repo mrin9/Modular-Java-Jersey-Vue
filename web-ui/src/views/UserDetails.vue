@@ -1,17 +1,21 @@
 <template>
     <div v-loading="loading" >
-      <span class="sw-section-heading">
-        USER DETAILS
-      </span> 
-      <span class="sw-gray-text">Provide some fake details, the data will be refreshed at certain interval</span>
+      <template v-if="userData.userId=='NEW'">
+        <span class="sw-section-heading">USER DETAILS</span> 
+        <span class="sw-gray-text">Provide some fake details, the data will be refreshed at certain interval</span>
+      </template>  
+      <span v-else class="sw-section-heading">
+          USER ID:  <span class="sw-primary-color"> {{userData.userId}}</span>
+          ROLE:     <span class="sw-primary-color"> {{userData.role}}</span>
+      </span>
       <br/>
-      <div class="sw-row">
+      <div v-if="userData.userId=='NEW'" class="sw-row">
         <label class="sw-label">User name </label><input type="text" class="sw-medium" v-model="userData.userId">
       </div>
       <div class="sw-row">
         <label class="sw-label">Password </label><input type="text" class="sw-medium" v-model="userData.password">
       </div>
-      <div v-if="role=='ADMIN'" class="sw-row">
+      <div v-if="role=='ADMIN' && userData.userId=='NEW'" class="sw-row">
         <label class="sw-label">Is Employee</label><el-switch v-model="isEmployee"/>
       </div>
 
@@ -23,7 +27,8 @@
         <input type="text" placeholder="Last Name" class="sw-medium" v-model="userData.lastName">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Email</label><input type="text" class="sw-medium" v-model="userData.email">
+        <label class="sw-label">Email</label>
+        <input type="text" class="sw-medium" style="width:245px" v-model="userData.email">
       </div>
       <div class="sw-row">
         <label class="sw-label">Phone</label><input type="text" class="sw-medium" v-model="userData.phone">
@@ -63,9 +68,12 @@
           <label class="sw-label">Company</label><input type="text" class="sw-medium" v-model="userData.company">
         </div>
       </template>  
-      <div class="sw-toolbar">
-        <el-button type="primary" size="medium" @click="onRegister" class="sw-toolbar-item">REGISTER</el-button>
-        <el-button size="medium" @click="onCancel" class="sw-toolbar-item">CANCEL</el-button>
+      <div v-if="isCustomer" class="sw-toolbar">
+          <el-button type="primary" size="medium" @click="onRegister" class="sw-toolbar-item">REGISTER AS CUSTOMER</el-button>
+          <el-button size="medium" @click="onCancel" class="sw-toolbar-item">CANCEL</el-button>
+      </div>
+      <div v-else class="sw-toolbar">
+          <el-button type="primary" size="medium" @click="onApplyChanges" class="sw-toolbar-item">APPLY CHANGES</el-button>
       </div>
     </div>
 </template>
@@ -77,6 +85,7 @@ import router from '@/router';
 export default {
   props: {
     rec:{type: Object, required:true},
+    isCustomer:{type: Boolean, default:true, required:false},
   },
 
   data:function(){
@@ -124,10 +133,10 @@ export default {
         console.log("REST ERROR: %O", err.response?err.response:err);
         me.$data.loading=false;
       });
+    },
 
-
-
-
+    onApplyChanges(){
+      
     },
 
     onCancel(){
@@ -205,7 +214,9 @@ el-switch{
   display:flex;
   align-items: center;
 }
-
+.sw-primary-color{
+  color:$sw-primary-color;
+}
 
 </style>
 

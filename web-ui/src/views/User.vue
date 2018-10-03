@@ -4,7 +4,7 @@
     
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
-      <user-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </user-details>
+      <user-details :rec="selectedRec" @changed="getData()" :isCustomer="false"> </user-details>
     </vue-slideout-panel>
 
     <h3> Manage Users </h3>
@@ -83,12 +83,36 @@ export default {
     },
 
     onEdit(rec){
-      this.$data.showSlideOut = true;
-      this.$data.selectedRec  = rec;
+      let me = this;
+      let methodName = "";
+      let id ="";
+      if (rec.role==="CUSTOMER"){
+        methodName="getCustomers"
+        id = rec.customerId;
+      }
+      else if (rec.role==="SUPPORT" || rec.role==="ADMIN"){
+        methodName="getEmployees";
+        id = rec.employeeId;
+      }
+      if (!id){
+        return;
+      }
+
+      Rest[methodName](1,1,id).then(function(resp){
+        if (resp.data.msgType==="SUCCESS" && resp.data.list.length === 1){
+          me.$data.selectedRec  = {...rec, ...resp.data.list[0]};
+          me.$data.showSlideOut = true;
+        }
+      })
+      .catch(function(err){
+        me.$message({ message:'Unable to retrieve selected data', type:'error', showClose:true, duration:6000});
+        console.log("REST ERROR: %O", err.response?err.response:err);
+      });
+
     },
     onOpenAddProduct(){
       this.$data.showSlideOut = true;
-      this.$data.selectedRec  = {userId:0};
+      this.$data.selectedRec  = {userId:'NEW'};
     },
     onContinueShopping(){
       console.log("Continue Shopping clicked...")
@@ -126,6 +150,7 @@ export default {
 .sw-slideout-body{
   margin-top:92px;
 }
+
 
 </style>
 

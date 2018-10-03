@@ -6,7 +6,7 @@
       <div>User Registration</div>
     </div>
     <div style="padding:10px">
-      <user-details :rec="{}"> </user-details>
+      <user-details :rec="{userId:'NEW'}" :isCustomer="true" > </user-details>
     </div>
   </div>
 </template>
