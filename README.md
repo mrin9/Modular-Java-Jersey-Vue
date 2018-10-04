@@ -55,4 +55,6 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 ### Screenshots
 #### Login
-![Login](/screenshots/login.png?raw=true)
+<kbd>
+    <img src="/screenshots/login.png?raw=true">
+</kbd>
