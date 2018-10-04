@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiModelProperty;
 public class OrderModel {
 
     @Id @GeneratedValue private Integer id;
-    @Column(name = "employee_id")   private Integer employeeId;
     @Column(name = "customer_id")   private Integer customerId;
     @Column(name = "order_date")    private Date    orderDate;
     @Column(name = "shipped_date")  private Date    shippedDate;
@@ -28,12 +27,11 @@ public class OrderModel {
 
     //Constructors
     public OrderModel(){}
-    public OrderModel(Integer id, Integer employeeId  , Integer customerId  , Date   orderDate   , String orderStatus,
-                      Date       shippedDate , String  shipName    , String  shipAddress1, String shipAddress2, String shipCity   , String shipState, String shipPostalCode, String shipCountry,
-                      BigDecimal shippingFee , String  paymentType , Date    paidDate
+    public OrderModel(Integer id, Integer customerId  , Date   orderDate   , String orderStatus,
+                      Date        shippedDate , String  shipName    , String  shipAddress1, String shipAddress2, String shipCity   , String shipState, String shipPostalCode, String shipCountry,
+                      BigDecimal  shippingFee , String  paymentType , Date    paidDate
     ){
         this.id=id;
-        this.employeeId  = employeeId ;
         this.customerId  = customerId ;
         this.orderDate   = orderDate;
         this.orderStatus = orderStatus;
@@ -53,9 +51,6 @@ public class OrderModel {
     // Getters and Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-
-    public Integer getEmployeeId() { return employeeId; }
-    public void setEmployeeId(Integer employeeId) { this.employeeId = employeeId; }
 
     public Integer getCustomerId() { return customerId; }
     public void setCustomerId(Integer customerId) { this.customerId = customerId; }

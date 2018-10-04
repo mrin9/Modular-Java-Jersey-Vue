@@ -139,6 +139,7 @@ public class UserController extends BaseController {
     public Response deleteUser(@ApiParam(value="User Id") @PathParam("userId") String userId) {
 
         BaseResponse resp = new BaseResponse();
+
         if (userId.equals("admin") || userId.equals("support") || userId.equals("customer")){
             resp.setErrorMessage("Cannot delete reserved User Ids - 'admin', 'support' or 'customer'");
             return Response.ok(resp).build();
@@ -149,10 +150,59 @@ public class UserController extends BaseController {
             return Response.ok(resp).build();
         }
 
-        String hql = "delete User where userId = :userId";
-        Query q = getSessionFactory().openSession().createQuery(hql).setParameter("userId", userId);
+        //String hql = "delete User where userId = :userId";
+        //Query q = getSessionFactory().openSession().createQuery(hql).setParameter("userId", userId);
+
+        /* To cleanly remove an user
+          1. First delete all the order-items that belongs to the the orders placed by the user
+          2. Then delete all the orders placed by the user
+          3. Then delete the customer associated with the user
+          4. Then delete the cart that belong to the user
+          5. Finally delete the user
+
+         */
+        String sqlDeleteOrderItems = "delete from northwind.order_items where order_id " +
+            " in (select id from northwind.orders where customer_id " +
+            "     in (select id from northwind.customers where id " +
+            "         in (Select customer_id from northwind.users where user_id = :userId ) " +
+            "   )" +
+            ")";
+
+        String sqlDeleteOrders = "delete from northwind.orders where customer_id " +
+            " in (select id  from northwind.customers where id " +
+            "     in (Select customer_id from northwind.users where user_id = :userId) " +
+            ")";
+
+        String sqlDeleteCustomer = "delete from northwind.customers where id in (Select customer_id from northwind.users where user_id = :userId)";
+        String sqlDeleteCart = "delete from northwind.cart where  user_id = :userId";
+        String sqlUser = "delete from northwind.users where user_id = :userId";
+
+        Session hbrSession = HibernateUtil.getSession();
+
+        Query queryDeleteOrderItems = hbrSession.createSQLQuery(sqlDeleteOrderItems);
+        queryDeleteOrderItems.setParameter("userId", userId);
+
+        Query queryDeleteOrders = hbrSession.createSQLQuery(sqlDeleteOrders);
+        queryDeleteOrders.setParameter("userId", userId);
+
+        Query queryDeleteCustomer = hbrSession.createSQLQuery(sqlDeleteCustomer);
+        queryDeleteCustomer.setParameter("userId", userId);
+
+        Query queryDeleteCart = hbrSession.createSQLQuery(sqlDeleteCart);
+        queryDeleteCart.setParameter("userId", userId);
+
+        Query queryDeleteUser = hbrSession.createSQLQuery(sqlUser);
+        queryDeleteUser.setParameter("userId", userId);
+
         try {
-            q.executeUpdate();
+            hbrSession.beginTransaction();
+            queryDeleteOrderItems.executeUpdate();
+            queryDeleteOrders.executeUpdate();
+            queryDeleteCustomer.executeUpdate();
+            queryDeleteCart.executeUpdate();
+            queryDeleteUser.executeUpdate();
+            hbrSession.getTransaction().commit();
+            //q.executeUpdate();
         }
         catch (ConstraintViolationException e) {
             resp.setErrorMessage("Cannot delete User - Database constraints are violated");

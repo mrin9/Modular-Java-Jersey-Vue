@@ -62,10 +62,11 @@ export default {
 
     onDelete(rec){
       let me = this;
-      this.$confirm('Are you sure delete?', 'Confirm', {
+      me.$confirm('The action will remove <ul><li> All orders placed by the customer</li><li> Associated customer details </li> <li> Shopping Cart items by this user </li> </ul>  ', 'Confirm', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
-        type: 'warning'
+        type: 'warning',
+        dangerouslyUseHTMLString:true
       }).then(() => {
         return Rest.deleteUser(rec.userId);
       }).then((resp) => {

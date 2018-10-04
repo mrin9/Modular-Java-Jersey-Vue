@@ -23,27 +23,26 @@ public class OrderWithNestedDetailModel  extends OrderModel {
     public OrderWithNestedDetailModel(){}
 
     public OrderWithNestedDetailModel(
-            Integer orderId,
-            Date orderDate,
-            String orderStatus,
-            Date   shippedDate,
-            String shipName,
-            String shipAddress1,
-            String shipAddress2 ,
-            String shipCity,
-            String shipState,
-            String shipPostalCode,
-            String shipCountry,
-            BigDecimal shippingFee,
-            Integer customerId,
-            String customerName,
-            String customerEmail,
-            String customerCompany,
-            String paymentType,
-            Date paidDate,
-            Integer employeeId
+        Integer orderId,
+        Date orderDate,
+        String orderStatus,
+        Date   shippedDate,
+        String shipName,
+        String shipAddress1,
+        String shipAddress2 ,
+        String shipCity,
+        String shipState,
+        String shipPostalCode,
+        String shipCountry,
+        BigDecimal shippingFee,
+        Integer customerId,
+        String customerName,
+        String customerEmail,
+        String customerCompany,
+        String paymentType,
+        Date paidDate
     ){
-        super(orderId, employeeId, customerId, orderDate, orderStatus, shippedDate ,shipName, shipAddress1,shipAddress2, shipCity, shipState, shipPostalCode, shipCountry, shippingFee, paymentType, paidDate);
+        super(orderId, customerId, orderDate, orderStatus, shippedDate ,shipName, shipAddress1,shipAddress2, shipCity, shipState, shipPostalCode, shipCountry, shippingFee, paymentType, paidDate);
         this.customerName     = customerName;
         this.customerEmail    = customerEmail;
         this.customerCompany  = customerCompany;

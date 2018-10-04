@@ -13,7 +13,6 @@ import java.math.*;
 public class OrderInfoModel {
     @Id
     @Column(name = "order_id")      private Integer orderId;
-    @Column(name = "employee_id")   private Integer employeeId;
     @Column(name = "customer_id")   private Integer customerId;
     @Column(name = "order_date")    private Date    orderDate;
     @Column(name = "shipped_date")  private Date    shippedDate;
@@ -29,13 +28,10 @@ public class OrderInfoModel {
     @Column(name = "payment_type") @ApiModelProperty(allowableValues = "Check, Cash, Card") private String paymentType;
     @Column(name = "order_status") @ApiModelProperty(allowableValues = "On Hold, Shipped, Complete, New")private String orderStatus;
 
-    private String customerName;
-    private String customerPhone;
-    private String customerEmail;
-    private String customerCompany;
-    private String employeeName;
-    private String employeeDepartment;
-    private String employeeJobTitle;
+    @Column(name = "customer_name")    private String customerName;
+    @Column(name = "customer_phone")   private String customerPhone;
+    @Column(name = "customer_email")   private String customerEmail;
+    @Column(name = "customer_company") private String customerCompany;
 
     public OrderInfoModel(){}
 
@@ -44,9 +40,6 @@ public class OrderInfoModel {
 
     public Integer getOrderId() { return orderId; }
     public void setOrderId(Integer orderId) { this.orderId = orderId; }
-
-    public Integer getEmployeeId() { return employeeId; }
-    public void setEmployeeId(Integer employeeId) { this.employeeId = employeeId; }
 
     public Integer getCustomerId() { return customerId; }
     public void setCustomerId(Integer customerId) { this.customerId = customerId; }
@@ -102,12 +95,4 @@ public class OrderInfoModel {
     public String getCustomerCompany() { return customerCompany; }
     public void setCustomerCompany(String customerCompany) { this.customerCompany = customerCompany; }
 
-    public String getEmployeeName() { return employeeName; }
-    public void setEmployeeName(String employeeName) { this.employeeName = employeeName; }
-
-    public String getEmployeeDepartment() { return employeeDepartment; }
-    public void setEmployeeDepartment(String employeeDepartment) { this.employeeDepartment = employeeDepartment; }
-
-    public String getEmployeeJobTitle() { return employeeJobTitle; }
-    public void setEmployeeJobTitle(String employeeJobTitle) { this.employeeJobTitle = employeeJobTitle; }
 }

@@ -24,7 +24,7 @@ public class OrderDao {
     }
 
     public static List<OrderWithNestedDetailModel> getWithOrderLines(Session hbrSession, int from, int limit, Integer orderId, Integer customerId, String paymetType, String orderStatus)  throws HibernateException, ConstraintViolationException {
-        String sql = "select order_id, product_id   , customer_id   , order_date, order_status  , shipped_date    , employee_id , payment_type, paid_date, "
+        String sql = "select order_id, product_id   , customer_id   , order_date, order_status  , shipped_date    , payment_type, paid_date, "
             + " ship_name            , ship_address1, ship_address2 , ship_city , ship_state    , ship_postal_code, ship_country, "
             + " product_code         , product_name , category      , quantity  , unit_price    , discount        , date_allocated, order_item_status, "
             + " shipping_fee         , customer_name, customer_email, customer_company "
@@ -89,8 +89,7 @@ public class OrderDao {
                     (String) row.get("CUSTOMER_EMAIL"),
                     (String) row.get("COMPANY"),
                     (String) row.get("PAYMENT_TYPE"),
-                    (Date) row.get("PAID_DATE"),
-                    (int) row.get("EMPLOYEE_ID")
+                    (Date) row.get("PAID_DATE")
                 );
                 orderDetail.addOrderLine(
                     (int) row.get("PRODUCT_ID"),
