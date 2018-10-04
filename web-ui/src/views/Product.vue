@@ -14,11 +14,11 @@
     <el-table :data="tableData" style="width:750px;" height="400" empty-text="No Data">
       <el-table-column prop="id"           label="PRODUCT #" width="85"/>
       <el-table-column prop="productName"  label="NAME"  />
-      <el-table-column prop="standardCost" label="COST"        width="80"/>
-      <el-table-column prop="listPrice"    label="LIST PRICE"  width="100"/>
+      <el-table-column prop="standardCost" label="COST"        width="80"  align="right"/>
+      <el-table-column prop="listPrice"    label="LIST PRICE"  width="100" align="right"/>
       <el-table-column prop="reorderLevel" label="REORDER"     width="80"/>
       <el-table-column prop="category"     label="CATEGORY"    width="100"/>
-      <el-table-column label="" width="80">
+      <el-table-column label="" width="80" align="center">
         <template slot-scope="scope">
           <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
           <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>

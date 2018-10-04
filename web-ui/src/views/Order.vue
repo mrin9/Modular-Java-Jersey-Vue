@@ -13,13 +13,13 @@
     </div>
 
     <el-table :data="tableData" style="width:750px;" height="400" empty-text="No Data">
-      <el-table-column prop="id"          label="ORDER#" width="70"/>
-      <el-table-column prop="orderDate"   label="DATE"  width="120"/>
-      <el-table-column prop="shipName"    label="SHIP TO" />
-      <el-table-column prop="orderStatus" label="STATUS"    width="90"/>
-      <el-table-column prop="paymentType" label="PAYMENT"   width="80"/>
-      <el-table-column prop="orderTotal"  label="TOTAL"     width="80"/>
-      <el-table-column label="" width="70">
+      <el-table-column prop="id"            label="ORDER#" width="70"/>
+      <el-table-column prop="strOrderDate"  label="DATE"  width="120"/>
+      <el-table-column prop="shipName"      label="SHIP TO" />
+      <el-table-column prop="orderStatus"   label="STATUS"    width="90"/>
+      <el-table-column prop="paymentType"   label="PAYMENT"   width="80"/>
+      <el-table-column prop="strOrderTotal" label="TOTAL"     width="90" align="right"/>
+      <el-table-column label="" width="80" align="center">
         <template slot-scope="scope">
           <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
           <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
@@ -51,7 +51,17 @@ export default {
       let me = this;
       me.$data.loading=true;
       Rest.getOrders(0,1000).then(function(resp){
-        me.$data.tableData = resp.data.list;
+        me.$data.tableData = resp.data.list.map(function(v){
+          let dt = new Date(v.orderDate);
+          let strOrderDate  = new Intl.DateTimeFormat('en-US', {year:'numeric', month: 'short', day:'numeric'}).format(dt);
+          let strOrderTotal = new Intl.NumberFormat('en-US', {useGrouping:true, currency: 'USD'}).format(v.orderTotal);
+          return {
+            ...v,
+            strOrderDate,
+            strOrderTotal
+          }
+
+        });
         me.$data.loading=false;
       })
       .catch(function(err){

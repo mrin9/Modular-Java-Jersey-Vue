@@ -2,14 +2,10 @@
 
   <div v-loading="loading" >
     <span class="sw-section-heading">
-      PRODUCT DETAILS
+      PRODUCT #  <span class="sw-primary-color"> {{productData.id}}</span>
     </span> <br/>
     <div class="sw-gray-text">Update Produt details (the data gets refreshed after certain interval)</div>
     <br/><br/>
-    <div class="sw-row">
-      <label class="sw-label">Product ID </label>
-      <label v-if="rec.id" class="sw-label">{{productData.id}} </label>
-    </div>
     <div class="sw-row">
       <label class="sw-label">Category</label><input type="text" class="sw-medium" v-model="productData.category">
     </div>
@@ -146,6 +142,9 @@ input{
 .sw-row{
   display:flex;
   align-items: center;
+}
+.sw-primary-color{
+  color:$sw-primary-color;
 }
 
 

@@ -6,10 +6,6 @@
     </span> <br/>
     <div class="sw-gray-text">Update Order details (the data gets refreshed after certain interval)</div>
     <br/><br/>
-    <div class="sw-row">
-      <label class="sw-label">Order ID </label>
-      <label v-if="rec.id" class="sw-label">{{orderData.id}} </label>
-    </div>
     <table style="width:100%">
       <tr>
         <td>

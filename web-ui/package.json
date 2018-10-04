@@ -2,18 +2,19 @@
   "name": "es",
   "description": "Northwind Order Processing Client",
   "version": "1.0.0",
-  "author" : "Mrinmoy Majumdar",
+  "author": "Mrinmoy Majumdar",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
-    "lint" : "vue-cli-service lint"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@clr/icons": "^0.13.3",
     "@vue/cli": "^3.0.4",
     "@webcomponents/custom-elements": "^1.2.0",
     "axios": "^0.18.0",
+    "chart.js": "^2.7.2",
     "circular-json": "^0.5.5",
     "debounce": "^1.2.0",
     "element-ui": "^2.4.8",
