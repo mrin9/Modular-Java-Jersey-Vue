@@ -26,7 +26,7 @@ public class SwaggerConfigServlet extends HttpServlet {
         ServletContext context = config.getServletContext();
         final List<SecurityRequirement> securityRequirements = new ArrayList<SecurityRequirement>();
         Info info = new Info()
-                .title("Mrin API Doc")
+                .title("Mrin Order Processing System")
                 .version("1.0.0");
 
         Swagger swagger = new Swagger().info(info);
