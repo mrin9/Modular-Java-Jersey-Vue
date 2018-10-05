@@ -47,7 +47,7 @@ public class OrderController extends BaseController {
         @ApiParam(value = "Payment Type", allowableValues = "Check, Cash, Card") @QueryParam("payment-type") String paymentType,
         @ApiParam(value = "Order Status", allowableValues = "On Hold, Shipped, Complete, New") @QueryParam("order-status") String orderStatus,
         @ApiParam(value = "Page No, Starts from 1 ", example = "1") @DefaultValue("1") @QueryParam("page") int page,
-        @ApiParam(value = "Items in each page", example = "20") @DefaultValue("20") @QueryParam("page-size") int pageSize
+        @ApiParam(value = "Items in each page", example = "20") @DefaultValue("1000") @QueryParam("page-size") int pageSize
     ) {
 
         OrderWithNestedDetailResponse resp = new OrderWithNestedDetailResponse();

@@ -58,7 +58,7 @@ public class OrderDao {
         q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
         List rowList = q.list();
         long prevOrderId = -1, newOrderId=0;
-        Long orderTotal =0L;
+        BigDecimal orderTotal = new BigDecimal(0);
 
 
         List<OrderWithNestedDetailModel> orderDetailList = new ArrayList<>();
@@ -104,8 +104,8 @@ public class OrderDao {
                 );
                 orderDetailList.add(orderDetail);
                 prevOrderId = newOrderId;
-                long lineTotal = (((BigDecimal)row.get("UNIT_PRICE")).longValue() * ((BigDecimal)row.get("QUANTITY")).longValue());
-                orderTotal = orderTotal + lineTotal;
+                BigDecimal lineTotal = ((BigDecimal)row.get("UNIT_PRICE")).multiply((BigDecimal)row.get("QUANTITY")).subtract((BigDecimal)row.get("DISCOUNT"));
+                orderTotal = orderTotal.add(lineTotal);
             }
             else {
                 orderDetail.addOrderLine(
@@ -119,9 +119,16 @@ public class OrderDao {
                     (Date) row.get("DATE_ALLOCATED"),
                     (String) row.get("ORDER_ITEM_STATUS")
                 );
-                long lineTotal = (((BigDecimal)row.get("UNIT_PRICE")).longValue() * ((BigDecimal)row.get("QUANTITY")).longValue());
-                orderTotal = orderTotal + lineTotal;
+                BigDecimal lineTotal = ((BigDecimal)row.get("UNIT_PRICE")).multiply((BigDecimal)row.get("QUANTITY")).subtract((BigDecimal)row.get("DISCOUNT"));
+                orderTotal = orderTotal.add(lineTotal);
             }
+        }
+        // Set the last ones order total;
+        orderDetail.setOrderTotal(orderTotal);
+        
+        // Remove the last order from the list as it might pick incomplete order lines due to the paging criteria
+        if (orderDetailList.size()>0 && orderId <= 0 ){
+            orderDetailList.remove(orderDetailList.size()-1);
         }
         return orderDetailList;
     }

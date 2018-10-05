@@ -34,8 +34,12 @@
     </table>  
 
     <br/><br/>
-    <span class="sw-section-heading">ORDER ITEMS</span> 
-
+    <div class="sw-toolbar sw-section-heading" style="width:650px;">
+      <span>ORDER ITEMS</span> 
+      <span style="flex:1"></span>
+      <span>ORDER TOTAL: &nbsp;</span>
+      <span class="sw-primary-color"> {{orderData.orderTotal}} </span>
+    </div>
     <el-table :data="orderData.orderLine" style="width:650px;" empty-text="No Data">
       <el-table-column prop="productId"   label="#"          width="50"/>
       <el-table-column prop="productName" label="NAME" />
@@ -78,13 +82,14 @@ export default {
       role:this.$store.state.role
     }
   },
-
+  
   methods:{
     getData(){
       let me = this;
-      Rest.getOrders(1,1,this.$data.orderData.id).then(function(resp){
-        if (resp.data.msgType==="SUCCESS" && resp.data.list.length===1){
+      Rest.getOrders(1,1000,this.$data.orderData.id).then(function(resp){
+        if (resp.data.msgType==="SUCCESS" && resp.data.list.length>0){
           me.$data.orderData = resp.data.list[0];
+          me.$forceUpdate();
         }
       })
       .catch(function(err){
@@ -129,6 +134,7 @@ export default {
         return Rest.deleteOrderLine( me.$data.orderData.id, row.productId);
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
+          //me.$emit("changed");
           me.getData();
           me.$message({message: 'Successfully deleted', type:'success'});
         }

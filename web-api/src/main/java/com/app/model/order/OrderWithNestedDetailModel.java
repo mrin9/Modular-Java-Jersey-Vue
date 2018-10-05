@@ -16,7 +16,7 @@ public class OrderWithNestedDetailModel  extends OrderModel {
     private String customerName;
     private String customerEmail;
     private String customerCompany;
-    private long orderTotal;
+    private BigDecimal orderTotal;
 
     private List<OrderLine> orderLine;
 
@@ -65,8 +65,8 @@ public class OrderWithNestedDetailModel  extends OrderModel {
     public String getCustomerCompany() { return customerCompany; }
     public void setCustomerCompany(String customerCompany) { this.customerCompany = customerCompany; }
 
-    public long getOrderTotal() { return orderTotal; }
-    public void setOrderTotal(long orderTotal) { this.orderTotal = orderTotal; }
+    public BigDecimal getOrderTotal() { return orderTotal; }
+    public void setOrderTotal(BigDecimal orderTotal) { this.orderTotal = orderTotal; }
 
     public List<OrderLine> getOrderLine() { return orderLine; }
     public void setOrderLine(List<OrderLine> orderLine) { this.orderLine = orderLine; }

@@ -50,7 +50,7 @@ export default {
     getData(){
       let me = this;
       me.$data.loading=true;
-      Rest.getOrders(0,1000).then(function(resp){
+      Rest.getOrders(0,10).then(function(resp){
         me.$data.tableData = resp.data.list.map(function(v){
           let dt = new Date(v.orderDate);
           let strOrderDate  = new Intl.DateTimeFormat('en-US', {year:'numeric', month: 'short', day:'numeric'}).format(dt);
