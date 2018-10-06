@@ -12,11 +12,7 @@ public class CustomerDao {
 
 
     public static BigDecimal getReferenceCount(Session hbrSession, Integer customerId){
-        String sql = "Select sum(cnt) from ("+
-                "   select count(*) as cnt from northwind.users where customer_id = :customerId "+
-                "   union "+
-                "   select count(*) as cnt from northwind.orders where customer_id = :customerId "+
-                " )";
+        String sql = "select count(*) as cnt from northwind.users where customer_id = :customerId ";
 
         Query q = hbrSession.createSQLQuery(sql);
         q.setParameter("customerId", customerId);

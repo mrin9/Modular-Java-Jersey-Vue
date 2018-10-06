@@ -140,27 +140,18 @@ public class EmployeeController extends BaseController {
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
-            BigDecimal referenceCount = CustomerDao.getReferenceCount(hbrSession, employeeId);
-            if (referenceCount.intValue() > 0){
-                resp.setErrorMessage("Cannot delete Employee, Referenced in other tables");
+            EmployeeModel foundEmp  = EmployeeDao.getById(hbrSession, employeeId);
+            if (foundEmp==null){
+                resp.setErrorMessage(String.format("Cannot delete - Employee do not exist (id:%s)", employeeId));
                 return Response.ok(resp).build();
             }
-            else {
-                CustomerModel foundCust  = CustomerDao.getById(hbrSession, employeeId);
-                if (foundCust==null){
-                    resp.setErrorMessage(String.format("Cannot delete - Employee do not exist (id:%s)", employeeId));
-                    return Response.ok(resp).build();
-                }
-                else{
-                    hbrSession.beginTransaction();
-                    CustomerDao.delete(hbrSession, employeeId);
-                    hbrSession.getTransaction().commit();
-                    resp.setSuccessMessage(String.format("Employee deleted (id:%s)", employeeId));
-                    return Response.ok(resp).build();
-
-                }
+            else{
+                hbrSession.beginTransaction();
+                EmployeeDao.delete(hbrSession, employeeId);
+                hbrSession.getTransaction().commit();
+                resp.setSuccessMessage(String.format("Employee deleted (id:%s)", employeeId));
+                return Response.ok(resp).build();
             }
-
         }
         catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Cannot delete Customer - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));

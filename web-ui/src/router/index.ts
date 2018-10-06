@@ -13,8 +13,6 @@ import LoginPage from '@/views/LoginPage.vue'
 import User from '@/views/User.vue'
 import Register from '@/views/Register.vue'
 
-
-
 //Charts
 import Dashboard from '@/views/Dashboard.vue'
 
@@ -26,6 +24,9 @@ import Order from '@/views/Order.vue'
 
 //Product
 import Product from '@/views/Product.vue'
+
+//Employees
+import Employee from '@/views/Employee.vue'
 
 Vue.use(Router)
 
@@ -51,7 +52,7 @@ const router =  new Router({
             { path: 'customers' , component: { template: '<div>Manage Customers</div>'}},
             { path: 'orders'    , component: Order   },
             { path: 'products'  , component: Product },
-            { path: 'employees' , component: { template: '<div>Manage Employees</div>' }},
+            { path: 'employees' , component: Employee},
             { path: 'carts'     , component: { template: '<div>Manage Carts</div>' }}
           ]
         }

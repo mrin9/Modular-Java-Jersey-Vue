@@ -12,18 +12,6 @@ import java.math.BigDecimal;
 public class EmployeeDao {
 
 
-    public static BigDecimal getReferenceCount(Session hbrSession, Integer employeeId){
-        String sql = "Select sum(cnt) from ("+
-                "   select count(*) as cnt from northwind.users where customer_id = :employeeId "+
-                "   union "+
-                "   select count(*) as cnt from northwind.orders where customer_id = :employeeId "+
-                " )";
-
-        Query q = hbrSession.createSQLQuery(sql);
-        q.setParameter("employeeId", employeeId);
-        return (BigDecimal) q.uniqueResult();
-    }
-
     public static EmployeeModel getById(Session hbrSession, Integer employeeId){
         String hql = "from EmployeeModel where id = :employeeId";
         Query q = hbrSession.createQuery(hql);
