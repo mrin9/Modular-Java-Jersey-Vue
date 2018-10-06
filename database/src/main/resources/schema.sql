@@ -157,6 +157,49 @@ select u.user_id
  , c.email as email
  From users u, customers c where u.customer_id = c.id;
 
+CREATE OR REPLACE VIEW user_emp_view AS
+select u.user_id
+ , u.password
+ , u.role
+ , u.employee_id
+ , concat(e.first_name, ' ', e.last_name) as full_name
+ , e.last_name
+ , e.first_name
+ , e.email
+ , e.avatar
+ , e.job_title
+ , e.department
+ , e.manager_id
+ , e.phone
+ , e.address1
+ , e.address2
+ , e.city
+ , e.state
+ , e.postal_code
+ , e.country
+ From employees e
+left join users u on e.id = u.employee_id;
+
+CREATE OR REPLACE VIEW user_cust_view AS
+select u.user_id
+ , u.password
+ , u.role
+ , u.customer_id
+ , concat(c.first_name, ' ', c.last_name) as full_name
+ , c.last_name
+ , c.first_name
+ , c.email
+ , c.company
+ , c.phone
+ , c.address1
+ , c.address2
+ , c.city
+ , c.state
+ , c.postal_code
+ , c.country
+ From customers c
+left join users u on c.id = u.customer_id;
+
 
 CREATE OR REPLACE VIEW order_info AS
 select o.id as order_id
