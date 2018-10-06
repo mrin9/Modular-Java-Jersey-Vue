@@ -138,7 +138,7 @@ public class ProductController extends BaseController {
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
-            BigDecimal referenceCount = CustomerDao.getReferenceCount(hbrSession, productId);
+            BigDecimal referenceCount = ProductDao.getReferenceCount(hbrSession, productId);
             if (referenceCount.intValue() > 0){
                 resp.setErrorMessage("Cannot delete product, Referenced in other tables");
                 return Response.ok(resp).build();

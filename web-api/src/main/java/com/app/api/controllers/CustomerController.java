@@ -135,28 +135,18 @@ public class CustomerController extends BaseController {
 
         BaseResponse resp = new BaseResponse();
         Session hbrSession = HibernateUtil.getSession();
-        hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
-            BigDecimal referenceCount = CustomerDao.getReferenceCount(hbrSession, customerId);
-            if (referenceCount.intValue() > 0){
-                resp.setErrorMessage("Cannot delete customer, Referenced in other tables");
+            CustomerModel foundCust  = CustomerDao.getById(hbrSession, customerId);
+            if (foundCust==null){
+                resp.setErrorMessage(String.format("Cannot delete customer - Customer do not exist (id:%s)", customerId));
                 return Response.ok(resp).build();
             }
-            else {
-                CustomerModel foundCust  = CustomerDao.getById(hbrSession, customerId);
-                if (foundCust==null){
-                    resp.setErrorMessage(String.format("Cannot delete customer - Customer do not exist (id:%s)", customerId));
-                    return Response.ok(resp).build();
-                }
-                else{
-                    hbrSession.beginTransaction();
-                    CustomerDao.delete(hbrSession, customerId);
-                    hbrSession.getTransaction().commit();
-                    resp.setSuccessMessage(String.format("Customer deleted (id:%s)", customerId));
-                    return Response.ok(resp).build();
 
-                }
-            }
+            hbrSession.beginTransaction();
+            CustomerDao.delete(hbrSession, customerId);
+            hbrSession.getTransaction().commit();
+            resp.setSuccessMessage(String.format("Customer deleted (id:%s)", customerId));
+            return Response.ok(resp).build();
 
         }
         catch (HibernateException | ConstraintViolationException e) {

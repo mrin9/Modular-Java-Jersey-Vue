@@ -1,6 +1,7 @@
 package com.app.api.controllers;
 
 import com.app.api.BaseController;
+import com.app.dao.UserDao;
 import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
@@ -102,19 +103,20 @@ public class UserController extends BaseController {
     @RolesAllowed({"CUSTOMER", "SUPPORT"})
     @ApiOperation(value = "Get Details of a User by id" , response = UserResponse.class)
     public Response getUserDetailsById(@ApiParam(value="User Id") @PathParam("userId") String userId) {
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(UserViewModel.class);
+
+        Session hbrSession = HibernateUtil.getSession();
 
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
-        criteria.add(Restrictions.eq("userId",  userId ));
-        UserViewModel userView = (UserViewModel)criteria.uniqueResult();
-        UserResponse resp = new UserResponse();
+        UserViewModel userView = UserDao.getById(hbrSession, userId);
 
+        UserResponse resp = new UserResponse();
         if (userView!=null) {
             if (userFromToken.getRole().equalsIgnoreCase("ADMIN") || userFromToken.getUserId().equals(userId)) {
                 //For Admins and Own-Id - Just remove the password
                 userView.setPassword("");
             } else {
                 // If not a ADMIN or not his own id then strip all the data and just send the id
+                // others should be able to find out if the userId exist or not
                 userView.setEmployeeId(0);
                 userView.setCustomerId(0);
                 userView.setPassword("");
@@ -136,10 +138,12 @@ public class UserController extends BaseController {
     @Path("{userId}")
     @ApiOperation(value = "Delete a user by id", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
-    public Response deleteUser(@ApiParam(value="User Id") @PathParam("userId") String userId) {
+    public Response deleteUser(
+        @ApiParam(value="User Id", example="mdaniel") @PathParam("userId") String userId,
+        @ApiParam(value="Delete associated orders, customer/employee data also", example="true") @DefaultValue("true")  @QueryParam("delete-related-data") boolean deleteRelatedData
+    ) {
 
         BaseResponse resp = new BaseResponse();
-
         if (userId.equals("admin") || userId.equals("support") || userId.equals("customer")){
             resp.setErrorMessage("Cannot delete reserved User Ids - 'admin', 'support' or 'customer'");
             return Response.ok(resp).build();
@@ -150,60 +154,20 @@ public class UserController extends BaseController {
             return Response.ok(resp).build();
         }
 
-        //String hql = "delete User where userId = :userId";
-        //Query q = getSessionFactory().openSession().createQuery(hql).setParameter("userId", userId);
-
-        /* To cleanly remove an user
-          1. First delete all the order-items that belongs to the the orders placed by the user
-          2. Then delete all the orders placed by the user
-          3. Then delete the customer associated with the user
-          4. Then delete the cart that belong to the user
-          5. Finally delete the user
-
-         */
-        String sqlDeleteOrderItems = "delete from northwind.order_items where order_id " +
-            " in (select id from northwind.orders where customer_id " +
-            "     in (select id from northwind.customers where id " +
-            "         in (Select customer_id from northwind.users where user_id = :userId ) " +
-            "   )" +
-            ")";
-
-        String sqlDeleteOrders = "delete from northwind.orders where customer_id " +
-            " in (select id  from northwind.customers where id " +
-            "     in (Select customer_id from northwind.users where user_id = :userId) " +
-            ")";
-
-        String sqlDeleteCustomer = "delete from northwind.customers where id in (Select customer_id from northwind.users where user_id = :userId)";
-        String sqlDeleteCart = "delete from northwind.cart where  user_id = :userId";
-        String sqlUser = "delete from northwind.users where user_id = :userId";
-
-        Session hbrSession = HibernateUtil.getSession();
-
-        Query queryDeleteOrderItems = hbrSession.createSQLQuery(sqlDeleteOrderItems);
-        queryDeleteOrderItems.setParameter("userId", userId);
-
-        Query queryDeleteOrders = hbrSession.createSQLQuery(sqlDeleteOrders);
-        queryDeleteOrders.setParameter("userId", userId);
-
-        Query queryDeleteCustomer = hbrSession.createSQLQuery(sqlDeleteCustomer);
-        queryDeleteCustomer.setParameter("userId", userId);
-
-        Query queryDeleteCart = hbrSession.createSQLQuery(sqlDeleteCart);
-        queryDeleteCart.setParameter("userId", userId);
-
-        Query queryDeleteUser = hbrSession.createSQLQuery(sqlUser);
-        queryDeleteUser.setParameter("userId", userId);
-
         try {
+
+            Session hbrSession = HibernateUtil.getSession();
+            UserViewModel userInfo = UserDao.getById(hbrSession,userId);
+            if (userInfo==null){
+                resp.setErrorMessage("User not found");
+                return Response.ok(resp).build();
+            }
+
             hbrSession.beginTransaction();
-            queryDeleteOrderItems.executeUpdate();
-            queryDeleteOrders.executeUpdate();
-            queryDeleteCustomer.executeUpdate();
-            queryDeleteCart.executeUpdate();
-            queryDeleteUser.executeUpdate();
+            UserDao.delete(hbrSession,userInfo,deleteRelatedData);
             hbrSession.getTransaction().commit();
-            //q.executeUpdate();
         }
+
         catch (ConstraintViolationException e) {
             resp.setErrorMessage("Cannot delete User - Database constraints are violated");
             return Response.ok(resp).build();
@@ -230,8 +194,6 @@ public class UserController extends BaseController {
 
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
-
-
 
         User user;
         try {
