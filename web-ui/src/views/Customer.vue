@@ -7,17 +7,16 @@
       <!-- <employee-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </employee-details> -->
     </vue-slideout-panel>
 
-    <h3> Manage Employees </h3>
+    <h3> Manage Customer </h3>
     <div class="sw-toolbar" style="width:900px;">
       <el-button type="primary" size="small" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
     </div>
     <el-table :data="tableData" style="width:850px;" height="400" empty-text="No Data">
-      <el-table-column prop="employeeId" label="EMP #" width="50"/>
+      <el-table-column prop="customerId" label="CUSTOMER #" width="90"/>
       <el-table-column prop="userId"     label="USER #" width="80"/>
       <el-table-column prop="fullName"   label="NAME"  />
-      <el-table-column prop="email"      label="EMAIL"      width="220" />
-      <el-table-column prop="jobTitle"   label="JOB TITLE"  width="190" />
-      <el-table-column prop="department" label="DEPARTMENT" width="100" />
+      <el-table-column prop="email"      label="EMAIL"  width="220" />
+      <el-table-column prop="phone"      label="PHONE"  width="130" />
       <el-table-column label="" width="60" align="center">
         <template slot-scope="scope">
           <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
@@ -50,7 +49,7 @@ export default {
       let me = this;
       console.log("Loaded Data");
       me.$data.loading=true;
-      Rest.getEmployees(0,1000).then(function(resp){
+      Rest.getCustomers(0,1000).then(function(resp){
         me.$data.tableData = resp.data.list.map(function(v){
           return {
             ...v,
@@ -72,7 +71,7 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
-        return Rest.deleteEmployee(rec.employeeId);
+        return Rest.deleteCustomer(rec.customerId);
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
@@ -95,7 +94,6 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = {id:0};
     }
-
   },
   mounted(){
     this.getData();

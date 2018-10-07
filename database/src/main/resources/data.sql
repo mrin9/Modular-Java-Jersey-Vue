@@ -53,7 +53,7 @@ insert into customers (id, last_name, first_name, email, company, phone, address
 ,(4 , 'Mcdonald', 'Michael'  , 'mmcdonald3@twitter.com'  , 'Feedfire' , '1-(419)743-7314', '85093 Jackson Park'   , null, 'Toledo', 'Ohio', '43610', 'United States')
 ,(5 , 'Tucker'  , 'Lori'     , 'ltucker4@etsy.com'       , 'Oyondu'   , '1-(202)381-2663', '0706 Heffernan Pass'  , null, 'Washington', 'District of Columbia', '20380', 'United States')
 ,(6 , 'Hansen'  , 'Lois'     , 'lhansen5@stumbleupon.com', 'Yozio'    , '1-(315)385-6866', '2 Ruskin Pass'        , null, 'Syracuse', 'New York', '13251', 'United States')
-,(7 , 'Tom'     , 'Hanks'    , 'thanks@yale.edu'         , 'Eire'     , '1-(863)799-9068', '61402 Morning Court'  , null, 'Lakeland', 'Florida', '33811', 'United States')
+,(7 , 'Hanks'   , 'Tom'      , 'thanks@yale.edu'         , 'Eire'     , '1-(863)799-9068', '61402 Morning Court'  , null, 'Lakeland', 'Florida', '33811', 'United States')
 ,(8 , 'Lewis'   , 'Catherine', 'clewis7@unesco.org'      , 'Realpoint', '1-(915)208-4997', '775 Messerschmidt Junction', null, 'El Paso', 'Texas', '88563', 'United States')
 ,(9 , 'Rogers'  , 'Edward'   , 'erogers8@guardian.co.uk' , 'Quinu'    , '1-(971)934-2404', '7074 Montana Place'   , null, 'Portland', 'Oregon', '97271', 'United States')
 ,(10, 'Owens'   , 'Tina'     , 'towens9@earthlink.net'   , 'Blogtag'  , '1-(712)989-9002', '59039 Sachtjen Street', null, 'Sioux City', 'Iowa', '51105', 'United States')

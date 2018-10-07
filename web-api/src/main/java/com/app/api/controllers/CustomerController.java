@@ -35,10 +35,10 @@ public class CustomerController extends BaseController {
     @ApiOperation(value = "Get list of customers", response = CustomerResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getCustomerList(
-        @ApiParam(value="Customer Id", example="1") @QueryParam("customer-id") int customerId,
+        @ApiParam(value="Customer Id") @QueryParam("customer-id") int customerId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
-        @ApiParam(value="Company") @QueryParam("company") String company,
-        @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName,
+        @ApiParam(value="Company - Use % for wildcard") @QueryParam("company") String company,
+        @ApiParam(value="Use % for wildcard eg:'Tom%' ", example="t%")  @QueryParam("first-name") String firstName,
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
         @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize
     ) {
@@ -53,10 +53,10 @@ public class CustomerController extends BaseController {
             criteria.add(Restrictions.eq("userId", userId));
         }
         if (StringUtils.isNotBlank(company)) {
-            criteria.add(Restrictions.like("company", "%"+company+"%").ignoreCase());
+            criteria.add(Restrictions.like("company", company).ignoreCase());
         }
         if (StringUtils.isNotBlank(firstName)) {
-            criteria.add(Restrictions.like("firstName", "%"+firstName+"%").ignoreCase());
+            criteria.add(Restrictions.like("firstName", firstName).ignoreCase());
         }
         if (page <= 0) {
             page = 1;

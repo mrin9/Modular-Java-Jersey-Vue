@@ -37,7 +37,7 @@ public class ProductController extends BaseController {
     public Response getProductList(
         @ApiParam(value="Product Id") @QueryParam("id") int id,
         @ApiParam(value="Category",allowableValues = "Camera, Laptop, Tablet, Phone") @QueryParam("category") String category,
-        @ApiParam(value="Name", example="Nikon") @QueryParam("name") String productName,
+        @ApiParam(value="Name", example="nikon%") @QueryParam("name") String productName,
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")    @QueryParam("page") int page,
         @ApiParam(value="Items in each page", example="20")     @DefaultValue("20")   @QueryParam("page-size") int pageSize
     ) {
@@ -49,10 +49,10 @@ public class ProductController extends BaseController {
             criteria.add(Restrictions.eq("id",  id ));
         }
         if (StringUtils.isNotBlank(productName)){
-            criteria.add(Restrictions.like("productName",  "%"+productName+"%" ).ignoreCase());
+            criteria.add(Restrictions.like("productName, Use % for wildcard ",  productName ).ignoreCase());
         }
         if (StringUtils.isNotBlank(category)){
-            criteria.add(Restrictions.like("category",  "%"+category+"%" ).ignoreCase());
+            criteria.add(Restrictions.like("category, Use % for wildcard ",  category ).ignoreCase());
         }
         if (page<=0){
             page = 1;

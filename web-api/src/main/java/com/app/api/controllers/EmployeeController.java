@@ -58,10 +58,10 @@ public class EmployeeController extends BaseController {
             criteria.add(Restrictions.eq("userId", userId));
         }
         if (StringUtils.isNotBlank(dept)){
-            criteria.add(Restrictions.like("department",  "%"+dept+"%" ).ignoreCase());
+            criteria.add(Restrictions.like("department, Use % for wildcard ",  dept ).ignoreCase());
         }
         if (StringUtils.isNotBlank(firstName)){
-            criteria.add(Restrictions.like("firstName",  "%"+firstName+"%" ).ignoreCase());
+            criteria.add(Restrictions.like("firstName, Use % for wildcard ",  firstName ).ignoreCase());
         }
         if (page<=0){
             page = 1;

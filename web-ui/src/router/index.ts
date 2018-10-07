@@ -28,6 +28,10 @@ import Product from '@/views/Product.vue'
 //Employees
 import Employee from '@/views/Employee.vue'
 
+//Customer
+import Customer from '@/views/Customer.vue'
+
+
 Vue.use(Router)
 
 const router =  new Router({
@@ -48,11 +52,11 @@ const router =  new Router({
         { path: 'manage'     , redirect:  '/manage/dashboard', component: { render(c) { return c('router-view') } },
           children: [
             { path: 'dashboard' , component: Dashboard },
-            { path: 'users'     , component: User},
-            { path: 'customers' , component: { template: '<div>Manage Customers</div>'}},
-            { path: 'orders'    , component: Order   },
-            { path: 'products'  , component: Product },
-            { path: 'employees' , component: Employee},
+            { path: 'users'     , component: User      },
+            { path: 'customers' , component: Customer  },
+            { path: 'orders'    , component: Order     },
+            { path: 'products'  , component: Product   },
+            { path: 'employees' , component: Employee  },
             { path: 'carts'     , component: { template: '<div>Manage Carts</div>' }}
           ]
         }
