@@ -2,6 +2,7 @@ package com.app.util;
 
 import com.app.model.cart.CartModel;
 import com.app.model.cart.CartViewModel;
+import com.app.model.customer.CustomerUserModel;
 import com.app.model.order.OrderItemModel;
 import com.app.model.user.UserViewModel;
 import org.hibernate.Session;
@@ -40,12 +41,15 @@ public class HibernateUtil {
             configuration.setProperty("hibernate.default_schema", "NORTHWIND");
             configuration.setProperty("hibernate.connection.username", "sa");
             configuration.setProperty("hibernate.connection.password", "sa");
+            configuration.setProperty("hibernate.show_sql", "true");
+            configuration.setProperty("hibernate.format_sql", "true");
 
             //Class Mappings
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(UserViewModel.class);
             configuration.addAnnotatedClass(EmployeeModel.class);
             configuration.addAnnotatedClass(CustomerModel.class);
+            configuration.addAnnotatedClass(CustomerUserModel.class);
             configuration.addAnnotatedClass(ProductModel.class);
             configuration.addAnnotatedClass(OrderModel.class);
             configuration.addAnnotatedClass(OrderItemModel.class);

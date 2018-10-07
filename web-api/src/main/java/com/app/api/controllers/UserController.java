@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -155,14 +154,12 @@ public class UserController extends BaseController {
         }
 
         try {
-
             Session hbrSession = HibernateUtil.getSession();
             UserViewModel userInfo = UserDao.getById(hbrSession,userId);
             if (userInfo==null){
                 resp.setErrorMessage("User not found");
                 return Response.ok(resp).build();
             }
-
             hbrSession.beginTransaction();
             UserDao.delete(hbrSession,userInfo,deleteRelatedData);
             hbrSession.getTransaction().commit();

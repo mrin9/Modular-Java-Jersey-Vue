@@ -157,7 +157,7 @@ select u.user_id
  , c.email as email
  From users u, customers c where u.customer_id = c.id;
 
-CREATE OR REPLACE VIEW user_emp_view AS
+CREATE OR REPLACE VIEW employee_user_view AS
 select u.user_id
  , u.password
  , u.role
@@ -180,7 +180,7 @@ select u.user_id
  From employees e
 left join users u on e.id = u.employee_id;
 
-CREATE OR REPLACE VIEW user_cust_view AS
+CREATE OR REPLACE VIEW customer_user_view AS
 select u.user_id
  , u.password
  , u.role

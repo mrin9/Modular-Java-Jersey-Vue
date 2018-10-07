@@ -5,6 +5,8 @@ import com.app.dao.CustomerDao;
 import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.customer.CustomerResponse;
+import com.app.model.customer.CustomerUserModel;
+import com.app.model.customer.CustomerUserResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,43 +35,49 @@ public class CustomerController extends BaseController {
     @ApiOperation(value = "Get list of customers", response = CustomerResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getCustomerList(
-        @ApiParam(value="Customer Id") @QueryParam("id") int id,
+        @ApiParam(value="Customer Id") @QueryParam("customer-id") int customerId,
+        @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Company") @QueryParam("company") String company,
         @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName,
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
         @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize
     ) {
 
-        int recordFrom=0;
-        Criteria criteria = HibernateUtil.getSession().createCriteria(CustomerModel.class);
+        int recordFrom = 0;
+        Criteria criteria = HibernateUtil.getSession().createCriteria(CustomerUserModel.class);
 
-        if (id > 0){
-            criteria.add(Restrictions.eq("id",  id ));
+        if (customerId > 0) {
+            criteria.add(Restrictions.eq("customerId", customerId));
         }
-        if (StringUtils.isNotBlank(company)){
-            criteria.add(Restrictions.eq("company",  company ));
+        if (StringUtils.isNotBlank(userId)) {
+            criteria.add(Restrictions.eq("userId", userId));
         }
-        if (StringUtils.isNotBlank(firstName)){
-            criteria.add(Restrictions.eq("firstName",  firstName ));
+        if (StringUtils.isNotBlank(company)) {
+            criteria.add(Restrictions.eq("company", company));
         }
-        if (page<=0){
+        if (StringUtils.isNotBlank(firstName)) {
+            criteria.add(Restrictions.eq("firstName", firstName));
+        }
+        if (page <= 0) {
             page = 1;
         }
-        if (pageSize<=0 || pageSize > 1000){
-            pageSize =20;
+        if (pageSize <= 0 || pageSize > 1000) {
+            pageSize = 20;
         }
-        recordFrom = (page-1) * pageSize;
+        recordFrom = (page - 1) * pageSize;
 
         // Execute the Hibernate Query
-        criteria.setFirstResult( (int) (long)recordFrom);
-        criteria.setMaxResults(  (int) (long)pageSize);
-        List<CustomerModel> customerList = criteria.list();
+        int rowCount =0;
+        criteria.setFirstResult((int) (long) recordFrom);
+        criteria.setMaxResults((int) (long) pageSize);
+        List<CustomerUserModel> customerUserList = criteria.list();
 
-        criteria.setProjection(Projections.rowCount());
-        int rowCount = Math.toIntExact((Long) criteria.uniqueResult());
-
-        CustomerResponse resp = new CustomerResponse();
-        resp.setList(customerList);
+        if (customerUserList.size() > 0) {
+            criteria.setProjection(Projections.rowCount());
+            rowCount = Math.toIntExact((Long) criteria.uniqueResult());
+        }
+        CustomerUserResponse resp = new CustomerUserResponse();
+        resp.setList(customerUserList);
         resp.setPageStats(rowCount, pageSize, page,"");
         resp.setSuccessMessage("List of customers");
         return Response.ok(resp).build();
