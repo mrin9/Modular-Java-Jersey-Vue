@@ -71,18 +71,20 @@ public class EmployeeController extends BaseController {
         }
         recordFrom = (page-1) * pageSize;
 
-        // Execute the Hibernate Query
-        int rowCount=0;
+        // Execute the Total-Count Query first ( if main query is executed first, it results in error for count-query)
+        criteria.setProjection(Projections.rowCount());
+        Long rowCount = (Long)criteria.uniqueResult();
+
+        // Execute the Main Query
+        criteria.setProjection(null);
         criteria.setFirstResult(recordFrom);
         criteria.setMaxResults(pageSize);
         List<EmployeeUserModel> empUserList = criteria.list();
-        if (empUserList.size() > 0) {
-            criteria.setProjection(Projections.rowCount());
-            rowCount = Math.toIntExact((Long) criteria.uniqueResult());
-        }
         EmployeeUserResponse resp = new EmployeeUserResponse();
         resp.setList(empUserList);
-        resp.setPageStats(rowCount, pageSize, page,"");
+
+
+        resp.setPageStats(rowCount.intValue(), pageSize, page,"");
         resp.setSuccessMessage("List of employees");
         return Response.ok(resp).build();
     }

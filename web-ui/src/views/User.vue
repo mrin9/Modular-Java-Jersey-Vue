@@ -1,17 +1,16 @@
 <template>
 
-  <div style="display:flex;flex-direction:column" v-loading="loading" >
-    
+  <div style="display:flex;flex-direction:column;width:750px;" v-loading="loading" >
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
       <user-details :rec="selectedRec" @changed="getData()" :isCustomer="false"> </user-details>
     </vue-slideout-panel>
 
     <h3> Manage Users </h3>
-    <div class="sw-toolbar" style="width:750px;">
+    <div class="sw-toolbar">
       <el-button type="primary" size="small" @click="onOpenAddProduct()" class="sw-toolbar-item">ADD</el-button>
     </div>
-    <el-table :data="tableData" style="width:750px;" empty-text="No Data">
+    <el-table :data="tableData" empty-text="No Data">
       <el-table-column prop="userId"      label="USER #" width="80"/>
       <el-table-column prop="role"        label="ROLE"   width="85"/>
       <el-table-column prop="fullName"    label="NAME"   />

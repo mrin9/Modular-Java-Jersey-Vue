@@ -1,17 +1,17 @@
 <template>
 
-  <div style="display:flex;flex-direction:column" v-loading="loading" >
-    
+   <div style="display:flex;flex-direction:column;width:750px;" v-loading="loading" >
+   
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
       <product-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </product-details>
     </vue-slideout-panel>
 
     <h3> Manage Products </h3>
-    <div class="sw-toolbar" style="width:600px;">
+    <div class="sw-toolbar">
       <el-button type="primary" size="small" @click="onOpenAddProduct()" class="sw-toolbar-item">ADD</el-button>
     </div>
-    <el-table :data="tableData" style="width:750px;" height="400" empty-text="No Data">
+    <el-table :data="tableData" height="400" empty-text="No Data">
       <el-table-column prop="id"           label="PRODUCT #" width="85"/>
       <el-table-column prop="productName"  label="NAME"  />
       <el-table-column prop="standardCost" label="COST"        width="80"  align="right"/>
@@ -25,6 +25,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageClick"></el-pagination>
   </div>
 
 </template>
@@ -41,16 +42,23 @@ export default {
       loading:false,
       showSlideOut:false,
       tableData:[],
-      selectedRec:{}
+      selectedRec:{},
+      currentPage:1,
+      pageSize:10,
+      totalPages:0,
+      totalRecs:0
     }
   },
 
   methods:{
-    getData(){
+    getData(start,limit){
       let me = this;
       console.log("Loaded Data");
       me.$data.loading=true;
-      Rest.getProducts(0,1000).then(function(resp){
+
+      Rest.getProducts(start,limit).then(function(resp){
+        me.$data.totalPages  = resp.data.totalPages;
+        me.$data.totalRecs   = resp.data.total;
         me.$data.tableData = resp.data.list;
         me.$data.loading=false;
       })
@@ -90,13 +98,17 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = {id:0};
     },
+    onPageClick(pageNum){
+      this.getData(pageNum,this.$data.pageSize);
+    },
+
     onContinueShopping(){
       console.log("Continue Shopping clicked...")
     },
 
   },
   mounted(){
-    this.getData();
+    this.getData(1, this.$data.pageSize);
   },
   components: {
     ProductDetails,

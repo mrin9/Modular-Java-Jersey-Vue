@@ -62,17 +62,20 @@ public class ProductController extends BaseController {
         }
         recordFrom = (page-1) * pageSize;
 
-        // Execute the Hibernate Query
+        // Execute the Total-Count Query first ( if main query is executed first, it results in error for count-query)
+        criteria.setProjection(Projections.rowCount());
+        Long rowCount = (Long)criteria.uniqueResult();
+
+        // Execute the Main Query
+        criteria.setProjection(null);
         criteria.setFirstResult( (int) (long)recordFrom);
         criteria.setMaxResults(  (int) (long)pageSize);
         List<ProductModel> productList = criteria.list();
 
-        criteria.setProjection(Projections.rowCount());
-        int rowCount = Math.toIntExact((Long) criteria.uniqueResult());
 
         ProductResponse resp = new ProductResponse();
         resp.setList(productList);
-        resp.setPageStats(rowCount, pageSize, page,"");
+        resp.setPageStats(rowCount.intValue(), pageSize, page,"");
         resp.setSuccessMessage("List of products");
         return Response.ok(resp).build();
     }

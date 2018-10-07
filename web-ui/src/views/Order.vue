@@ -1,18 +1,16 @@
 <template>
 
-  <div style="display:flex;flex-direction:column" v-loading="loading" >
-
-
+  <div style="display:flex;flex-direction:column;width:750px;" v-loading="loading" >
     <!-- The slider shows a single-order-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
       <order-details :rec="selectedRec" @changed="getData();"> </order-details>
     </vue-slideout-panel>
     <h3> Manage Orders </h3>
-    <div class="sw-toolbar" style="width:850px;">
+    <div class="sw-toolbar">
 
     </div>
 
-    <el-table :data="tableData" style="width:750px;" height="400" empty-text="No Data">
+    <el-table :data="tableData" height="400" empty-text="No Data">
       <el-table-column prop="id"            label="ORDER#" width="70"/>
       <el-table-column prop="strOrderDate"  label="DATE"  width="120"/>
       <el-table-column prop="shipName"      label="SHIP TO" />

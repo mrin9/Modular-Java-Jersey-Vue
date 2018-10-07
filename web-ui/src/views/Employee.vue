@@ -1,17 +1,16 @@
 <template>
 
-  <div style="display:flex;flex-direction:column" v-loading="loading" >
-    
+  <div style="display:flex;flex-direction:column;width:900px;" v-loading="loading" >
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
       <!-- <employee-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </employee-details> -->
     </vue-slideout-panel>
 
     <h3> Manage Employees </h3>
-    <div class="sw-toolbar" style="width:900px;">
+    <div class="sw-toolbar">
       <el-button type="primary" size="small" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
     </div>
-    <el-table :data="tableData" style="width:850px;" height="400" empty-text="No Data">
+    <el-table :data="tableData" height="400" empty-text="No Data">
       <el-table-column prop="employeeId" label="EMP #" width="50"/>
       <el-table-column prop="userId"     label="USER #" width="80"/>
       <el-table-column prop="fullName"   label="NAME"  />
@@ -25,6 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageClick"></el-pagination>
   </div>
 
 </template>
@@ -41,17 +41,24 @@ export default {
       loading:false,
       showSlideOut:false,
       tableData:[],
-      selectedRec:{}
+      selectedRec:{},
+      currentPage:1,
+      pageSize:10,
+      totalPages:0,
+      totalRecs:0,
+
     }
   },
 
   methods:{
-    getData(){
+    getData(start, limit){
       let me = this;
       console.log("Loaded Data");
       me.$data.loading=true;
-      Rest.getEmployees(0,1000).then(function(resp){
-        me.$data.tableData = resp.data.list.map(function(v){
+      Rest.getEmployees(start,limit).then(function(resp){
+        me.$data.totalPages = resp.data.totalPages;
+        me.$data.totalRecs  = resp.data.total;
+        me.$data.tableData  = resp.data.list.map(function(v){
           return {
             ...v,
             fullName: (v.firstName + " " + v.lastName)
@@ -91,6 +98,10 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = rec;
     },
+    onPageClick(pageNum){
+      this.getData(pageNum,this.$data.pageSize);
+    },
+
     onOpenAddEmployee(){
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = {id:0};
@@ -98,7 +109,7 @@ export default {
 
   },
   mounted(){
-    this.getData();
+    this.getData(0,this.$data.pageSize);
   },
   components: {
     VueSlideoutPanel,
