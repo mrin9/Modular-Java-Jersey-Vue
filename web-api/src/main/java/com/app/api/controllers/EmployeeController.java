@@ -41,7 +41,7 @@ public class EmployeeController extends BaseController {
     @ApiOperation(value = "Get list of employees", response = EmployeeResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getEmployeeList(
-        @ApiParam(value="Employee Id") @QueryParam("employee-id") int employeeId,
+        @ApiParam(value="Employee Id", example="201") @QueryParam("employee-id") int employeeId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Department")  @QueryParam("department") String dept,
         @ApiParam(value="Use % for wildcard like 'Steav%' ")    @QueryParam("first-name") String firstName,
@@ -58,10 +58,10 @@ public class EmployeeController extends BaseController {
             criteria.add(Restrictions.eq("userId", userId));
         }
         if (StringUtils.isNotBlank(dept)){
-            criteria.add(Restrictions.like("department",  dept ));
+            criteria.add(Restrictions.like("department",  "%"+dept+"%" ).ignoreCase());
         }
         if (StringUtils.isNotBlank(firstName)){
-            criteria.add(Restrictions.like("firstName",  firstName ));
+            criteria.add(Restrictions.like("firstName",  "%"+firstName+"%" ).ignoreCase());
         }
         if (page<=0){
             page = 1;

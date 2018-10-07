@@ -35,7 +35,7 @@ public class CustomerController extends BaseController {
     @ApiOperation(value = "Get list of customers", response = CustomerResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getCustomerList(
-        @ApiParam(value="Customer Id") @QueryParam("customer-id") int customerId,
+        @ApiParam(value="Customer Id", example="1") @QueryParam("customer-id") int customerId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Company") @QueryParam("company") String company,
         @ApiParam(value="Use % for wildcard like 'Steav%' ")  @QueryParam("first-name") String firstName,
@@ -53,10 +53,10 @@ public class CustomerController extends BaseController {
             criteria.add(Restrictions.eq("userId", userId));
         }
         if (StringUtils.isNotBlank(company)) {
-            criteria.add(Restrictions.eq("company", company));
+            criteria.add(Restrictions.like("company", "%"+company+"%").ignoreCase());
         }
         if (StringUtils.isNotBlank(firstName)) {
-            criteria.add(Restrictions.eq("firstName", firstName));
+            criteria.add(Restrictions.like("firstName", "%"+firstName+"%").ignoreCase());
         }
         if (page <= 0) {
             page = 1;
