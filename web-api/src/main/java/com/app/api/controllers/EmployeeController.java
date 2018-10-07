@@ -7,6 +7,8 @@ import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
 import com.app.model.employee.EmployeeResponse;
+import com.app.model.employee.EmployeeUserModel;
+import com.app.model.employee.EmployeeUserResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +41,8 @@ public class EmployeeController extends BaseController {
     @ApiOperation(value = "Get list of employees", response = EmployeeResponse.class)
     @RolesAllowed({"ADMIN"})
     public Response getEmployeeList(
-        @ApiParam(value="Employee Id") @QueryParam("id") int id,
+        @ApiParam(value="Employee Id") @QueryParam("employee-id") int employeeId,
+        @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Department")  @QueryParam("department") String dept,
         @ApiParam(value="Use % for wildcard like 'Steav%' ")    @QueryParam("first-name") String firstName,
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page")  int page,
@@ -47,9 +50,12 @@ public class EmployeeController extends BaseController {
     ) {
 
         int recordFrom=0;
-        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(EmployeeModel.class);
-        if (id > 0){
-            criteria.add(Restrictions.eq("id",  id ));
+        Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(EmployeeUserModel.class);
+        if (employeeId > 0){
+            criteria.add(Restrictions.eq("employeeId",  employeeId ));
+        }
+        if (StringUtils.isNotBlank(userId)) {
+            criteria.add(Restrictions.eq("userId", userId));
         }
         if (StringUtils.isNotBlank(dept)){
             criteria.add(Restrictions.like("department",  dept ));
@@ -66,15 +72,17 @@ public class EmployeeController extends BaseController {
         recordFrom = (page-1) * pageSize;
 
         // Execute the Hibernate Query
+        int rowCount=0;
         criteria.setFirstResult(recordFrom);
         criteria.setMaxResults(pageSize);
-        List<EmployeeModel> empList = criteria.list();
-        criteria.setProjection(Projections.rowCount());
-        int totalRows = Math.toIntExact((Long) criteria.uniqueResult());
-
-        EmployeeResponse resp = new EmployeeResponse();
-        resp.setList(empList);
-        resp.setPageStats(totalRows, pageSize, page,"");
+        List<EmployeeUserModel> empUserList = criteria.list();
+        if (empUserList.size() > 0) {
+            criteria.setProjection(Projections.rowCount());
+            rowCount = Math.toIntExact((Long) criteria.uniqueResult());
+        }
+        EmployeeUserResponse resp = new EmployeeUserResponse();
+        resp.setList(empUserList);
+        resp.setPageStats(rowCount, pageSize, page,"");
         resp.setSuccessMessage("List of employees");
         return Response.ok(resp).build();
     }

@@ -6,7 +6,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
 
 public class CustomerDao {
 

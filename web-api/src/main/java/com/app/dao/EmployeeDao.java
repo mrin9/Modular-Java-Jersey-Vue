@@ -19,10 +19,18 @@ public class EmployeeDao {
         return  (EmployeeModel)q.uniqueResult();
     }
 
-    public static int delete(Session hbrSession, Integer employeeId)  throws HibernateException, ConstraintViolationException {
-        Query q = hbrSession.createQuery("delete EmployeeModel where id = :employeeId");
-        q.setParameter("employeeId", employeeId);
-        return q.executeUpdate();
+    public static void delete(Session hbrSession, Integer employeeId)  throws HibernateException, ConstraintViolationException {
+        String sqlDeleteUser     = "delete from northwind.users where employee_id = :employeeId";
+        String sqlDeleteEmployee = "delete from northwind.employees where id = :employeeId";
+
+        Query queryDeleteUser = hbrSession.createSQLQuery(sqlDeleteUser);
+        queryDeleteUser.setParameter("employeeId", employeeId);
+
+        Query queryDeleteEmployee = hbrSession.createSQLQuery(sqlDeleteEmployee);
+        queryDeleteEmployee.setParameter("employeeId", employeeId);
+
+        queryDeleteUser.executeUpdate();
+        queryDeleteEmployee.executeUpdate();
     }
 
 

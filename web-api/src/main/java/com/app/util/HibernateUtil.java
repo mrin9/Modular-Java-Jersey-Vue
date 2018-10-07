@@ -3,6 +3,7 @@ package com.app.util;
 import com.app.model.cart.CartModel;
 import com.app.model.cart.CartViewModel;
 import com.app.model.customer.CustomerUserModel;
+import com.app.model.employee.EmployeeUserModel;
 import com.app.model.order.OrderItemModel;
 import com.app.model.user.UserViewModel;
 import org.hibernate.Session;
@@ -48,6 +49,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(UserViewModel.class);
             configuration.addAnnotatedClass(EmployeeModel.class);
+            configuration.addAnnotatedClass(EmployeeUserModel.class);
             configuration.addAnnotatedClass(CustomerModel.class);
             configuration.addAnnotatedClass(CustomerUserModel.class);
             configuration.addAnnotatedClass(ProductModel.class);

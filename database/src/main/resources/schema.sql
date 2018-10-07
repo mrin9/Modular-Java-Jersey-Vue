@@ -161,7 +161,7 @@ CREATE OR REPLACE VIEW employee_user_view AS
 select u.user_id
  , u.password
  , u.role
- , u.employee_id
+ , e.id as employee_id
  , concat(e.first_name, ' ', e.last_name) as full_name
  , e.last_name
  , e.first_name
@@ -184,7 +184,7 @@ CREATE OR REPLACE VIEW customer_user_view AS
 select u.user_id
  , u.password
  , u.role
- , u.customer_id
+ , c.id as customer_id
  , concat(c.first_name, ' ', c.last_name) as full_name
  , c.last_name
  , c.first_name
