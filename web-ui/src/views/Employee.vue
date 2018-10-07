@@ -8,11 +8,12 @@
     </vue-slideout-panel>
 
     <h3> Manage Employees </h3>
-    <div class="sw-toolbar" style="width:850px;">
+    <div class="sw-toolbar" style="width:900px;">
       <el-button type="primary" size="small" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
     </div>
     <el-table :data="tableData" style="width:850px;" height="400" empty-text="No Data">
-      <el-table-column prop="id"         label="EMP #" width="50"/>
+      <el-table-column prop="employeeId" label="EMP #" width="50"/>
+      <el-table-column prop="userId"     label="USER #" width="80"/>
       <el-table-column prop="fullName"   label="NAME"  />
       <el-table-column prop="email"      label="EMAIL"      width="220" />
       <el-table-column prop="jobTitle"   label="JOB TITLE"  width="190" />
@@ -71,7 +72,7 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
-        return Rest.deleteEmployee(rec.id);
+        return Rest.deleteEmployee(rec.employeeId);
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
