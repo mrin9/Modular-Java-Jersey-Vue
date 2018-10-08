@@ -55,7 +55,7 @@ globalErrorParser(err:AxiosError){
       return;
     }
     if (err.response.status===403){
-      me.$alert('Product not regesterd or you dont have appropriate licences', 'Error', {
+      me.$alert('You do not have access to perform this operation', 'Access Denied', {
         confirmButtonText: 'OK',
       });
       return;

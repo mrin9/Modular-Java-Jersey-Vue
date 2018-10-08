@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading" >
-      <template v-if="userData.userId=='NEW'">
+      <template v-if="$props.isCustomer">
         <span class="sw-section-heading">USER DETAILS</span> 
         <span class="sw-gray-text">Provide some fake details, the data will be refreshed at certain interval</span>
       </template>  
@@ -9,17 +9,21 @@
           ROLE:     <span class="sw-primary-color"> {{userData.role}}</span>
       </span>
       <br/>
-      <div v-if="userData.userId=='NEW'" class="sw-row">
-        <label class="sw-label">User name </label><input type="text" class="sw-medium" v-model="userData.userId">
+      <div v-if="$props.isNew" class="sw-row">
+        <label class="sw-label" >User name </label><input type="text" style="width:180px" class="sw-medium" v-model="userData.userId">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Password </label><input type="text" class="sw-medium" v-model="userData.password">
+        <label class="sw-label">Password </label><input type="text" style="width:180px" class="sw-medium" v-model="userData.password">
       </div>
-      <div v-if="role=='ADMIN' && userData.userId=='NEW'" class="sw-row">
-        <label class="sw-label">Is Employee</label><el-switch v-model="isEmployee"/>
+      <div v-if="$props.isNew==true && $props.isCustomer==false" class="sw-row" style="margin-top:2px;">
+        <label class="sw-label">Role </label>
+        <el-select size="medium" v-model="userData.role" placeholder="Role">
+           <el-option label="Customer" value="CUSTOMER"></el-option>
+           <el-option label="Support Employee" value="SUPPORT"></el-option>
+           <el-option v-if="$store.state.role==='ADMIN'" label="Admin" value="ADMIN"></el-option>
+        </el-select>  
       </div>
-
-      <br/><br/>
+      <br/>
       <span class="sw-section-heading">NAME & CONTACT</span> 
       <div class="sw-row">
         <label class="sw-label">Name</label>
@@ -33,8 +37,7 @@
       <div class="sw-row">
         <label class="sw-label">Phone</label><input type="text" class="sw-medium" v-model="userData.phone">
       </div>
-    
-    <br/><br/>
+    <br/>
       <span class="sw-section-heading">ADDRESS</span>
       <div class="sw-row">
         <label class="sw-label">Address</label>
@@ -55,14 +58,14 @@
       <div class="sw-row">
         <label class="sw-label">Country</label><input type="text" class="sw-medium" v-model="userData.country">
       </div>
-      <template v-if="role=='ADMIN'">
-        <br/><br/>
-        <span class="sw-section-heading">Employee Info</span>
+      <template v-if="userData.role!=='CUSTOMER'">
+        <br/>
+        <span class="sw-section-heading">EMPLOYEE INFO</span>
         <div class="sw-row">
-          <label class="sw-label">Department</label><input type="text" class="sw-medium" v-model="userObj.department">
+          <label class="sw-label">Department</label><input type="text" class="sw-medium" v-model="userData.department">
         </div>
         <div class="sw-row">
-          <label class="sw-label">Manager ID</label><input type="text" class="sw-medium" v-model="userObj.managerId">
+          <label class="sw-label">Manager ID</label><input type="text" class="sw-medium" v-model="userData.managerId">
         </div>
         <div class="sw-row">
           <label class="sw-label">Company</label><input type="text" class="sw-medium" v-model="userData.company">
@@ -86,32 +89,14 @@ export default {
   props: {
     rec:{type: Object, required:true},
     isCustomer:{type: Boolean, default:true, required:false},
-  },
+    isNew:{type: Boolean, default:true, required:false},
+},
 
   data:function(){
     return {
       loading : false,
       isEmployee:false,
-      role:this.$store.state.role,
       userData : this.rec,  // Assign the prop value to data to make it reactive
-      userObj:{
-        "userId": "test",
-        "password": "test",
-        "role": "CUSTOMER",
-        "lastName": "First",
-        "firstName": "Last",
-        "email": "abc@example,com",
-        "company": "",
-        "phone": "1234",
-        "address1": "add1",
-        "address2": "add2",
-        "city": "Sunnyvale",
-        "state": "CA",
-        "postalCode": "94086",
-        "country": "USA",
-        "department": "",
-        "managerId":0
-      }
     }
   },
 
@@ -119,7 +104,7 @@ export default {
     
     onRegister(){
       let me = this;
-      Rest.registerUser(me.$data.userObj).then(function(resp){
+      Rest.registerUser(me.$data.userData).then(function(resp){
         me.$data.loading=false;
         if (resp.data.msgType==="ERROR"){
           me.$message.error('Unable to register the user with id: '+ me.$data.userData.userId)
@@ -142,20 +127,9 @@ export default {
     onCancel(){
       router.push("/login");
     }
-
-
   },
 
   mounted(){
-    if (this.$store.state.role==="ADMIN"){
-
-    }
-    else if (this.$store.state.role==="SUPPORT"){
-      this.$data.userObj.role="SUPPORT";
-    }
-    else{
-      this.$data.userObj.role="CUSTOMER";
-    }
     
   },
   components: {

@@ -60,23 +60,22 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
 
         String jwtToken = reqContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isBlank(jwtToken)) {
-            resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Empty Token" );
+            resp.setTypeAndMessage(MessageTypeEnum.BAD_TOKEN, "Empty Token" );
             reqContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(resp).build());
             return;
         }
 
         try {
-            //IMPORTANT: You must create userAccount from token not from session
             userView = TokenUtil.getUserFromToken(jwtToken);
             if (userView==null) {
-                resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Invalid Token" );
+                resp.setTypeAndMessage(MessageTypeEnum.BAD_TOKEN, "Invalid Token" );
                 reqContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(resp).build());
                 return;
             }
         }
         catch (Exception e) {
             log.error("Invalid user token " + e.getMessage());
-            resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Invalid User" );
+            resp.setTypeAndMessage(MessageTypeEnum.BAD_TOKEN, "Invalid User" );
             reqContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(resp).build());
             return;
         }
@@ -106,7 +105,7 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
         //check for roles
         if(method.isAnnotationPresent(RolesAllowed.class)) {
             RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-            Set<String> allowedRoleSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value() ));
+            Set<String> allowedRoleSet = new HashSet<>(Arrays.asList(rolesAnnotation.value() ));
             if (allowedRoleSet.contains(userView.getRole())){
                 return;
             }
@@ -116,7 +115,9 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
             }
             else{
                 resp.setTypeAndMessage(MessageTypeEnum.NO_ACCESS, "Unauthorized for " +  userView.getRole() + " role");
-                reqContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(resp).build());
+                reqContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                    .type(MediaType.APPLICATION_JSON)
+                    .entity(resp).build());
                 return;
             }
         }

@@ -33,7 +33,7 @@ public class CustomerController extends BaseController {
 
     @GET
     @ApiOperation(value = "Get list of customers", response = CustomerResponse.class)
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response getCustomerList(
         @ApiParam(value="Customer Id") @QueryParam("customer-id") int customerId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,

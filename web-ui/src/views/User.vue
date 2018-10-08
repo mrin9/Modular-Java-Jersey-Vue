@@ -3,7 +3,7 @@
   <div style="display:flex;flex-direction:column;width:750px;" v-loading="loading" >
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
-      <user-details :rec="selectedRec" @changed="getData()" :isCustomer="false"> </user-details>
+      <user-details :rec="selectedRec" @changed="getData()" :isCustomer="false" :isNew="isNew"> </user-details>
     </vue-slideout-panel>
 
     <h3> Manage Users </h3>
@@ -18,9 +18,9 @@
       <el-table-column prop="customerId"  label="CUSTOMER #" width="90"/>
       <el-table-column prop="employeeId"  label="EMPLOYEE #" width="90"/>
       <el-table-column label="" width="50">
-        <template slot-scope="scope">
-          <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
-          <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
+        <template slot-scope="scope" v-if="($store.state.role==='ADMIN' || ($store.state.role=='SUPPORT' &&  scope.row.role !=='ADMIN' )) ">
+            <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
+            <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
         </template>
       </el-table-column>
     </el-table>
@@ -40,7 +40,8 @@ export default {
       loading:false,
       showSlideOut:false,
       tableData:[],
-      selectedRec:{}
+      selectedRec:{},
+      isNew:false,
     }
   },
 
@@ -86,6 +87,7 @@ export default {
       let me = this;
       let methodName = "";
       let id ="";
+     
       if (rec.role==="CUSTOMER"){
         methodName="getCustomers"
         id = rec.customerId;
@@ -101,6 +103,7 @@ export default {
       Rest[methodName](1,1,id).then(function(resp){
         if (resp.data.msgType==="SUCCESS" && resp.data.list.length === 1){
           me.$data.selectedRec  = {...rec, ...resp.data.list[0]};
+          me.$data.isNew = false;
           me.$data.showSlideOut = true;
         }
       })
@@ -111,8 +114,9 @@ export default {
 
     },
     onOpenAddProduct(){
-      this.$data.showSlideOut = true;
+      this.$data.isNew = true;
       this.$data.selectedRec  = {userId:'NEW'};
+      this.$data.showSlideOut = true;
     },
     onContinueShopping(){
       console.log("Continue Shopping clicked...")

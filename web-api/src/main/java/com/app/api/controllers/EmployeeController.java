@@ -39,7 +39,7 @@ public class EmployeeController extends BaseController {
 
     @GET
     @ApiOperation(value = "Get list of employees", response = EmployeeResponse.class)
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response getEmployeeList(
         @ApiParam(value="Employee Id", example="201") @QueryParam("employee-id") int employeeId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
@@ -92,7 +92,7 @@ public class EmployeeController extends BaseController {
 
     @POST
     @ApiOperation(value = "Add a employee", response = BaseResponse.class)
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response addEmployee(EmployeeModel emp) {
 
         BaseResponse resp = new BaseResponse();

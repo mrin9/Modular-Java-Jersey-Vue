@@ -19,8 +19,10 @@
       <el-table-column prop="strOrderTotal" label="TOTAL"     width="90" align="right"/>
       <el-table-column label="" width="80" align="center">
         <template slot-scope="scope">
-          <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
-          <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
+          <i v-if="$store.state.role!=='CUSTOMER'" class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
+          <i v-if="$store.state.role!=='CUSTOMER'" class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
+          <i v-if="$store.state.role == 'CUSTOMER'" class="el-icon-view"  style="font-size:16px; vertical-align: middle; cursor:pointer;  color:cornflowerblue" @click="onViewDetails(scope.row)"></i>
+
         </template>
       </el-table-column>
     </el-table>
@@ -91,6 +93,11 @@ export default {
     },
 
     onEdit(rec){
+      this.$data.showSlideOut = true;
+      this.$data.selectedRec  = rec;
+    },
+
+    onViewDetails(rec){
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = rec;
     },

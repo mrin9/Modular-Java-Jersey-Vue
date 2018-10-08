@@ -2,7 +2,7 @@ package com.app.model;
 import io.swagger.annotations.ApiModelProperty;
 
 public class BaseResponse {
-    public enum MessageTypeEnum {SUCCESS, ERROR, WARNING,NO_ACCESS};
+    public enum MessageTypeEnum {SUCCESS, ERROR, WARNING, NO_ACCESS, BAD_TOKEN};
 
     protected MessageTypeEnum  msgType;
     protected String  msg;

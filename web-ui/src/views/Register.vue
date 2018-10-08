@@ -1,12 +1,12 @@
 <template>
 
-  <div class="sw-register-form" v-loading="loading" >
+  <div class="sw-register-form" >
     <div class="sw-form-heading">
       <mr-logo style="height:42px;width:42px;margin:5px; display:inline-block"></mr-logo>
       <div>User Registration</div>
     </div>
     <div style="padding:10px">
-      <user-details :rec="{userId:'NEW'}" :isCustomer="true" > </user-details>
+      <user-details :rec="{userId:'NEW', role:'CUSTOMER'}" :isCustomer="true" > </user-details>
     </div>
   </div>
 </template>
@@ -19,75 +19,6 @@ import UserDetails from '@/views/UserDetails'
 
 export default {
 
-  data:function(){
-    return {
-      loading : false,
-      isEmployee:false,
-      role:this.$store.state.role,
-      userObj:{
-        "userId": "test",
-        "password": "test",
-        "role": "CUSTOMER",
-        "lastName": "First",
-        "firstName": "Last",
-        "email": "abc@example,com",
-        "company": "",
-        "phone": "1234",
-        "address1": "add1",
-        "address2": "add2",
-        "city": "Sunnyvale",
-        "state": "CA",
-        "postalCode": "94086",
-        "country": "USA",
-        "department": "",
-        "managerId":0
-      }
-    }
-  },
-
-  methods:{
-    
-    onRegister(){
-      let me = this;
-      Rest.registerUser(me.$data.userObj).then(function(resp){
-        me.$data.loading=false;
-        if (resp.data.msgType==="ERROR"){
-          me.$message.error('Unable to register the user with id: '+ me.$data.userObj.userId)
-        }
-        else{
-          router.push("/login");
-          me.$message.success('User ID created :' + me.$data.userObj.userId);
-        }
-      })
-      .catch(function(err){
-        console.log("REST ERROR: %O", err.response?err.response:err);
-        me.$data.loading=false;
-      });
-
-
-
-
-    },
-
-    onCancel(){
-      router.push("/login");
-    }
-
-
-  },
-
-  mounted(){
-    if (this.$store.state.role==="ADMIN"){
-
-    }
-    else if (this.$store.state.role==="SUPPORT"){
-      this.$data.userObj.role="SUPPORT";
-    }
-    else{
-      this.$data.userObj.role="CUSTOMER";
-    }
-    
-  },
   components: {
     MrLogo,
     UserDetails

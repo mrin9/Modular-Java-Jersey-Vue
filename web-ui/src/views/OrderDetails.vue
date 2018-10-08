@@ -47,12 +47,13 @@
       <el-table-column prop="unitPrice"   label="PRICE"      width="60"/>
       <el-table-column prop="discount"    label="DISCOUNT"   width="80"/>
       <el-table-column prop="orderItemStatus" label="STATUS" width="100"/>
-      <el-table-column label="" width="60">
+      <el-table-column width="60">
         <template slot-scope="scope">
-          <i class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
-          <i class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
+          <i  v-if="$store.state.role !== 'CUSTOMER'" class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
+          <i  v-if="$store.state.role !== 'CUSTOMER'" class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
         </template>
       </el-table-column>
+
     </el-table>
 
 
@@ -79,7 +80,6 @@ export default {
     return {
       loading:false,
       orderData : this.rec,  // Assign the prop value to data to make it reactive
-      role:this.$store.state.role
     }
   },
   
@@ -153,15 +153,6 @@ export default {
 
   mounted(){
     console.log("id is :" + this.rec.id)
-    if (this.$store.state.role==="ADMIN"){
-    }
-    else if (this.$store.state.role==="SUPPORT"){
-      this.$data.userObj.role="SUPPORT";
-    }
-    else{
-      this.$data.userObj.role="CUSTOMER";
-    }
-    
   }
 
 }

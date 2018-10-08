@@ -36,7 +36,7 @@ public class UserController extends BaseController {
 
     @GET
     @ApiOperation(value = "Get list of users", response = UserListResponse.class)
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response getUserList(
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page") int page,
         @ApiParam(value="Items in each page", example="20") @DefaultValue("20") @QueryParam("page-size") int pageSize,
