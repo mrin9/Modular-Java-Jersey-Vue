@@ -9,7 +9,12 @@
 
     <h3> Manage Customer </h3>
     <div class="sw-toolbar">
-      <el-button type="primary" size="small" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
+      <input type="text" class="sw-medium"  placeholder="Serach by first name" v-model="filterValue" @keyup="applyFilter">
+      <!--
+      <el-button type="primary" size="medium" style="margin-left:5px" icon="el-icon-search" class="sw-toolbar-item"></el-button>
+      -->
+      <span style="flex:1"/>
+      <el-button type="primary" size="medium" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
     </div>
     <el-table :data="tableData" height="400" empty-text="No Data">
       <el-table-column prop="customerId" label="CUSTOMER #" width="90"/>
@@ -32,6 +37,7 @@
 <script>
 import Rest from '@/rest/Rest';
 import store from '@/store';
+import debounce from '@/utils/debounce';
 import VueSlideoutPanel from 'vue-slideout-panel/src/VueSlideoutPanel'
 //import EmployeeDetails from '@/views/EmployeeDetails'
 
@@ -46,15 +52,16 @@ export default {
       pageSize:10,
       totalPages:0,
       totalRecs:0,
+      filterValue:''
     }
   },
 
   methods:{
-    getData(start,limit){
+    getData(start,limit, firstName){
       let me = this;
       console.log("Loaded Data");
       me.$data.loading=true;
-      Rest.getCustomers(start,limit).then(function(resp){
+      Rest.getCustomers(start,limit, undefined, firstName).then(function(resp){
         me.$data.totalPages  = resp.data.totalPages;
         me.$data.totalRecs   = resp.data.total;
         me.$data.tableData   = resp.data.list.map(function(v){
@@ -97,9 +104,18 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = rec;
     },
+
     onPageClick(pageNum){
       this.getData(pageNum,this.$data.pageSize);
     },
+
+    
+    applyFilter:debounce(function(e) {
+      this.getData(0,this.$data.pageSize,this.$data.filterValue);
+      //console.log(this.$data.filterValue);
+    }, 700),
+    
+    
 
     onOpenAddEmployee(){
       this.$data.showSlideOut = true;
