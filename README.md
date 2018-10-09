@@ -58,3 +58,8 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <kbd>
     <img src="/screenshots/login.png?raw=true">
 </kbd>
+
+#### API Reference 
+<kbd>
+    <img src="/screenshots/api_reference.png?raw=true">
+</kbd>
