@@ -17,7 +17,6 @@
           
     </div>
     <div class="sw-app-header-row sw-row2">
-        Order Processing System
     </div>
   </div>
 

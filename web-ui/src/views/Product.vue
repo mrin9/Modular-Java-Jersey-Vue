@@ -6,7 +6,6 @@
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
       <product-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </product-details>
     </vue-slideout-panel>
-
     <h3> Manage Products </h3>
     <div class="sw-toolbar">
       <el-button type="primary" size="small" @click="onOpenAddProduct()" class="sw-toolbar-item">ADD</el-button>
