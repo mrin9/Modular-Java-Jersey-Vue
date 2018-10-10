@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@clr/icons": "^0.13.3",
-    "@vue/cli": "^3.0.4",
+    "@vue/cli": "^3.0.5",
     "@webcomponents/custom-elements": "^1.2.0",
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
@@ -26,15 +26,15 @@
     "vue-router": "^3.0.1",
     "vue-slideout-panel": "^3.0.0",
     "vuex": "^3.0.1",
-    "vuex-persist": "^1.7.1"
+    "vuex-persist": "^1.7.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.4",
-    "@vue/cli-plugin-typescript": "^3.0.4",
-    "@vue/cli-service": "^3.0.4",
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-typescript": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
-    "typescript": "^3.1.1",
+    "typescript": "^3.1.2",
     "vue-template-compiler": "^2.5.17"
   },
   "browserslist": [
