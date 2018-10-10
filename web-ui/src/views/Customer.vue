@@ -9,7 +9,7 @@
 
     <h3> Manage Customer </h3>
     <div class="sw-toolbar">
-      <input type="text" class="sw-medium"  placeholder="Serach by first name" v-model="filterValue" @keyup="applyFilter">
+      <input type="text" class="sw-medium"  placeholder="Serach by name" v-model="filterValue" @keyup="applyFilter">
       <!--
       <el-button type="primary" size="medium" style="margin-left:5px" icon="el-icon-search" class="sw-toolbar-item"></el-button>
       -->
@@ -57,11 +57,11 @@ export default {
   },
 
   methods:{
-    getData(start,limit, firstName){
+    getData(start,limit, name){
       let me = this;
       console.log("Loaded Data");
       me.$data.loading=true;
-      Rest.getCustomers(start,limit, undefined, firstName).then(function(resp){
+      Rest.getCustomers(start,limit, undefined, name).then(function(resp){
         me.$data.totalPages  = resp.data.totalPages;
         me.$data.totalRecs   = resp.data.total;
         me.$data.tableData   = resp.data.list.map(function(v){

@@ -3,12 +3,12 @@ import RestUtil from '@/rest/RestUtil';
 
 export default {
 
-  getCustomers( page, pageSize, customerId, firstName, company ){
+  getCustomers( page, pageSize, customerId, name, company ){
     let qsParams={};
     if (page)       { qsParams['page']=page;}
     if (pageSize)   { qsParams['page-size']=pageSize;}
     if (customerId) { qsParams['id']=customerId;}
-    if (firstName)  { qsParams['first-name']="%"+firstName+"%";}
+    if (name)       { qsParams['name']="%"+name+"%";}
     if (company)    { qsParams['company']=company;}
     
     return axios.get(RestUtil.getBasePath() + "/customers",{
