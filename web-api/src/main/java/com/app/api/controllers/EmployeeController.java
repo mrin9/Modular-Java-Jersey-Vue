@@ -44,7 +44,7 @@ public class EmployeeController extends BaseController {
         @ApiParam(value="Employee Id", example="201") @QueryParam("employee-id") int employeeId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Department")  @QueryParam("department") String dept,
-        @ApiParam(value="Use % for wildcard like 'Steav%' ")    @QueryParam("first-name") String firstName,
+        @ApiParam(value="Use % for wildcard like '%ra%'", example="%ra%")    @QueryParam("name") String name,
         @ApiParam(value="Page No, Starts from 1 ", example="1") @DefaultValue("1")  @QueryParam("page")  int page,
         @ApiParam(value="Items in each page", example="20")     @DefaultValue("20") @QueryParam("page-size") int pageSize
     ) {
@@ -58,10 +58,15 @@ public class EmployeeController extends BaseController {
             criteria.add(Restrictions.eq("userId", userId));
         }
         if (StringUtils.isNotBlank(dept)){
-            criteria.add(Restrictions.like("department, Use % for wildcard ",  dept ).ignoreCase());
+            criteria.add(Restrictions.like("department",  dept ).ignoreCase());
         }
-        if (StringUtils.isNotBlank(firstName)){
-            criteria.add(Restrictions.like("firstName, Use % for wildcard ",  firstName ).ignoreCase());
+        if (StringUtils.isNotBlank(name)){
+            criteria.add(
+                Restrictions.or(
+                    Restrictions.like("firstName",  name ).ignoreCase(),
+                    Restrictions.like("lastName",  name ).ignoreCase()
+                )
+            );
         }
         if (page<=0){
             page = 1;
