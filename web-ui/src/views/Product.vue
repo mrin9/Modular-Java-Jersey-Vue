@@ -1,6 +1,6 @@
 <template>
 
-   <div style="display:flex;flex-direction:column;width:750px;" v-loading="loading" >
+   <div style="display:flex;flex-direction:column;width:800px;" v-loading="loading" >
    
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
@@ -10,8 +10,9 @@
     <div class="sw-toolbar">
       <el-button type="primary" size="small" @click="onOpenAddProduct()" class="sw-toolbar-item">ADD</el-button>
     </div>
-    <el-table :data="tableData" height="400" empty-text="No Data">
+    <el-table :data="tableData" empty-text="No Data">
       <el-table-column prop="id"           label="PRODUCT #" width="85"/>
+      <el-table-column prop="productCode"  label="CODE" width="85"/>
       <el-table-column prop="productName"  label="NAME"  />
       <el-table-column prop="standardCost" label="COST"        width="80"  align="right"/>
       <el-table-column prop="listPrice"    label="LIST PRICE"  width="100" align="right"/>
@@ -24,7 +25,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageClick"></el-pagination>
+    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageChange"></el-pagination>
   </div>
 
 </template>
@@ -58,7 +59,7 @@ export default {
       Rest.getProducts(start,limit).then(function(resp){
         me.$data.totalPages  = resp.data.totalPages;
         me.$data.totalRecs   = resp.data.total;
-        me.$data.tableData = resp.data.list;
+        me.$data.tableData   = resp.data.list;
         me.$data.loading=false;
       })
       .catch(function(err){
@@ -78,7 +79,7 @@ export default {
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
-          me.getData()
+          me.getData(me.$data.currentPage, me.$data.pageSize);
         }
         else{
           me.$message({message: 'Unable to delete, this could be due to the product being reffered in existing orders', type:'error', showClose:true, duration:6000});
@@ -97,8 +98,9 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = {id:0};
     },
-    onPageClick(pageNum){
+    onPageChange(pageNum){
       this.getData(pageNum,this.$data.pageSize);
+      this.$data.currentPage = pageNum;
     },
 
     onContinueShopping(){

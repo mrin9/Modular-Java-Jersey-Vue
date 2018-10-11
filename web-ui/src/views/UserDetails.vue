@@ -35,7 +35,8 @@
         <input type="text" class="sw-medium" style="width:245px" v-model="userData.email">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Phone</label><input type="text" class="sw-medium" v-model="userData.phone">
+        <label class="sw-label">Phone</label>
+        <input type="text" class="sw-medium" v-model="userData.phone">
       </div>
     <br/>
       <span class="sw-section-heading">ADDRESS</span>
@@ -47,28 +48,35 @@
       <div class="sw-row">
       </div>
       <div class="sw-row">
-        <label class="sw-label">City</label><input type="text" class="sw-medium" v-model="userData.city">
+        <label class="sw-label">City</label>
+        <input type="text" class="sw-medium" v-model="userData.city">
       </div>
       <div class="sw-row">
-        <label class="sw-label">State</label><input type="text" class="sw-medium" v-model="userData.state">
+        <label class="sw-label">State</label>
+        <input type="text" class="sw-medium" v-model="userData.state">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Postal Code</label><input type="text" class="sw-medium" v-model="userData.postalCode">
+        <label class="sw-label">Postal Code</label>
+        <input type="text" class="sw-medium" v-model="userData.postalCode">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Country</label><input type="text" class="sw-medium" v-model="userData.country">
+        <label class="sw-label">Country</label>
+        <input type="text" class="sw-medium" v-model="userData.country">
       </div>
       <template v-if="userData.role!=='CUSTOMER'">
         <br/>
         <span class="sw-section-heading">EMPLOYEE INFO</span>
         <div class="sw-row">
-          <label class="sw-label">Department</label><input type="text" class="sw-medium" v-model="userData.department">
+          <label class="sw-label">Department</label>
+          <input type="text" class="sw-medium" v-model="userData.department">
         </div>
         <div class="sw-row">
-          <label class="sw-label">Manager ID</label><input type="text" class="sw-medium" v-model="userData.managerId">
+          <label class="sw-label">Manager ID</label>
+          <input type="text" class="sw-medium" v-model="userData.managerId">
         </div>
         <div class="sw-row">
-          <label class="sw-label">Company</label><input type="text" class="sw-medium" v-model="userData.company">
+          <label class="sw-label">Company</label>
+          <input type="text" class="sw-medium" v-model="userData.company">
         </div>
       </template>  
       <div v-if="isCustomer" class="sw-toolbar">

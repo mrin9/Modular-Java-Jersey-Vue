@@ -16,7 +16,6 @@
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
     "circular-json": "^0.5.5",
-    "debounce": "^1.2.0",
     "element-ui": "^2.4.8",
     "global": "^4.3.2",
     "vue": "^2.5.17",

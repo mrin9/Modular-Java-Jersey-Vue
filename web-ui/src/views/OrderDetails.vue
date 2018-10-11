@@ -10,24 +10,30 @@
       <tr>
         <td>
           <div class="sw-row">
-            <label class="sw-label">Status</label><input type="text" class="sw-medium" v-model="orderData.orderStatus">
+            <label class="sw-label">Status</label>
+            <input type="text" class="sw-medium" v-model="orderData.orderStatus">
           </div>
           <div class="sw-row">
-            <label class="sw-label">Payment</label><input type="text" class="sw-medium" v-model="orderData.paymentType">
+            <label class="sw-label">Payment</label>
+            <input type="text" class="sw-medium" v-model="orderData.paymentType">
           </div>
           <div class="sw-row">
-            <label class="sw-label">Payment</label><input type="text" class="sw-medium" v-model="orderData.paymentType">
+            <label class="sw-label">Payment</label>
+            <input type="text" class="sw-medium" v-model="orderData.paymentType">
           </div>
         </td>
         <td>
           <div class="sw-row">
-            <label class="sw-label">Status</label><input type="text" class="sw-medium" v-model="orderData.orderStatus">
+            <label class="sw-label">Status</label>
+            <input type="text" class="sw-medium" v-model="orderData.orderStatus">
           </div>
           <div class="sw-row">
-            <label class="sw-label">Payment</label><input type="text" class="sw-medium" v-model="orderData.paymentType">
+            <label class="sw-label">Payment</label>
+            <input type="text" class="sw-medium" v-model="orderData.paymentType">
           </div>
           <div class="sw-row">
-            <label class="sw-label">Payment</label><input type="text" class="sw-medium" v-model="orderData.paymentType">
+            <label class="sw-label">Payment</label>
+            <input type="text" class="sw-medium" v-model="orderData.paymentType">
           </div>
         </td>
       </tr>

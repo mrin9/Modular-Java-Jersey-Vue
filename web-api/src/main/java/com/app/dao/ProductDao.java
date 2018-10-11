@@ -15,7 +15,7 @@ public class ProductDao {
         String sql = "Select sum(cnt) from ("+
                 "   select count(*) as cnt from northwind.cart where product_id = :productId "+
                 "   union "+
-                "   select count(*) as cnt from northwind.order_items where customer_id = :productId "+
+                "   select count(*) as cnt from northwind.order_items where product_id = :productId "+
                 " )";
 
         Query q = hbrSession.createSQLQuery(sql);

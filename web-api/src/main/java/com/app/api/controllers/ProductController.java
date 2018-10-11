@@ -137,7 +137,7 @@ public class ProductController extends BaseController {
     @Path("{productId}")
     @ApiOperation(value = "Delete a Product", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
-    public Response deleteCustomer(@ApiParam(value="Product Id", example="601") @PathParam("productId") Integer productId) {
+    public Response deleteProduct(@ApiParam(value="Product Id", example="601") @PathParam("productId") Integer productId) {
 
         BaseResponse resp = new BaseResponse();
         Session hbrSession = HibernateUtil.getSession();

@@ -3,14 +3,22 @@
   <div style="display:flex;flex-direction:column;width:900px;" v-loading="loading" >
     <!-- The slider shows a single-product-details panel -->
     <vue-slideout-panel v-model="showSlideOut" @close="showSlideOut=false" :widths="['700px']" closeHtml='Close'>
-      <!-- <employee-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </employee-details> -->
+      <employee-details :rec="selectedRec" @changed="getData();showSlideOut=false"> </employee-details>
     </vue-slideout-panel>
 
     <h3> Manage Employees </h3>
     <div class="sw-toolbar">
       <el-button type="primary" size="small" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
     </div>
-    <el-table :data="tableData" height="400" empty-text="No Data">
+    <div class="sw-toolbar">
+      <input type="text" class="sw-medium"  placeholder="Serach by name" v-model="searchValue" @keyup="applySearch">
+      <!--
+      <el-button type="primary" size="medium" style="margin-left:5px" icon="el-icon-search" class="sw-toolbar-item"></el-button>
+      -->
+      <span style="flex:1"/>
+      <el-button type="primary" size="medium" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
+    </div>
+    <el-table :data="tableData" empty-text="No Data">
       <el-table-column prop="employeeId" label="EMP #" width="50"/>
       <el-table-column prop="userId"     label="USER #" width="80"/>
       <el-table-column prop="fullName"   label="NAME"  />
@@ -24,7 +32,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageClick"></el-pagination>
+    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageChange"></el-pagination>
   </div>
 
 </template>
@@ -33,7 +41,7 @@
 import Rest from '@/rest/Rest';
 import store from '@/store';
 import VueSlideoutPanel from 'vue-slideout-panel/src/VueSlideoutPanel'
-//import EmployeeDetails from '@/views/EmployeeDetails'
+import EmployeeDetails from '@/views/EmployeeDetails'
 
 export default {
   data:function(){
@@ -42,10 +50,12 @@ export default {
       showSlideOut:false,
       tableData:[],
       selectedRec:{},
+      searchValue:'',
       currentPage:1,
       pageSize:10,
       totalPages:0,
       totalRecs:0,
+      recsInCurrentPage:0
 
     }
   },
@@ -58,6 +68,7 @@ export default {
       Rest.getEmployees(start,limit).then(function(resp){
         me.$data.totalPages = resp.data.totalPages;
         me.$data.totalRecs  = resp.data.total;
+        me.$data.recsInCurrentPage = resp.data.list.length;
         me.$data.tableData  = resp.data.list.map(function(v){
           return {
             ...v,
@@ -83,7 +94,12 @@ export default {
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
-          me.getData()
+          if (me.$data.recsInCurrentPage<=1){
+            me.getData(me.$data.currentPage-1, me.$data.pageSize);
+          }
+          else{
+            me.getData(me.$data.currentPage, me.$data.pageSize);
+          }
         }
         else{
           me.$message({message: 'Unable to delete, this could be due to the employee being reffered in other tables', type:'error', showClose:true, duration:6000});
@@ -98,8 +114,9 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = rec;
     },
-    onPageClick(pageNum){
+    onPageChange(pageNum){
       this.getData(pageNum,this.$data.pageSize);
+      this.$data.currentPage = pageNum;
     },
 
     onOpenAddEmployee(){
@@ -113,7 +130,7 @@ export default {
   },
   components: {
     VueSlideoutPanel,
-    //EmployeeDetails,
+    EmployeeDetails
   },
 }
 </script>
@@ -134,10 +151,6 @@ export default {
   box-shadow: 0px 0px 8px 2px #ccc;
   background-color: #fff;
   z-index:1;
-}
-
-.sw-slideout-body{
-  margin-top:92px;
 }
 
 </style>

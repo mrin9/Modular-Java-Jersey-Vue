@@ -12,22 +12,20 @@
 
     <el-table :data="tableData" height="400" empty-text="No Data">
       <el-table-column prop="id"            label="ORDER#" width="70"/>
-      <el-table-column prop="strOrderDate"  label="DATE"  width="120"/>
+      <el-table-column prop="strOrderDate"  label="DATE"   width="120"/>
       <el-table-column prop="shipName"      label="SHIP TO" />
-      <el-table-column prop="orderStatus"   label="STATUS"    width="90"/>
-      <el-table-column prop="paymentType"   label="PAYMENT"   width="80"/>
-      <el-table-column prop="strOrderTotal" label="TOTAL"     width="90" align="right"/>
-      <el-table-column label="" width="80" align="center">
+      <el-table-column prop="orderStatus"   label="STATUS"   width="90"/>
+      <el-table-column prop="paymentType"   label="PAYMENT"  width="80"/>
+      <el-table-column prop="strOrderTotal" label="TOTAL"    width="90" align="right"/>
+      <el-table-column label="" width="80"  align="center">
         <template slot-scope="scope">
           <i v-if="$store.state.role!=='CUSTOMER'" class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i>
           <i v-if="$store.state.role!=='CUSTOMER'" class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
           <i v-if="$store.state.role == 'CUSTOMER'" class="el-icon-view"  style="font-size:16px; vertical-align: middle; cursor:pointer;  color:cornflowerblue" @click="onViewDetails(scope.row)"></i>
-
         </template>
       </el-table-column>
     </el-table>
   </div>
-
 </template>
 
 <script>

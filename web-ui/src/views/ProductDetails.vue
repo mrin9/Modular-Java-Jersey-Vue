@@ -2,34 +2,44 @@
 
   <div v-loading="loading" >
     <span class="sw-section-heading">
-      PRODUCT #  <span class="sw-primary-color"> {{productData.id}}</span>
+      PRODUCT #  <span class="sw-primary-color"> {{productData.id ? productData.id : "NEW"}}</span>
     </span> <br/>
     <div class="sw-gray-text">Update Produt details (the data gets refreshed after certain interval)</div>
     <br/><br/>
     <div class="sw-row">
-      <label class="sw-label">Category</label><input type="text" class="sw-medium" v-model="productData.category">
+      <label class="sw-label">Category</label>
+      <el-select size="medium" style="width:185px" v-model="productData.category">
+          <el-option label="Camera" value="Camera"></el-option>
+          <el-option label="Laptop" value="Laptop"></el-option>
+          <el-option label="Tablet" value="Tablet"></el-option>
+          <el-option label="Phone" value="Phone"></el-option>
+      </el-select>  
+
     </div>
     <div class="sw-row">
       <label class="sw-label">Code & Name </label>
       <input type="text" style="width:60px" class="sw-medium" v-model="productData.productCode">
       <input type="text" class="sw-medium" v-model="productData.productName">
-
     </div>
     <div class="sw-row">
-      <label class="sw-label">Description</label><input type="text" style="width:185px" class="sw-medium" v-model="productData.description">
+      <label class="sw-label">Description</label>
+      <input type="text" style="width:185px" class="sw-medium" v-model="productData.description">
     </div>
 
     <div class="sw-row">
-      <label class="sw-label">Discontinued ? </label><el-switch v-model="productData.discontinued" :active-value="1" :inactive-value="0" />
+      <label class="sw-label">Discontinued ? </label>
+      <el-switch v-model="productData.discontinued" :active-value="1" :inactive-value="0" />
     </div>  
 
     <br/><br/>
     <span class="sw-section-heading">COST & STOCK LEVELS</span> 
     <div class="sw-row">
-      <label class="sw-label">Standard Cost</label><input type="text" class="sw-medium" v-model="productData.standardCost">
+      <label class="sw-label">Standard Cost</label>
+      <input type="text" class="sw-medium" v-model="productData.standardCost">
     </div>
     <div class="sw-row">
-      <label class="sw-label">List Price</label><input type="text" class="sw-medium" v-model="productData.listPrice">
+      <label class="sw-label">List Price</label>
+      <input type="text" class="sw-medium" v-model="productData.listPrice">
     </div>
     <div class="sw-row">
       <label class="sw-label">Stock Levels</label>
@@ -95,19 +105,6 @@ export default {
 
     },
 
-  },
-
-  mounted(){
-    console.log("id is :" + this.rec.id)
-    if (this.$store.state.role==="ADMIN"){
-    }
-    else if (this.$store.state.role==="SUPPORT"){
-      this.$data.userObj.role="SUPPORT";
-    }
-    else{
-      this.$data.userObj.role="CUSTOMER";
-    }
-    
   }
 
 }

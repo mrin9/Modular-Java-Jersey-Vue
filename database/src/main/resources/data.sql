@@ -1,6 +1,6 @@
 /* Employees */
 insert into employees (id, last_name, first_name, email, phone, address1, address2, city, state, postal_code, country, avatar, job_title, department, manager_id) values
- (201, 'Majumdar', 'Mrinmoy' , 'mmajumdar0@example.com', '1-(210)270-8536', '2 Bayside Drive', null, 'Mountain View', 'California', '78240', 'United States', 'https://robohash.org/modilaboriosammolestiae.bmp?size=50x50&set=set1', 'Administrative Assistant I', 'Toys', null)
+ (201, 'Majumdar', 'Mrinmoy' , 'mrin@example.com', '1-(210)270-8536', '2 Bayside Drive', null, 'Mountain View', 'California', '78240', 'United States', 'https://robohash.org/modilaboriosammolestiae.bmp?size=50x50&set=set1', 'Administrative Assistant I', 'Toys', null)
 ,(202, 'Hayes'   , 'Rachel'  , 'rhayes1@si.edu', '1-(971)797-2729', '30 Anhalt Street', null, 'Portland', 'Oregon', '97232', 'United States', 'https://robohash.org/seddistinctiodolorem.jpg?size=50x50&set=set1', 'Design Engineer', 'Books', null)
 ,(203, 'Palmer'  , 'Anthony' , 'apalmer2@posterous.com', '1-(702)984-2108', '02809 4th Pass', null, 'North Las Vegas', 'Nevada', '89036', 'United States', 'https://robohash.org/vitaererumdolore.png?size=50x50&set=set1', 'Health Coach II', 'Toys', null)
 ,(204, 'Alvarez' , 'Laura'   , 'lalvarez3@time.com', '1-(518)328-2658', '647 Lakeland Road', null, 'Albany', 'New York', '12210', 'United States', 'https://robohash.org/nobisplaceatquisquam.jpg?size=50x50&set=set1', 'Computer Systems Analyst II', 'Health', null)
@@ -19,7 +19,8 @@ insert into employees (id, last_name, first_name, email, phone, address1, addres
 ,(217, 'Sullivan', 'Lillian' , 'lsullivang@flavors.me', '1-(904)885-2053', '42 Manufacturers Pass', null, 'Jacksonville', 'Florida', '32215', 'United States', 'https://robohash.org/quiaetaut.jpg?size=50x50&set=set1', 'Engineer I', 'Sports', null)
 ,(218, 'Jenkins' , 'Frances' , 'fjenkinsh@huffingtonpost.com', '1-(512)764-3809', '69255 Dakota Plaza', null, 'Austin', 'Texas', '78769', 'United States', 'https://robohash.org/voluptatemnamaliquam.bmp?size=50x50&set=set1', 'Developer IV', 'Baby', null)
 ,(219, 'Myers'   , 'Roger'   , 'rmyersi@alexa.com', '1-(480)583-9583', '3 Eagle Crest Place', null, 'Gilbert', 'Arizona', '85297', 'United States', 'https://robohash.org/consequaturutquo.png?size=50x50&set=set1', 'Account Executive', 'Beauty', null)
-,(220, 'Hunter'  , 'Bonnie'  , 'bhunterj@ucsd.edu', '1-(320)933-5140', '99 Arapahoe Terrace', null, 'Saint Cloud', 'Minnesota', '56372', 'United States', 'https://robohash.org/etfacilisquo.bmp?size=50x50&set=set1', 'Analog Circuit Design manager', 'Baby', null);
+,(220, 'Hunter'  , 'Bonnie'  , 'bhunterj@ucsd.edu', '1-(320)933-5140', '99 Arapahoe Terrace', null, 'Saint Cloud', 'Minnesota', '56372', 'United States', 'https://robohash.org/etfacilisquo.bmp?size=50x50&set=set1', 'Analog Circuit Design manager', 'Baby', null)
+,(221, 'Mickey'  , 'Mouse'   , 'mickey@desney.com', '1-(120)653-3780', '11 Desney Land', null, 'Las Angeles', 'California', '56372', 'United States', 'https://robohash.org/etfacilisquo.bmp?size=50x50&set=set1', 'Animation Design manager', 'Kids', null);
 
 /* Products */
 insert into products (id, product_code, product_name, description, standard_cost, list_price, target_level, reorder_level, discontinued, category) values
@@ -154,12 +155,12 @@ insert into users (user_id, password, role, employee_id, customer_id) values
 ('customer'  , 'customer' , 'CUSTOMER', null, 1    ),
 ('support'   , 'support'  , 'SUPPORT' , 205 , null ),
 ('thanks'    , 'thanks'   , 'CUSTOMER', null, 7    ),
-('mdaniel'   , 'mdaniel'  , 'CUSTOMER', null, 65   ),
-('jshaw'     , 'jshaw'    , 'CUSTOMER', null, 42   ),
+('dmoore'    , 'dmoore'   , 'CUSTOMER', null, 65   ),
+('gwood'     , 'gwood'    , 'CUSTOMER', null, 42   ),
 ('pgilbert'  , 'pgilbert' , 'SUPPORT' , 210 , null ),
 ('jjacobs'   , 'jjacobs'  , 'SUPPORT' , 220 , null ),
-('kbennett'  , 'kbennett' , 'CUSTOMER', null, 9    ),
-('cmurphy'   , 'cmurphy'  , 'CUSTOMER', null, 99   );
+('erogers'   , 'erogers'  , 'CUSTOMER', null, 9    ),
+('jchavez'   , 'jchavez'  , 'CUSTOMER', null, 99   );
 
 /* Shopping Cart */
 insert into cart (user_id, product_id, quantity) values
