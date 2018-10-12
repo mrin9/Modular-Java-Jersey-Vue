@@ -96,14 +96,14 @@ public class TomcatStarter {
 
         //Schedule Refresh DB Task
         ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
-        RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
+        // RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
         long period = 1;
         TimeUnit timeUnit = TimeUnit.HOURS;
 
-        Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
+        //Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
         log.info(String.format("\n\nRefreshDB Task Scheduled (The task refreshes the Database every %s %s)", period, timeUnit.toString()));
 
-        // Start Web API Server
+        //Start Web API Server
         tomcat.setPort(port);
         tomcat.start();
         tomcat.getConnector(); // Trigger the creation of the default connector

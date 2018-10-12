@@ -16,7 +16,8 @@
         <input type="text" class="sw-medium" style="width:245px" v-model="customerData.email">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Phone</label><input type="text" class="sw-medium" v-model="customerData.phone">
+        <label class="sw-label">Phone</label>
+        <input type="text" class="sw-medium" v-model="customerData.phone">
       </div>
     <br/>
       <span class="sw-section-heading">ADDRESS</span>
@@ -26,18 +27,20 @@
         <input type="text" placeholder="Address Line 2" class="sw-medium" v-model="customerData.address2">
       </div>
       <div class="sw-row">
+        <label class="sw-label">City</label>
+        <input type="text" class="sw-medium" v-model="customerData.city">
       </div>
       <div class="sw-row">
-        <label class="sw-label">City</label><input type="text" class="sw-medium" v-model="customerData.city">
+        <label class="sw-label">State</label>
+        <input type="text" class="sw-medium" v-model="customerData.state">
       </div>
       <div class="sw-row">
-        <label class="sw-label">State</label><input type="text" class="sw-medium" v-model="customerData.state">
+        <label class="sw-label">Postal Code</label>
+        <input type="text" class="sw-medium" v-model="customerData.postalCode">
       </div>
       <div class="sw-row">
-        <label class="sw-label">Postal Code</label><input type="text" class="sw-medium" v-model="customerData.postalCode">
-      </div>
-      <div class="sw-row">
-        <label class="sw-label">Country</label><input type="text" class="sw-medium" v-model="customerData.country">
+        <label class="sw-label">Country</label>
+        <input type="text" class="sw-medium" v-model="customerData.country">
       </div>
       <div class="sw-toolbar">
           <el-button type="primary" size="medium" @click="onApplyChanges" class="sw-toolbar-item">APPLY CHANGES</el-button>
