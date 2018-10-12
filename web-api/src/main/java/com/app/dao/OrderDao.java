@@ -100,6 +100,7 @@ public class OrderDao {
             if (prevOrderId != newOrderId) {
                 if (prevOrderId != -1){
                     orderDetail.setOrderTotal(orderTotal);
+                    orderTotal = BigDecimal.ZERO;
                 }
                 orderDetail = new OrderWithNestedDetailModel(
                     (int) row.get("ORDER_ID"),
