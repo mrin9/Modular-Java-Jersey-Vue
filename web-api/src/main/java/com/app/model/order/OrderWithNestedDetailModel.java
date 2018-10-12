@@ -2,6 +2,7 @@ package com.app.model.order;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -82,8 +83,12 @@ class OrderLine  {
     private BigDecimal quantity;
     private BigDecimal unitPrice;
     private BigDecimal discount;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date       dateAllocated;
-    @ApiModelProperty(allowableValues = "On Order, Allocated, No Stock") private String orderItemStatus;
+
+    @ApiModelProperty(allowableValues = "On Order, Allocated, No Stock")
+    private String orderItemStatus;
 
 
     public OrderLine(int productId, String productCode, String productName, String category, BigDecimal quantity, BigDecimal unitPrice, BigDecimal discount, Date dateAllocated, String orderItemStatus){

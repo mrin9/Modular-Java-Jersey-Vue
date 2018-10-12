@@ -1903,3 +1903,13 @@ insert into order_items (order_id, product_id, quantity, unit_price, discount, o
 ,(4600, 611, 5 , 22.93, 8.87, 'Allocated', '2016-06-16')
 ,(4600, 615, 5 , 22.93, 8.87, 'Allocated', '2016-06-16')
 ,(4600, 612, 5 , 22.93, 8.87, 'Allocated', '2016-06-16');
+
+
+/* Update Order and Shipped Dates (Specific to H2, may not work on MySQL etc) */
+update orders set order_date = dateadd('DAY',  ROUND(RAND() * -200), CURDATE() );
+update orders set shipped_date = dateadd('DAY',  ROUND(RAND() *6)+1, order_date) where order_status in ('Shipped', 'Complete');
+update orders set shipped_date = NULL where order_status in ('New', 'On Hold');
+
+update order_items set ORDER_ITEM_STATUS = 'Allocated' where order_id in (select id from orders where order_status  in ('Shipped', 'Complete') );
+update order_items set ORDER_ITEM_STATUS =  ARRAY_GET(('On Order', 'No Stock'), ( ROUND(RAND() * 1)+1 )  )  where order_id in (select id from orders where order_status  in ('New', 'On Hold') );
+

@@ -1,5 +1,7 @@
 package com.app.model.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,6 +18,8 @@ public class OrderItemModel {
     @Column(name = "unit_price")        private BigDecimal unitPrice;
     @Column(name = "discount")          private BigDecimal discount;
     @Column(name = "order_item_status") private String     orderItemStatus;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "date_allocated")    private Date       dateAllocated;
 
     // Getters and Setters

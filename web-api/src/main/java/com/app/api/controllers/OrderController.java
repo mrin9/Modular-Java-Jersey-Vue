@@ -25,6 +25,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,14 +58,19 @@ public class OrderController extends BaseController {
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
         //Customers can query their own cart only
         if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
-            customerId = userFromToken.getCustomerId();
+            if (customerId>0) {
+                customerId = userFromToken.getCustomerId();
+            }
         }
 
 
         try {
-            List<OrderWithNestedDetailModel> orderWithOrderLinesList = OrderDao.getWithOrderLines(hbrSession, page,pageSize, orderId, customerId, paymentType, orderStatus);
+            List<OrderWithNestedDetailModel> orderWithOrderLinesList = OrderDao.getWithOrderLines(hbrSession, page, pageSize, orderId, customerId, paymentType, orderStatus);
+            BigInteger total = OrderDao.getOrderCount(hbrSession, orderId, customerId, paymentType, orderStatus);
+
             resp.setList(orderWithOrderLinesList);
-            resp.setTotal(orderWithOrderLinesList.size());
+            resp.setTotal(total.intValue());
+            resp.setPageStats(total.intValue(),pageSize, page,"");
             resp.setSuccessMessage("List of Orders and nested details " + (customerId>0 ? "- Customer:"+customerId:""));
             return Response.ok(resp).build();
         }

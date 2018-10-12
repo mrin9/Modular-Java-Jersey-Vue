@@ -3,6 +3,8 @@ package com.app.model.order;
 import java.math.BigDecimal;
 import java.util.*;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
@@ -11,9 +13,16 @@ public class OrderModel {
 
     @Id @GeneratedValue private Integer id;
     @Column(name = "customer_id")   private Integer customerId;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "order_date")    private Date    orderDate;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "shipped_date")  private Date    shippedDate;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "paid_date")     private Date    paidDate;
+
     @Column(name = "ship_name")     private String  shipName;
     @Column(name = "ship_address1") private String  shipAddress1;
     @Column(name = "ship_address2") private String  shipAddress2;

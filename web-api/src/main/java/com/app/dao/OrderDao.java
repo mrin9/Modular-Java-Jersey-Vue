@@ -9,6 +9,7 @@ import org.hibernate.*;
 
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,37 +24,66 @@ public class OrderDao {
         return  (OrderModel)q.uniqueResult();
     }
 
+
+    private static String createSqlWhereString(Integer orderId, Integer customerId, String paymetType, String orderStatus){
+
+        String sqlWhere = " where  1 = 1 ";
+
+        if (orderId > 0)   { sqlWhere = sqlWhere + " and id = :orderId "; }
+        if (customerId >0){ sqlWhere = sqlWhere + " and customer_id = :customerId "; }
+        if (StringUtils.isNotBlank(paymetType)) { sqlWhere = sqlWhere + " and payment_type = :paymetType "; }
+        if (StringUtils.isNotBlank(orderStatus)){ sqlWhere = sqlWhere + " and order_status = :orderStatus "; }
+
+        return " from northwind.orders " + sqlWhere;
+
+    }
+
+    public static BigInteger getOrderCount(Session hbrSession, Integer orderId, Integer customerId, String paymetType, String orderStatus)  throws HibernateException{
+
+        String sqlOrders = createSqlWhereString(orderId, customerId, paymetType, orderStatus);
+        String countSql = "select count(*) " + sqlOrders ;
+        SQLQuery q = HibernateUtil.getSession().createSQLQuery(countSql);
+        if (orderId >0)   { q.setParameter("orderId", orderId); }
+        if (customerId >0){ q.setParameter("customerId", customerId); }
+        if (StringUtils.isNotBlank(paymetType)) { q.setParameter("paymetType", paymetType);   }
+        if (StringUtils.isNotBlank(orderStatus)){ q.setParameter("orderStatus", orderStatus); }
+
+        return (BigInteger)q.uniqueResult();
+    }
+
     public static List<OrderWithNestedDetailModel> getWithOrderLines(Session hbrSession, int from, int limit, Integer orderId, Integer customerId, String paymetType, String orderStatus)  throws HibernateException, ConstraintViolationException {
-        String sql = "select order_id, product_id   , customer_id   , order_date, order_status  , shipped_date    , payment_type, paid_date, "
+
+        String sqlOrders = createSqlWhereString(orderId, customerId, paymetType, orderStatus);
+        String sqlLimit = "";
+        if ( limit <= 0 || limit > 1000 ){
+            sqlLimit = " limit 1000 ";
+        }
+        else{
+            sqlLimit = " limit " +  limit;
+        }
+        if (from <= 0) {
+            from = 0;
+        }
+        else{
+            from = (from - 1) * limit;
+        }
+
+        sqlLimit = sqlLimit + " offset " + from;
+
+
+        String finalSql = "select order_id, product_id   , customer_id   , order_date, order_status  , shipped_date    , payment_type, paid_date, "
             + " ship_name            , ship_address1, ship_address2 , ship_city , ship_state    , ship_postal_code, ship_country, "
             + " product_code         , product_name , category      , quantity  , unit_price    , discount        , date_allocated, order_item_status, "
             + " shipping_fee         , customer_name, customer_email, customer_company "
-            + " from northwind.order_details ";
-        String whereClause = " where  1 = 1 ";
+            + " from northwind.order_details where order_id in ";
 
-        if (orderId > 0)   { whereClause = whereClause + " and order_id = :orderId "; }
-        if (customerId >0){ whereClause = whereClause + " and customer_id = :customerId "; }
-        if (StringUtils.isNotBlank(paymetType)) { whereClause = whereClause + " and payment_type = :paymetType "; }
-        if (StringUtils.isNotBlank(orderStatus)){ whereClause = whereClause + " and order_status = :orderStatus "; }
+        finalSql = finalSql + "( select id " + sqlOrders + sqlLimit + ") order by order_id, product_id ";
 
-        sql = sql + whereClause + " order by order_id, product_id ";
-
-        SQLQuery q = HibernateUtil.getSession().createSQLQuery(sql);
+        SQLQuery q = HibernateUtil.getSession().createSQLQuery(finalSql);
         if (orderId >0)   { q.setParameter("orderId", orderId); }
         if (customerId >0){ q.setParameter("customerId", customerId); }
         if (StringUtils.isNotBlank(paymetType)) { q.setParameter("paymetType", paymetType); }
         if (StringUtils.isNotBlank(orderStatus)){ q.setParameter("orderStatus", orderStatus); }
-
-        if (from <= 0) {
-            from = 1;
-        }
-        if (limit <= 0 || limit > 1000) {
-            limit = 1000;
-        }
-        from = (from - 1) * limit;
-
-        q.setFirstResult(from);
-        q.setMaxResults(limit);
 
         q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
         List rowList = q.list();
@@ -126,10 +156,6 @@ public class OrderDao {
         // Set the last ones order total;
         orderDetail.setOrderTotal(orderTotal);
         
-        // Remove the last order from the list as it might pick incomplete order lines due to the paging criteria
-        if (orderDetailList.size()>0 && orderId <= 0 ){
-            orderDetailList.remove(orderDetailList.size()-1);
-        }
         return orderDetailList;
     }
 
