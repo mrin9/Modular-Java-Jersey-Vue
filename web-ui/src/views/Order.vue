@@ -56,7 +56,7 @@ export default {
     getData(start, limit){
       let me = this;
       me.$data.loading=true;
-      Rest.getOrders(0,10).then(function(resp){
+      Rest.getOrders(start, limit).then(function(resp){
         me.$data.tableData = resp.data.list.map(function(v){
           let dt = new Date(v.orderDate);
           let strOrderDate  = new Intl.DateTimeFormat('en-US', {year:'numeric', month: 'short', day:'numeric'}).format(dt);
@@ -119,7 +119,7 @@ export default {
     },
 
     onPageChange(pageNum){
-      this.getData(pageNum,this.$data.pageSize);
+      this.getData(pageNum, this.$data.pageSize);
       this.$data.currentPage = pageNum;
     },
 
