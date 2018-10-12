@@ -3,13 +3,13 @@ import RestUtil from '@/rest/RestUtil';
 
 export default {
 
-  getEmployees( page, pageSize, employeeId, name, department ){
+  getEmployees( page, pageSize, employeeId, nameOrEmail, department ){
     let qsParams={};
     if (page)       { qsParams['page']=page;}
     if (pageSize)   { qsParams['page-size']=pageSize;}
     if (employeeId) { qsParams['id']=employeeId;}
-    if (name)       { qsParams['name']=name;}
-    if (department) { qsParams['id']=department;}
+    if (nameOrEmail){ qsParams['search']="%"+nameOrEmail+"%";}
+    if (department) { qsParams['department']=department;}
     
     return axios.get(RestUtil.getBasePath() + "/employees",{
       headers: {'Authorization': RestUtil.getToken()},

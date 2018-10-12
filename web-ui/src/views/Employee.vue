@@ -8,10 +8,7 @@
 
     <h3> Manage Employees </h3>
     <div class="sw-toolbar">
-      <el-button type="primary" size="small" @click="onOpenAddEmployee()" class="sw-toolbar-item">ADD</el-button>
-    </div>
-    <div class="sw-toolbar">
-      <input type="text" class="sw-medium"  placeholder="Serach by name" v-model="searchValue" @keyup="applySearch">
+      <input type="text" class="sw-medium"  placeholder="Serach by name or email" v-model="searchValue" @keyup="applySearch">
       <!--
       <el-button type="primary" size="medium" style="margin-left:5px" icon="el-icon-search" class="sw-toolbar-item"></el-button>
       -->
@@ -40,6 +37,7 @@
 <script>
 import Rest from '@/rest/Rest';
 import store from '@/store';
+import debounce from '@/utils/debounce';
 import VueSlideoutPanel from 'vue-slideout-panel/src/VueSlideoutPanel'
 import EmployeeDetails from '@/views/EmployeeDetails'
 
@@ -61,11 +59,11 @@ export default {
   },
 
   methods:{
-    getData(start, limit){
+    getData(start, limit, id, nameOrEmail){
       let me = this;
       console.log("Loaded Data");
       me.$data.loading=true;
-      Rest.getEmployees(start,limit).then(function(resp){
+      Rest.getEmployees(start,limit, id, nameOrEmail).then(function(resp){
         me.$data.totalPages = resp.data.totalPages;
         me.$data.totalRecs  = resp.data.total;
         me.$data.recsInCurrentPage = resp.data.list.length;
@@ -114,10 +112,15 @@ export default {
       this.$data.showSlideOut = true;
       this.$data.selectedRec  = rec;
     },
+
     onPageChange(pageNum){
       this.getData(pageNum,this.$data.pageSize);
       this.$data.currentPage = pageNum;
     },
+
+    applySearch:debounce(function(e) {
+      this.getData(0,this.$data.pageSize, undefined, this.$data.searchValue);
+    }, 700),
 
     onOpenAddEmployee(){
       this.$data.showSlideOut = true;

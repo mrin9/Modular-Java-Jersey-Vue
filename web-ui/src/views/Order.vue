@@ -25,6 +25,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination style="align-self:center" layout="prev, pager, next" :total="totalRecs" :page-size="pageSize" :current-page="currentPage" @current-change="onPageChange"></el-pagination>
+
   </div>
 </template>
 
@@ -40,12 +42,18 @@ export default {
       loading:false,
       showSlideOut:false,
       tableData:[],
-      selectedRec:{}
+      selectedRec:{},
+      currentPage:1,
+      pageSize:10,
+      totalPages:0,
+      totalRecs:0,
+      recsInCurrentPage:0
+
     }
   },
 
   methods:{
-    getData(){
+    getData(start, limit){
       let me = this;
       me.$data.loading=true;
       Rest.getOrders(0,10).then(function(resp){
@@ -53,6 +61,11 @@ export default {
           let dt = new Date(v.orderDate);
           let strOrderDate  = new Intl.DateTimeFormat('en-US', {year:'numeric', month: 'short', day:'numeric'}).format(dt);
           let strOrderTotal = new Intl.NumberFormat('en-US', {useGrouping:true, currency: 'USD'}).format(v.orderTotal);
+          
+          me.$data.totalPages = resp.data.totalPages;
+          me.$data.totalRecs  = resp.data.total;
+          me.$data.recsInCurrentPage = resp.data.list.length;
+
           return {
             ...v,
             strOrderDate,
@@ -79,7 +92,12 @@ export default {
       }).then((resp) => {
         if (resp.data.msgType==="SUCCESS"){
           me.$message({message: 'Successfully deleted', type:'success'});
-          me.getData()
+          if (me.$data.recsInCurrentPage<=1){
+            me.getData(me.$data.currentPage-1, me.$data.pageSize);
+          }
+          else{
+            me.getData(me.$data.currentPage, me.$data.pageSize);
+          }
         }
         else{
           me.$message({message: 'Unable to delete', type:'error', showClose:true, duration:6000});
@@ -100,13 +118,14 @@ export default {
       this.$data.selectedRec  = rec;
     },
 
-    onContinueShopping(){
-      console.log("Continue Shopping clicked...")
+    onPageChange(pageNum){
+      this.getData(pageNum,this.$data.pageSize);
+      this.$data.currentPage = pageNum;
     },
 
   },
   mounted(){
-    this.getData();
+    this.getData(0,this.$data.pageSize);
   },
   components: {
     OrderDetails,
