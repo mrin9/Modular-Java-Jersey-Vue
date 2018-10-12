@@ -39,7 +39,7 @@ public class TomcatStarter {
             else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            //System.out.println("application resolved root folder: " + root.getAbsolutePath());
+            System.out.println("application resolved root folder: " + root.getAbsolutePath());
             return root;
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -53,6 +53,13 @@ public class TomcatStarter {
         System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
         System.setProperty("java.util.logging.ConsoleHandler.level", "WARNING");
         System.setProperty("java.util.logging.FileHandler.level", "WARNING");
+
+        log.info("\n\n *** System Variables ***");
+        log.info(" user.home     :" + System.getProperty("user.home"));
+        log.info(" user.dir      :" + System.getProperty("user.dir"));
+        log.info(" catalina.home :" + System.getProperty("catalina.home"));
+        log.info(" catalina.base :" + System.getProperty("catalina.base") +"\n *** *** *** *** *** \n");
+
 
 
         tomcat = new Tomcat();
@@ -95,13 +102,17 @@ public class TomcatStarter {
         log.info(asciiArt);
 
         //Schedule Refresh DB Task
+        /*
         ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
-        // RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
+        RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
         long period = 1;
         TimeUnit timeUnit = TimeUnit.HOURS;
-
-        //Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
+        Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
         log.info(String.format("\n\nRefreshDB Task Scheduled (The task refreshes the Database every %s %s)", period, timeUnit.toString()));
+        */
+        DatabaseService.initDB();
+        Thread.sleep(4000);
+
 
         //Start Web API Server
         tomcat.setPort(port);

@@ -34,12 +34,6 @@ public class JerseyApplication extends ResourceConfig {
         packages("io.swagger.jaxrs.listing");
         packages("com.app.api");
 
-        log.info("\n\n *** System Variables ***");
-        log.info(" user.home     :" + System.getProperty("user.home"));
-        log.info(" user.dir      :" + System.getProperty("user.dir"));
-        log.info(" catalina.home :" + System.getProperty("catalina.home"));
-        log.info(" catalina.base :" + System.getProperty("catalina.base") +"\n *** *** *** *** *** \n");
-
         //Configure Hibernate Session
         HibernateUtil.getSessionFactory();
 

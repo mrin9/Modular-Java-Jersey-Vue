@@ -1,7 +1,6 @@
 package com.app.task;
 
 import com.app.DatabaseService;
-import com.app.TomcatStarter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
