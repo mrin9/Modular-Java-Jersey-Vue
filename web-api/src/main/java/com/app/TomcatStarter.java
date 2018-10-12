@@ -54,14 +54,6 @@ public class TomcatStarter {
         System.setProperty("java.util.logging.ConsoleHandler.level", "WARNING");
         System.setProperty("java.util.logging.FileHandler.level", "WARNING");
 
-        log.info("\n\n *** System Variables ***");
-        log.info(" user.home     :" + System.getProperty("user.home"));
-        log.info(" user.dir      :" + System.getProperty("user.dir"));
-        log.info(" catalina.home :" + System.getProperty("catalina.home"));
-        log.info(" catalina.base :" + System.getProperty("catalina.base") +"\n *** *** *** *** *** \n");
-
-
-
         tomcat = new Tomcat();
         Path tempPath = Files.createTempDirectory("tomcat-base-dir");
         tomcat.setBaseDir(tempPath.toString());
@@ -101,17 +93,24 @@ public class TomcatStarter {
         String asciiArt = FigletFont.convertOneLine("Mrin >>>") + " Version 1.0.0";
         log.info(asciiArt);
 
+
+        log.info("\n\n *** System Variables ***");
+        log.info(" user.home     :" + System.getProperty("user.home"));
+        log.info(" user.dir      :" + System.getProperty("user.dir"));
+        log.info(" catalina.home :" + System.getProperty("catalina.home"));
+        log.info(" catalina.base :" + System.getProperty("catalina.base") +"\n *** *** *** *** *** \n");
+
+
         //Schedule Refresh DB Task
-        /*
         ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
         RefreshDBTask refreshDBTask = new RefreshDBTask(); //DatabaseService.initDB();
         long period = 1;
         TimeUnit timeUnit = TimeUnit.HOURS;
         Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
         log.info(String.format("\n\nRefreshDB Task Scheduled (The task refreshes the Database every %s %s)", period, timeUnit.toString()));
-        */
-        DatabaseService.initDB();
-        Thread.sleep(4000);
+
+
+
 
 
         //Start Web API Server

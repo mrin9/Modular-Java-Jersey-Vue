@@ -34,6 +34,7 @@ public class JerseyApplication extends ResourceConfig {
         packages("io.swagger.jaxrs.listing");
         packages("com.app.api");
 
+
         //Configure Hibernate Session
         HibernateUtil.getSessionFactory();
 
