@@ -1,14 +1,12 @@
 package com.app.api.controllers;
 
 import com.app.api.BaseController;
+import com.app.dao.StatsDao;
+import com.app.model.stats.DailySaleModel;
 import com.app.model.stats.DailySaleModel.DailySaleResponse;
-import com.app.model.user.UserViewModel;
-import com.app.util.Constants;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -36,13 +34,19 @@ public class StatsController extends BaseController {
     public Response getDailySale() {
         DailySaleResponse resp = new DailySaleResponse();
 
-        String sql = "select sum( (unit_price * quantity) - discount) as count, order_date as date from  NORTHWIND.ORDER_DETAILS"
-        +" where order_date > DATEADD(DAY, -100 , CURDATE())"
-        +" group by DAY_OF_YEAR (order_date)";
-
-        resp.setSuccessMessage("Success");
-        return Response.ok(resp).build();
-
+        try {
+            Session hbrSession = HibernateUtil.getSession();
+            hbrSession.beginTransaction();
+            List<DailySaleModel> dailySales = StatsDao.getDailySales(hbrSession);
+            hbrSession.getTransaction().commit();
+            resp.setSuccessMessage("Daily Sales");
+            resp.setList(dailySales);
+            return Response.ok(resp).build();
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Internal Error - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
     }
 
 

@@ -22,6 +22,12 @@ public class DailySaleModel {
     private Date date;
     private BigDecimal amount;
 
+    //Constructor
+    public DailySaleModel(Date date, BigDecimal amount) {
+        this.date = date;
+        this.amount = amount;
+    }
+
     //Getters and Setters
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
