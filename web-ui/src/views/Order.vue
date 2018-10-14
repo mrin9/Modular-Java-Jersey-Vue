@@ -14,7 +14,14 @@
       <el-table-column prop="id"            label="ORDER#" width="70"/>
       <el-table-column prop="strOrderDate"  label="DATE"   width="120"/>
       <el-table-column prop="shipName"      label="SHIP TO" />
-      <el-table-column prop="orderStatus"   label="STATUS"   width="90"/>
+      <el-table-column prop="orderStatus"   label="STATUS" width="80">
+        <template slot-scope="scope">
+        <span :class=" 'sw-tag-' + scope.row.orderStatus.replace(/\s/g, '-').toLowerCase() ">
+          {{scope.row.orderStatus}}
+        </span>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="paymentType"   label="PAYMENT"  width="80"/>
       <el-table-column prop="strOrderTotal" label="TOTAL"    width="90" align="right"/>
       <el-table-column label="" width="80"  align="center">
@@ -44,7 +51,7 @@ export default {
       tableData:[],
       selectedRec:{},
       currentPage:1,
-      pageSize:10,
+      pageSize:20,
       totalPages:0,
       totalRecs:0,
       recsInCurrentPage:0
@@ -139,22 +146,20 @@ export default {
   line-height:24px;
 }
 
-.sw-slideout-head{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  display:flex;
-  height:60px;
-  padding:16px;
-  box-shadow: 0px 0px 8px 2px #ccc;
-  background-color: #fff;
-  z-index:1;
+.sw-tag-new,
+.sw-tag-on-hold{
+  padding:3px 6px;
+  border-radius: $sw-border-radius;
+  color:#fff;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: bold;
+  font-family: arial;
 }
 
-.sw-slideout-body{
-  margin-top:92px;
-}
+.sw-tag-on-hold{background-color: orangered}
+.sw-tag-new{background-color: cornflowerblue}
+
 
 </style>
 

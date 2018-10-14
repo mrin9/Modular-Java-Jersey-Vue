@@ -6,7 +6,7 @@
     </span> <br/>
     <div class="sw-gray-text">Update Order details (the data gets refreshed after certain interval)</div>
     <br/><br/>
-    <table style="width:100%">
+    <table style="width:100%;vertical-align:top;">
       <tr>
         <td>
           <div class="sw-row">
@@ -30,20 +30,40 @@
               <el-option label="Card" value="Card"></el-option>
             </el-select>  
           </div>
+          <div class="sw-row">
+            <label class="sw-label">Ship To</label>
+            <input type="text" class="sw-medium" v-model="orderData.shipName">
+          </div>
+          <div class="sw-row">
+            <label class="sw-label">Shipping Fee</label>
+            <input type="text" class="sw-medium" v-model="orderData.shippingFee">
+          </div>
+
         </td>
         <td>
           <div class="sw-row">
-            <label class="sw-label">Status</label>
-            <input type="text" class="sw-medium" v-model="orderData.orderStatus">
+            <label class="sw-label">Address</label>
+            <input type="text" placeholder="Address Line 1" class="sw-medium" v-model="orderData.shipAddress1">
+            <input type="text" placeholder="Address Line 2" class="sw-medium" v-model="orderData.shipAddress2">
           </div>
           <div class="sw-row">
-            <label class="sw-label">Payment</label>
-            <input type="text" class="sw-medium" v-model="orderData.paymentType">
+            <label class="sw-label">City</label>
+            <input type="text" class="sw-medium" v-model="orderData.shipCity">
           </div>
           <div class="sw-row">
-            <label class="sw-label">Payment</label>
-            <input type="text" class="sw-medium" v-model="orderData.paymentType">
+            <label class="sw-label">State</label>
+            <input type="text" class="sw-medium" v-model="orderData.shipState">
           </div>
+          <div class="sw-row">
+            <label class="sw-label">Postal Code</label>
+            <input type="text" class="sw-medium" v-model="orderData.shipPostalCode">
+          </div>
+          <div class="sw-row">
+            <label class="sw-label">Country</label>
+            <input type="text" class="sw-medium" v-model="orderData.shipCountry">
+          </div>
+
+
         </td>
       </tr>
     </table>  
