@@ -1,9 +1,12 @@
 package com.app.model.product;
 
 import javax.persistence.*;
+
+import com.app.model.PageResponse;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -51,4 +54,13 @@ public class ProductModel {
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+
+    public static class ProductResponse extends PageResponse {
+        private List<ProductModel> list;
+
+        public List<ProductModel> getList() {return list; }
+        public void setList(List<ProductModel> list) { this.list = list; }
+
+
+    }
 }

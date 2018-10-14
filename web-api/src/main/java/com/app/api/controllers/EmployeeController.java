@@ -1,14 +1,12 @@
 package com.app.api.controllers;
 
 import com.app.api.BaseController;
-import com.app.dao.CustomerDao;
 import com.app.dao.EmployeeDao;
 import com.app.model.BaseResponse;
-import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
-import com.app.model.employee.EmployeeResponse;
+import com.app.model.employee.EmployeeModel.EmployeeResponse;
 import com.app.model.employee.EmployeeUserModel;
-import com.app.model.employee.EmployeeUserResponse;
+import com.app.model.employee.EmployeeUserModel.EmployeeUserResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +16,6 @@ import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -27,7 +24,6 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -38,7 +34,7 @@ import java.util.List;
 public class EmployeeController extends BaseController {
 
     @GET
-    @ApiOperation(value = "Get list of employees", response = EmployeeResponse.class)
+    @ApiOperation(value = "Get list of employees", response = EmployeeUserResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response getEmployeeList(
         @ApiParam(value="Employee Id", example="201") @QueryParam("employee-id") int employeeId,

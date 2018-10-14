@@ -6,6 +6,7 @@ import javax.ws.rs.core.*;
 
 import com.app.api.BaseController;
 import com.app.model.user.*;
+import com.app.model.user.LoginModel.LoginResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import io.swagger.annotations.*;

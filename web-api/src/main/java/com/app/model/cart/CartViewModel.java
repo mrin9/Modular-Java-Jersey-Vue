@@ -1,7 +1,9 @@
 package com.app.model.cart;
 
+import com.app.model.PageResponse;
 import org.hibernate.annotations.Immutable;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Immutable //Indicates its a View not a table (cannot be updated)
@@ -54,4 +56,12 @@ public class CartViewModel {
     public void setListPrice(Long listPrice) { this.listPrice = listPrice; }
 
 
+    //Response Class for API
+    public static class CartViewResponse extends PageResponse {
+
+        private List<CartViewModel> list;
+
+        public List<CartViewModel> getList() {return list; }
+        public void setList(List<CartViewModel> list) { this.list = list; }
+    }
 }

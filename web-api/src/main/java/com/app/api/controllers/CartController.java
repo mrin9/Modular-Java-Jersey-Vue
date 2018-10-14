@@ -3,18 +3,15 @@ package com.app.api.controllers;
 import com.app.api.BaseController;
 import com.app.model.BaseResponse;
 import com.app.model.cart.CartModel;
-import com.app.model.cart.CartResponse;
 import com.app.model.cart.CartViewModel;
-import com.app.model.cart.CartViewResponse;
+import com.app.model.cart.CartViewModel.CartViewResponse;
 import com.app.model.user.UserViewModel;
 import com.app.util.Constants;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
-import org.hibernate.criterion.Projections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +20,6 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
 import java.util.List;
 import com.app.dao.CartDao;
 

@@ -1,6 +1,8 @@
 package com.app.model.order;
 
 import javax.persistence.*;
+
+import com.app.model.PageResponse;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Immutable;
 
@@ -95,4 +97,13 @@ public class OrderInfoModel {
     public String getCustomerCompany() { return customerCompany; }
     public void setCustomerCompany(String customerCompany) { this.customerCompany = customerCompany; }
 
+    //API Response class
+    public static class OrderInfoResponse extends PageResponse {
+        private List<OrderInfoModel> list;
+
+        public List<OrderInfoModel> getList() {return list; }
+        public void setList(List<OrderInfoModel> list) { this.list = list; }
+
+
+    }
 }

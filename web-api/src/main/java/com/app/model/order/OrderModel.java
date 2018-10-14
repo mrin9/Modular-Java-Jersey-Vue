@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import javax.persistence.*;
 
+import com.app.model.PageResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -102,4 +103,13 @@ public class OrderModel {
 
     public String getOrderStatus() { return orderStatus; }
     public void setOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }
+
+    public static class OrderResponse extends PageResponse {
+        private List<OrderModel> list;
+
+        public List<OrderModel> getList() {return list; }
+        public void setList(List<OrderModel> list) { this.list = list; }
+
+
+    }
 }

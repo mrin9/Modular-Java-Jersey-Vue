@@ -1,12 +1,10 @@
 package com.app.api.controllers;
 
 import com.app.api.BaseController;
-import com.app.dao.CustomerDao;
 import com.app.dao.ProductDao;
 import com.app.model.BaseResponse;
-import com.app.model.customer.CustomerModel;
 import com.app.model.product.ProductModel;
-import com.app.model.product.ProductResponse;
+import com.app.model.product.ProductModel.ProductResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

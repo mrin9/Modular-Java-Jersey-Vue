@@ -1,8 +1,10 @@
 package com.app.model.cart;
 
+import com.app.model.PageResponse;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "cart")
@@ -42,4 +44,13 @@ public class CartModel {
         public void setProductId(Integer productId) { this.productId = productId; }
     }
 
+
+    //Response for CartModel
+    public static class CartResponse extends PageResponse {
+
+        private List<CartModel> list;
+
+        public List<CartModel> getList() {return list; }
+        public void setList(List<CartModel> list) { this.list = list; }
+    }
 }

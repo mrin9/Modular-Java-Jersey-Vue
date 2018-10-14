@@ -4,9 +4,9 @@ import com.app.api.BaseController;
 import com.app.dao.CustomerDao;
 import com.app.model.BaseResponse;
 import com.app.model.customer.CustomerModel;
-import com.app.model.customer.CustomerResponse;
+import com.app.model.customer.CustomerModel.CustomerResponse;
 import com.app.model.customer.CustomerUserModel;
-import com.app.model.customer.CustomerUserResponse;
+import com.app.model.customer.CustomerUserModel.CustomerUserResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +21,6 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
 import java.util.List;
 
 

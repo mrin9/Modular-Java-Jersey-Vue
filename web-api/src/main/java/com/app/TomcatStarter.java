@@ -39,7 +39,7 @@ public class TomcatStarter {
             else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            System.out.println("application resolved root folder: " + root.getAbsolutePath());
+            //System.out.println("application resolved root folder: " + root.getAbsolutePath());
             return root;
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);

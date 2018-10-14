@@ -1,9 +1,11 @@
 package com.app.model.employee;
 
+import com.app.model.PageResponse;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Immutable //Indicates its a View not a table (cannot be updated)
@@ -89,4 +91,14 @@ public class EmployeeUserModel {
 
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
+
+    public static class EmployeeUserResponse extends PageResponse {
+
+        private List<EmployeeUserModel> list;
+
+        public List<EmployeeUserModel> getList() {return list; }
+        public void setList(List<EmployeeUserModel> list) { this.list = list; }
+
+
+    }
 }

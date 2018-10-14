@@ -71,6 +71,9 @@ public class OrderWithNestedDetailModel  extends OrderModel {
 
     public List<OrderLine> getOrderLine() { return orderLine; }
     public void setOrderLine(List<OrderLine> orderLine) { this.orderLine = orderLine; }
+
+
+
 }
 
 
