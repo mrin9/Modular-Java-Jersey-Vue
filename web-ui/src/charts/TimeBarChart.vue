@@ -5,8 +5,7 @@
       <div class="sw-chart-title">{{title}}</div>
       <div style="flex:1"> </div>
       <div class="sw-chart-title">{{interval}}</div>
-      <!-- Uncomment below for getting Chart Data Button -->
-      <!-- el-button v-for="(btn, index) in buttons" :key="index" size="small"  @click="$emit('button-click', index, simplifyChartData())" >{{buttons[index]}}</el-button -->
+      <el-button v-for="(btn, index) in buttons" :key="index" size="small"  @click="$emit('button-click', index, simplifyChartData())" >{{buttons[index]}}</el-button>
     </div>
     <base-bar-chart class="sw-time-bar-chart" :chartData="chartData" :options="options" :height="height" :width="width"/>
   </div>

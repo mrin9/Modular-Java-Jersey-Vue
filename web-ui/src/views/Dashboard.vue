@@ -105,7 +105,10 @@ export default {
     return {
       showFor:'all',
       showSlideOut:false,
-      domainOrOuName:"",
+      dailySaleData:{},
+
+
+      //OLD Data
       selectedChartData:[],
       selectedChartTitle:"",
       outGoodJunkData :{},
@@ -224,6 +227,100 @@ export default {
         return v;
       });
       this.$data.showSlideOut=true;
+    },
+
+    getDailySale(){
+      let me = this;
+      let goodColor="lightgray";
+      let junkColor="orangered";
+
+      Rest.getDailySale(this.$store.state.dashboardInterval,this.$data.showFor, this.$data.domainOrOuName, true)
+      .then(function(resp){
+        let dateLabels=[];
+        let outCounts=[];
+        let inCounts=[];
+        let inJunkTotal =0;
+        let inGoodTotal =0;
+        let outJunkTotal=0;
+        let outGoodTotal=0;
+
+        resp.data.list.map(function(dataRow){
+          dateLabels.push(new Date(dataRow.DTIME));
+          inJunkTotal  = inJunkTotal  + dataRow.INBOUND_JUNK_COUNT;
+          inGoodTotal  = inGoodTotal  + dataRow.INBOUND_GOOD_COUNT;
+          outJunkTotal = outJunkTotal + dataRow.OUTBOUND_JUNK_COUNT;
+          outGoodTotal = outGoodTotal + dataRow.OUTBOUND_GOOD_COUNT;
+          //For 100% Stack
+          //inCounts.push( ((dataRow.INBOUND_JUNK_COUNT   + dataRow.INBOUND_GOOD_COUNT)/(dataRow.INBOUND_JUNK_COUNT+ dataRow.INBOUND_GOOD_COUNT+dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT) *100));
+          //outCounts.push(((dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT)/(dataRow.INBOUND_JUNK_COUNT+ dataRow.INBOUND_GOOD_COUNT+dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT) *100)) ;
+          inCounts.push(dataRow.INBOUND_JUNK_COUNT   + dataRow.INBOUND_GOOD_COUNT);
+          outCounts.push(dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT);
+
+        });
+        //console.log("In-Junk: %s, In-Good:%s, Out-Junk:%s, Out-Good:%s", inJunkTotal, inGoodTotal, outJunkTotal, outGoodTotal);
+
+        //Incomming Pie-Chart Chart and Legend
+        me.inGoodJunkData={
+          labels: ['Good', 'Junk'],
+          datasets: [{
+            data: [
+              inGoodTotal,
+              inJunkTotal
+            ],
+            backgroundColor: [goodColor, junkColor],
+            borderWidth: 0,
+          }]
+        }
+        me.inGoodJunkLegendData=[
+          {label:'Good Mails', value:inGoodTotal, color:goodColor},
+          {label:'Junk Mails', value:inJunkTotal, color:junkColor},
+        ];
+
+        //Outgoing Pie-Chart Chart and Legend 
+        me.outGoodJunkData={
+          labels: ['Good', 'Junk'],
+          datasets: [{
+            data: [
+              outGoodTotal,
+              outJunkTotal
+            ],
+            backgroundColor: [goodColor, junkColor],
+            borderWidth: 0
+          }]
+        }
+        me.outGoodJunkLegendData=[
+          {label:'Good Mails', value:outGoodTotal, color:goodColor},
+          {label:'Junk Mails', value:outJunkTotal, color:junkColor},
+        ];
+
+        // Incomming Vs Outgoing (Bar chart time seriese)
+        me.inAndOutGroupedData={
+          labels: dateLabels,// Labels should be Date objects
+          datasets: [
+            {
+              label: "Out-Bound",
+              data: outCounts,
+              borderWidth:0,
+              backgroundColor: '#816C5B',
+              pointRadius:0, 
+              pointHitRadius:10,
+              pointHoverRadius:3,
+              pointHoverBorderWidth:0
+            },
+            {
+              label: "In-Bound",
+              data: inCounts,
+              borderWidth:0,
+              backgroundColor: '#A9A18C',
+              pointRadius:0,
+              pointHitRadius:10,
+              pointHoverRadius:3,
+              pointHoverBorderWidth:0
+            }
+          ]
+        }
+
+      }).catch(() => {});
     },
 
     getInboundVsOutbound(){
@@ -478,11 +575,13 @@ export default {
     },
 
     refreshAllChartData(){
+      /*
       this.getInboundVsOutbound();
       this.getThreatBreakdown("inbound" );
       this.getThreatBreakdown("outbound");
       this.getTopReport('topConnectingIps', 'topConnectingIpData', 'IPADDRESS', 'cornflowerblue');
       this.getTopReport('topInboundViruses', 'topVirusData', 'VIRUSNAME', '#E45641');
+      */
     },
 
     onIntervalChange(val){

@@ -1,15 +1,10 @@
 package com.app.model.stats;
 
 import com.app.model.BaseResponse;
-import com.app.model.cart.CartModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -20,21 +15,28 @@ public class DailySaleModel {
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date date;
-    private BigDecimal amount;
+    private BigDecimal saleAmount;
+    private BigDecimal discount;
+
 
     //Constructor
-    public DailySaleModel(Date date, BigDecimal amount) {
+    public DailySaleModel(Date date, BigDecimal saleAmount, BigDecimal discount) {
         this.date = date;
-        this.amount = amount;
+        this.saleAmount = saleAmount;
+        this.discount = discount;
     }
 
     //Getters and Setters
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
 
-    public BigDecimal getAmount() { return amount; }
-    public void setAmount(BigDecimal amount) { this.amount = amount; }
+    public BigDecimal getSaleAmount() { return saleAmount; }
+    public void setSaleAmount(BigDecimal saleAmount) { this.saleAmount = saleAmount; }
 
+    public BigDecimal getDiscount() { return discount; }
+    public void setDiscount(BigDecimal discount) { this.discount = discount; }
+
+    //Response Class
     public static class DailySaleResponse  extends BaseResponse {
         private List<DailySaleModel> list;
 

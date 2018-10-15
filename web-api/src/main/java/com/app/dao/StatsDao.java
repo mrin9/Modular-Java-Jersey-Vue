@@ -16,7 +16,7 @@ import java.util.Map;
 public class StatsDao {
 
     public static List<DailySaleModel> getDailySales(Session hbrSession) {
-        String sql = "select sum( (unit_price * quantity) - discount) as count, order_date as date from  NORTHWIND.ORDER_DETAILS "
+        String sql = "select sum( (unit_price * quantity) - discount) as sale_amount, sum(discount) as discount, order_date as date from  NORTHWIND.ORDER_DETAILS "
             + " where order_date > DATEADD(DAY, -100 , CURDATE()) "
             + " group by DAY_OF_YEAR (order_date) ";
 
@@ -26,7 +26,7 @@ public class StatsDao {
 
         for (Object object : rowList) {
             Map row =  (Map) object;
-            DailySaleModel dailyRow = new DailySaleModel((Date) row.get("DATE"), (BigDecimal) row.get("COUNT"));
+            DailySaleModel dailyRow = new DailySaleModel((Date)row.get("DATE"), (BigDecimal)row.get("SALE_AMOUNT"), (BigDecimal)row.get("DISCOUNT"));
             dailySaleList.add(dailyRow);
         }
         return dailySaleList;
