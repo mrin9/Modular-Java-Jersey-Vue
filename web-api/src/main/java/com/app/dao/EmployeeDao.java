@@ -1,13 +1,11 @@
 package com.app.dao;
 
-import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
 
 public class EmployeeDao {
 

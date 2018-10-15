@@ -18,9 +18,9 @@ public class StatsDao {
     public static List<DailySaleModel> getDailySales(Session hbrSession) {
         String sql = "select sum( (unit_price * quantity) - discount) as sale_amount, sum(discount) as discount, order_date as date from  NORTHWIND.ORDER_DETAILS "
             + " where order_date > DATEADD(DAY, -100 , CURDATE()) "
-            + " group by DAY_OF_YEAR (order_date) ";
+            + " group by DAY_OF_YEAR (order_date) order by order_date desc limit 100";
 
-        SQLQuery q = HibernateUtil.getSession().createSQLQuery(sql);
+        SQLQuery q = hbrSession.createSQLQuery(sql);
         List rowList = q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).list();
         List<DailySaleModel> dailySaleList = new ArrayList<>();
 

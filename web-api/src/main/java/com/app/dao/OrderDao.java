@@ -42,7 +42,7 @@ public class OrderDao {
 
         String sqlOrders = createSqlWhereString(orderId, customerId, paymetType, orderStatus);
         String countSql = "select count(*) " + sqlOrders ;
-        SQLQuery q = HibernateUtil.getSession().createSQLQuery(countSql);
+        SQLQuery q = hbrSession.createSQLQuery(countSql);
         if (orderId >0)   { q.setParameter("orderId", orderId); }
         if (customerId >0){ q.setParameter("customerId", customerId); }
         if (StringUtils.isNotBlank(paymetType)) { q.setParameter("paymetType", paymetType);   }
@@ -79,7 +79,7 @@ public class OrderDao {
 
         finalSql = finalSql + "( select id " + sqlOrders + sqlLimit + ") order by order_id, product_id ";
 
-        SQLQuery q = HibernateUtil.getSession().createSQLQuery(finalSql);
+        SQLQuery q = hbrSession.createSQLQuery(finalSql);
         if (orderId >0)   { q.setParameter("orderId", orderId); }
         if (customerId >0){ q.setParameter("customerId", customerId); }
         if (StringUtils.isNotBlank(paymetType)) { q.setParameter("paymetType", paymetType); }

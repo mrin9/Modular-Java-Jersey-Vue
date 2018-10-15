@@ -49,14 +49,14 @@
   <div class="sw-row1">
     <div class="sw-chart-card sw-time-bar-chart">
       <time-bar-chart
-          ref="inGoodVsjunk"
-          :chartData="inBreakdownGroupedData"
+          ref="dailySaleChart"
+          :chartData="dailySaleData"
           :options="timeChartOptions"
           :width="1070"
           :height="160"
           :buttons="['Table Data']"
-          @button-click="onChartButtonClick($refs.inGoodVsjunk, ...arguments)"
-          title="Good Vs Junk (Incomming)"
+          @button-click="onChartButtonClick($refs.dailySaleChart, ...arguments)"
+          title="Daily Sale"
           interval=""
           style="width:100%;"
         >
@@ -107,7 +107,6 @@ export default {
       showSlideOut:false,
       dailySaleData:{},
 
-
       //OLD Data
       selectedChartData:[],
       selectedChartTitle:"",
@@ -149,7 +148,7 @@ export default {
               drawBorder: false,
             },
             barPercentage :1,
-            categoryPercentage:0.90
+            categoryPercentage:0.50
           }],
           xAxes: [{
             stacked:true,
@@ -182,8 +181,8 @@ export default {
               lineWidth: 1.5,
               tickMarkLength: 10
             },
-            barPercentage :1,
-            categoryPercentage:0.90
+            barPercentage : .55,
+            //categoryPercentage:1
           }]
         }
       }
@@ -234,72 +233,25 @@ export default {
       let goodColor="lightgray";
       let junkColor="orangered";
 
-      Rest.getDailySale(this.$store.state.dashboardInterval,this.$data.showFor, this.$data.domainOrOuName, true)
+      Rest.getDailySale()
       .then(function(resp){
         let dateLabels=[];
-        let outCounts=[];
-        let inCounts=[];
-        let inJunkTotal =0;
-        let inGoodTotal =0;
-        let outJunkTotal=0;
-        let outGoodTotal=0;
+        let saleAmounts=[];
+        let discounts=[];
 
         resp.data.list.map(function(dataRow){
-          dateLabels.push(new Date(dataRow.DTIME));
-          inJunkTotal  = inJunkTotal  + dataRow.INBOUND_JUNK_COUNT;
-          inGoodTotal  = inGoodTotal  + dataRow.INBOUND_GOOD_COUNT;
-          outJunkTotal = outJunkTotal + dataRow.OUTBOUND_JUNK_COUNT;
-          outGoodTotal = outGoodTotal + dataRow.OUTBOUND_GOOD_COUNT;
-          //For 100% Stack
-          //inCounts.push( ((dataRow.INBOUND_JUNK_COUNT   + dataRow.INBOUND_GOOD_COUNT)/(dataRow.INBOUND_JUNK_COUNT+ dataRow.INBOUND_GOOD_COUNT+dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT) *100));
-          //outCounts.push(((dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT)/(dataRow.INBOUND_JUNK_COUNT+ dataRow.INBOUND_GOOD_COUNT+dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT) *100)) ;
-          inCounts.push(dataRow.INBOUND_JUNK_COUNT   + dataRow.INBOUND_GOOD_COUNT);
-          outCounts.push(dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT);
-
+          dateLabels.push(new Date(dataRow.date));
+          saleAmounts.push(dataRow.saleAmount);
+          discounts.push(dataRow.discount);
         });
-        //console.log("In-Junk: %s, In-Good:%s, Out-Junk:%s, Out-Good:%s", inJunkTotal, inGoodTotal, outJunkTotal, outGoodTotal);
 
-        //Incomming Pie-Chart Chart and Legend
-        me.inGoodJunkData={
-          labels: ['Good', 'Junk'],
-          datasets: [{
-            data: [
-              inGoodTotal,
-              inJunkTotal
-            ],
-            backgroundColor: [goodColor, junkColor],
-            borderWidth: 0,
-          }]
-        }
-        me.inGoodJunkLegendData=[
-          {label:'Good Mails', value:inGoodTotal, color:goodColor},
-          {label:'Junk Mails', value:inJunkTotal, color:junkColor},
-        ];
-
-        //Outgoing Pie-Chart Chart and Legend 
-        me.outGoodJunkData={
-          labels: ['Good', 'Junk'],
-          datasets: [{
-            data: [
-              outGoodTotal,
-              outJunkTotal
-            ],
-            backgroundColor: [goodColor, junkColor],
-            borderWidth: 0
-          }]
-        }
-        me.outGoodJunkLegendData=[
-          {label:'Good Mails', value:outGoodTotal, color:goodColor},
-          {label:'Junk Mails', value:outJunkTotal, color:junkColor},
-        ];
-
-        // Incomming Vs Outgoing (Bar chart time seriese)
-        me.inAndOutGroupedData={
+        // Daily Sale Data (Bar chart time seriese)
+        me.dailySaleData={
           labels: dateLabels,// Labels should be Date objects
           datasets: [
             {
-              label: "Out-Bound",
-              data: outCounts,
+              label: "Sale",
+              data: saleAmounts,
               borderWidth:0,
               backgroundColor: '#816C5B',
               pointRadius:0, 
@@ -308,8 +260,8 @@ export default {
               pointHoverBorderWidth:0
             },
             {
-              label: "In-Bound",
-              data: inCounts,
+              label: "Discounts",
+              data: discounts,
               borderWidth:0,
               backgroundColor: '#A9A18C',
               pointRadius:0,
@@ -319,262 +271,14 @@ export default {
             }
           ]
         }
+        console.log(me.dailySaleData);
+
 
       }).catch(() => {});
-    },
-
-    getInboundVsOutbound(){
-      let me = this;
-      let goodColor="lightgray";
-      let junkColor="orangered";
-
-      Rest.getInboundVsOutBound(this.$store.state.dashboardInterval,this.$data.showFor, this.$data.domainOrOuName, true)
-      .then(function(resp){
-        let dateLabels=[];
-        let outCounts=[];
-        let inCounts=[];
-        let inJunkTotal =0;
-        let inGoodTotal =0;
-        let outJunkTotal=0;
-        let outGoodTotal=0;
-
-        resp.data.list.map(function(dataRow){
-          dateLabels.push(new Date(dataRow.DTIME));
-          inJunkTotal  = inJunkTotal  + dataRow.INBOUND_JUNK_COUNT;
-          inGoodTotal  = inGoodTotal  + dataRow.INBOUND_GOOD_COUNT;
-          outJunkTotal = outJunkTotal + dataRow.OUTBOUND_JUNK_COUNT;
-          outGoodTotal = outGoodTotal + dataRow.OUTBOUND_GOOD_COUNT;
-          //For 100% Stack
-          //inCounts.push( ((dataRow.INBOUND_JUNK_COUNT   + dataRow.INBOUND_GOOD_COUNT)/(dataRow.INBOUND_JUNK_COUNT+ dataRow.INBOUND_GOOD_COUNT+dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT) *100));
-          //outCounts.push(((dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT)/(dataRow.INBOUND_JUNK_COUNT+ dataRow.INBOUND_GOOD_COUNT+dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT) *100)) ;
-          inCounts.push(dataRow.INBOUND_JUNK_COUNT   + dataRow.INBOUND_GOOD_COUNT);
-          outCounts.push(dataRow.OUTBOUND_JUNK_COUNT + dataRow.OUTBOUND_GOOD_COUNT);
-
-        });
-        //console.log("In-Junk: %s, In-Good:%s, Out-Junk:%s, Out-Good:%s", inJunkTotal, inGoodTotal, outJunkTotal, outGoodTotal);
-
-        //Incomming Pie-Chart Chart and Legend
-        me.inGoodJunkData={
-          labels: ['Good', 'Junk'],
-          datasets: [{
-            data: [
-              inGoodTotal,
-              inJunkTotal
-            ],
-            backgroundColor: [goodColor, junkColor],
-            borderWidth: 0,
-          }]
-        }
-        me.inGoodJunkLegendData=[
-          {label:'Good Mails', value:inGoodTotal, color:goodColor},
-          {label:'Junk Mails', value:inJunkTotal, color:junkColor},
-        ];
-
-        //Outgoing Pie-Chart Chart and Legend 
-        me.outGoodJunkData={
-          labels: ['Good', 'Junk'],
-          datasets: [{
-            data: [
-              outGoodTotal,
-              outJunkTotal
-            ],
-            backgroundColor: [goodColor, junkColor],
-            borderWidth: 0
-          }]
-        }
-        me.outGoodJunkLegendData=[
-          {label:'Good Mails', value:outGoodTotal, color:goodColor},
-          {label:'Junk Mails', value:outJunkTotal, color:junkColor},
-        ];
-
-        // Incomming Vs Outgoing (Bar chart time seriese)
-        me.inAndOutGroupedData={
-          labels: dateLabels,// Labels should be Date objects
-          datasets: [
-            {
-              label: "Out-Bound",
-              data: outCounts,
-              borderWidth:0,
-              backgroundColor: '#816C5B',
-              pointRadius:0, 
-              pointHitRadius:10,
-              pointHoverRadius:3,
-              pointHoverBorderWidth:0
-            },
-            {
-              label: "In-Bound",
-              data: inCounts,
-              borderWidth:0,
-              backgroundColor: '#A9A18C',
-              pointRadius:0,
-              pointHitRadius:10,
-              pointHoverRadius:3,
-              pointHoverBorderWidth:0
-            }
-          ]
-        }
-
-      }).catch(() => {});
-    },
-
-    getThreatBreakdown(innoundOrOutbound){
-      let me = this;
-      let reportName ="";
-      let groupedData={};
-      if(innoundOrOutbound==="inbound"){
-        reportName="inbound-breakdown";
-        groupedData = "inBreakdownGroupedData";
-      }
-      else if(innoundOrOutbound==="outbound"){
-        reportName="outbound-breakdown";
-        groupedData = "outBreakdownGroupedData";
-      }
-
-      Rest.getReport(reportName, this.$store.state.dashboardInterval, this.$data.showFor, this.$data.domainOrOuName, true)
-      .then(function(resp){
-        let dateLabels=[];
-        let junkCounts=[];
-        let goodCounts=[];
-        let inSpamCounts=[];
-        let inLikelySpamCounts=[];
-        let inSpamTotal=0, inLikelySpamTotal=0, inVirusTotal=0, inLikelyVirusTotal=0, inFraudTotal=0, inLikelyFraudTotal=0, inDhaTotal=0, inPolicyTotal=0;
-
-        resp.data.list.map(function(dataRow){
-          dateLabels.push(new Date(dataRow.DATE_TIME));
-          junkCounts.push(dataRow.JUNK_COUNT);
-          goodCounts.push(dataRow.GOOD_COUNT);
-          if(innoundOrOutbound==="inbound"){
-              
-              inSpamCounts.push(dataRow.SPAM_COUNT);
-              inLikelySpamCounts.push(dataRow.LIKELY_SPAM_COUNT);
-
-              inSpamTotal        = inSpamTotal + dataRow.SPAM_COUNT;
-              inLikelySpamTotal  = inLikelySpamTotal + dataRow.LIKELY_SPAM_COUNT;
-              inVirusTotal       = inVirusTotal + dataRow.VIRUS_COUNT;
-              inLikelyVirusTotal = inLikelyVirusTotal + dataRow.LIKELY_VIRUS_COUNT;
-              inFraudTotal       = inFraudTotal + dataRow.FRAUD_COUNT;
-              inLikelyFraudTotal = inLikelyFraudTotal + dataRow.LIKELY_FRAUD_COUNT;
-              inDhaTotal         = inDhaTotal + dataRow.DHA_COUNT;
-              inPolicyTotal      = inPolicyTotal + dataRow.POLICY_COUNT;
-          }
-        });
-        if(innoundOrOutbound==="inbound" ){
-          // Data for Spam caught
-          me.inSpamGroupedData={
-            labels: dateLabels,// Labels should be Date objects
-            datasets: [
-              {
-                label: "Spam",
-                data: inSpamCounts,
-                borderWidth:0,
-                backgroundColor: 'orangered',
-                pointRadius:0, 
-                pointHitRadius:10,
-                pointHoverRadius:3,
-                pointHoverBorderWidth:0,
-                pointHoverBackgroundColor:'#333'
-
-              },
-              {
-                label: "Likely Spam",
-                data: inLikelySpamCounts,
-                borderWidth:0,
-                backgroundColor: 'orange',
-                pointRadius:0, 
-                pointHitRadius:10,
-                pointHoverRadius:3,
-                pointHoverBorderWidth:0,
-                pointHoverBackgroundColor:'#333'
-              },
-            ]
-          }
-
-          // console.log("spam:%s, likey-spam:%s, virus:%s, likey-virus:%s, fraud:%s, likey-fraud:%s, dha:%s, policy:%s", inSpamTotal, inLikelySpamTotal, inVirusTotal, inLikelyVirusTotal, inFraudTotal, inLikelyFraudTotal, inDhaTotal, inPolicyTotal);
-          // Data for Horizontal-mini-bar chart
-          me.inBreakdownData={
-            labels: [["Spam"], ["Virus"], ["Fraud"], ["DHA"],["Policy"]  ],
-            datasets: [
-              {
-                label: "Confirmed",
-                backgroundColor: ["#E45641","#E45641","#E45641","#E45641","#E45641"],
-                data: [
-                  inSpamTotal,
-                  inVirusTotal,
-                  inFraudTotal,
-                  inDhaTotal,
-                  inPolicyTotal
-                ]
-              },
-              {
-                label: "Likely",
-                backgroundColor: ["#F1A94E","#F1A94E","#F1A94E","#F1A94E","#F1A94E"],
-                data: [
-                  inLikelySpamTotal ,
-                  inLikelyVirusTotal,
-                  inLikelyFraudTotal,
-                  0,0
-                ]
-              }
-            ]
-          }
-
-        }
-        me[groupedData]={
-          // Labels should be Date objects
-          labels: dateLabels,
-          datasets: [
-            {
-              label: "Junk",
-              data: junkCounts,
-              borderWidth:0,
-              backgroundColor: 'orangered',
-              pointRadius:0, 
-              pointHitRadius:10,
-              pointHoverRadius:3,
-              pointHoverBorderWidth:0,
-              pointHoverBackgroundColor:'#333'
-            },
-            {
-              label: "Good",
-              data: goodCounts,
-              borderWidth:0,
-              backgroundColor: 'lightgray',
-              pointRadius:0, 
-              pointHitRadius:10,
-              pointHoverRadius:3,
-              pointHoverBorderWidth:0,
-              pointHoverBackgroundColor:'#333'
-            },
-          ]
-        }
-
-      }).catch(() => {}); // End of Response
-
-    },
-
-    getTopReport(reportName, dataVariable, labelFieldName, color){
-      let me = this;
-      Rest[reportName](this.$store.state.dashboardInterval, this.$data.showFor, this.$data.domainOrOuName, 10)
-      .then(function(resp){
-          let labels=[];
-          let count=[];
-          resp.data.list.map(function(dataRow){
-            labels.push(dataRow[labelFieldName]);
-            count.push(dataRow.EMAIL_COUNT);
-          });
-
-          me[dataVariable]={
-            labels:labels,
-            datasets:[{
-              backgroundColor:color,
-              data:count
-            }]
-          }
-      })
-      .catch(() => {})
     },
 
     refreshAllChartData(){
+      this.getDailySale();
       /*
       this.getInboundVsOutbound();
       this.getThreatBreakdown("inbound" );
@@ -696,7 +400,7 @@ export default {
   },
 
   mounted(){
-    //this.refreshAllChartData();
+    this.refreshAllChartData();
   },
   components:{
     GoodJunk,
