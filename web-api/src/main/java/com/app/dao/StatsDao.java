@@ -1,6 +1,7 @@
 package com.app.dao;
 
 import com.app.model.order.OrderWithNestedDetailModel;
+import com.app.model.stats.CategoryCountModel;
 import com.app.model.stats.DailySaleModel;
 import com.app.util.HibernateUtil;
 import org.hibernate.Criteria;
@@ -8,6 +9,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,4 +33,36 @@ public class StatsDao {
         }
         return dailySaleList;
     }
+
+    public static List<CategoryCountModel> getOrdersByPaymentType(Session hbrSession) {
+        String sql = "select count(*) as count, payment_type as category from NORTHWIND.orders where order_date > DATEADD(DAY, -100 , CURDATE()) group by payment_type" ;
+
+        SQLQuery q = hbrSession.createSQLQuery(sql);
+        List rowList = q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).list();
+        List<CategoryCountModel> categoryCountList = new ArrayList<>();
+
+        for (Object object : rowList) {
+            Map row =  (Map) object;
+            CategoryCountModel categoryAndCount = new CategoryCountModel((String)row.get("CATEGORY"), (BigInteger)row.get("COUNT"));
+            categoryCountList.add(categoryAndCount);
+        }
+        return categoryCountList;
+    }
+
+    public static List<CategoryCountModel> getOrdersByStatus(Session hbrSession) {
+        String sql = "select count(*) as count, order_status as category from NORTHWIND.orders where order_date > DATEADD(DAY, -100 , CURDATE()) group by order_status" ;
+
+        SQLQuery q = hbrSession.createSQLQuery(sql);
+        List rowList = q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).list();
+        List<CategoryCountModel> categoryCountList = new ArrayList<>();
+
+        for (Object object : rowList) {
+            Map row =  (Map) object;
+            CategoryCountModel categoryAndCount = new CategoryCountModel((String)row.get("CATEGORY"), (BigInteger)row.get("COUNT"));
+            categoryCountList.add(categoryAndCount);
+        }
+        return categoryCountList;
+    }
+
+
 }

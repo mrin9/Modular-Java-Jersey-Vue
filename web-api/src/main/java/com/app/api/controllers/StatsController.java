@@ -2,11 +2,14 @@ package com.app.api.controllers;
 
 import com.app.api.BaseController;
 import com.app.dao.StatsDao;
+import com.app.model.stats.CategoryCountModel;
+import com.app.model.stats.CategoryCountModel.CategoryCountResponse;
 import com.app.model.stats.DailySaleModel;
 import com.app.model.stats.DailySaleModel.DailySaleResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -29,7 +32,7 @@ public class StatsController extends BaseController {
 
     @GET
     @Path("daily-sale")
-    @ApiOperation(value = "Get Orders by date", response = DailySaleResponse.class)
+    @ApiOperation(value = "Get Sales by date", response = DailySaleResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response getDailySale() {
         DailySaleResponse resp = new DailySaleResponse();
@@ -49,6 +52,32 @@ public class StatsController extends BaseController {
         }
     }
 
+    @GET
+    @Path("{orderStats: orders-by-status|orders-by-payment-type}")
+    @ApiOperation(value = "Get Orders by status", response = CategoryCountResponse.class)
+    @RolesAllowed({"ADMIN", "SUPPORT"})
+    public Response getOrdersByStatus(@ApiParam(allowableValues = "orders-by-status,orders-by-payment-type", example="orders-by-status") @PathParam("orderStats") String orderStats) {
+        CategoryCountResponse resp = new CategoryCountResponse();
+        List<CategoryCountModel> categoryCountList;
+        try {
+            Session hbrSession = HibernateUtil.getSession();
+            hbrSession.beginTransaction();
+            if (orderStats.equals("orders-by-status")) {
+                categoryCountList = StatsDao.getOrdersByStatus(hbrSession);
+            }
+            else{
+                categoryCountList = StatsDao.getOrdersByPaymentType(hbrSession);
+            }
+            hbrSession.getTransaction().commit();
+            resp.setSuccessMessage("Orders by status");
+            resp.setList(categoryCountList);
+            return Response.ok(resp).build();
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Internal Error - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
+    }
 
 
 

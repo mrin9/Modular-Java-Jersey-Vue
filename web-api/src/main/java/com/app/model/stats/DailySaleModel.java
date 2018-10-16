@@ -2,15 +2,10 @@ package com.app.model.stats;
 
 import com.app.model.BaseResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.annotations.Immutable;
-
-import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Immutable //Indicates its a View not a table (cannot be updated)
 public class DailySaleModel {
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
