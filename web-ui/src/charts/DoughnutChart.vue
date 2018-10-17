@@ -43,7 +43,7 @@ export default {
   margin:5px;
   display:flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
 }
 
 

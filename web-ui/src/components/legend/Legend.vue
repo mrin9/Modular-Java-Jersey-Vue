@@ -1,6 +1,6 @@
 <template>
-  <div class="sw-legend-wrap col">
-    <div :key="index" v-for="(l,index) in legends" class="sw-legend-item">
+  <div :class="'sw-legend-wrap ' + direction "  >
+    <div :key="index" v-for="(l, index) in legends" class="sw-legend-item">
       <div :style="{backgroundColor:l.color}" class="sw-legend-color"></div>
       <div class="sw-legend-value-wrap">
         <div class="sw-legend-value">{{l.value}}</div>
@@ -13,6 +13,14 @@
 <script>
 export default {
   props: {
+    direction:{
+      type: String,
+      default:'row',
+      validator: value => {
+        // Only accepts values that contain the string 'cookie-dough'.
+        return ['row', 'col'].indexOf(value) !== -1
+      }
+    },
     legends : {
       type:Array,
       default:function(){ return []; }
@@ -33,6 +41,13 @@ export default {
   flex-direction: column;
   .sw-legend-item + .sw-legend-item {
     margin-top:10px;
+  }
+}
+
+.sw-legend-wrap.row{
+  flex-direction: row;
+  .sw-legend-item + .sw-legend-item {
+    margin-left:16px;
   }
 }
 

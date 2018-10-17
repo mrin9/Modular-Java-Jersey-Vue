@@ -6,54 +6,42 @@
 
   <div class="sw-row1">
 
-    <div class="sw-chart-card">
+    <div class="sw-chart-common">
       <div class="p1" style="display:inline-block; margin-bottom:12px;color:#777"> Orders by Status </div>
       <clr-icon shape="flag" style="width:20px; height:20px; color:mediumseagreen;float:right"></clr-icon>
       <doughnut-chart
-        :chartData="inGoodJunkData"
+        :chartData="ordersByStatusData"
         :options="$_miniDonutOptions"
-        :width="100"
-        :height="100"
+        :width="140"
+        :height="140"
       >
-        <sw-legend :legends="inGoodJunkLegendData"></sw-legend>
+        <sw-legend :legends="ordersByStatusLegendData" direction="row"></sw-legend>
       </doughnut-chart>
     </div>
 
-    <div class="sw-chart-card">
+    <div class="sw-chart-common">
       <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777"> Orders by Payment Type </div>
       <clr-icon shape="wallet" style="width:20px; height:20px; color:mediumseagreen;float:right"></clr-icon>
       <doughnut-chart
-        :chartData="outGoodJunkData"
+        :chartData="ordersByPaymentTypeData"
         :options="$_miniDonutOptions"
-        :width="100"
-        :height="100"
+        :width="140"
+        :height="140"
       >
-        <sw-legend :legends="outGoodJunkLegendData"></sw-legend>
+        <sw-legend :legends="ordersByPaymentTypeLegendData"></sw-legend>
       </doughnut-chart>
     </div>
 
-    <div class="sw-chart-card sw-mini-bar-chart">
-      <div class="p1" style="display:inline-block; margin-bottom:12px; color:#777">Top Customers </div>
-      <clr-icon shape="shield-check" style="width:20px; height:20px; color:mediumseagreen;float:right"></clr-icon>
-      <base-horizontal-bar-chart
-        :chartData="inBreakdownData"
-        :options="$_miniBarOptions"
-        :width="250"
-        :height="120"
-        style="width:262px"
-      >
-      </base-horizontal-bar-chart>
-    </div>
 
   </div>
   <div class="sw-row1">
-    <div class="sw-chart-card sw-time-bar-chart">
+    <div class="sw-chart-common sw-time-bar-chart">
       <time-bar-chart
           ref="dailySaleChart"
           :chartData="dailySaleData"
           :options="timeChartOptions"
-          :width="1070"
-          :height="160"
+          :width="1000"
+          :height="150"
           :buttons="['Table Data']"
           @button-click="onChartButtonClick($refs.dailySaleChart, ...arguments)"
           title="Daily Sale"
@@ -64,40 +52,17 @@
     </div>
   </div>
 
-
-  <div class="sw-row1">
-    <div class="sw-chart-card sw-time-bar-chart">
-      <time-bar-chart
-          ref="outGoodVsjunk"
-          :chartData="outBreakdownGroupedData"
-          :options="timeChartOptions"
-          :width="1075"
-          :height="160"
-          :buttons="['Table Data']"
-          @button-click="onChartButtonClick($refs.outGoodVsjunk, ...arguments)"
-          title="Good Vs Junk (Outgoing)"
-          interval=""
-          style="width:100%;"
-        >
-      </time-bar-chart>
-    </div>
-  </div>
-
-
 </div>
 </template>
 <script>
 
 //import store from '@/store'
-import GoodJunk from '@/charts/GoodVsJunk'
 import DoughnutChart from '@/charts/DoughnutChart'
 import BaseHorizontalBarChart from '@/charts/BaseHorizontalBarChart'
 import TimeBarChart from '@/charts/TimeBarChart'
 import SwLegend from '@/components/legend/Legend'
 import Rest from '@/rest/Rest';
 import VueSlideoutPanel from 'vue-slideout-panel/src/VueSlideoutPanel'
-
-
 
 export default {
   data(){
@@ -106,22 +71,10 @@ export default {
       showFor:'all',
       showSlideOut:false,
       dailySaleData:{},
-
-      //OLD Data
-      selectedChartData:[],
-      selectedChartTitle:"",
-      outGoodJunkData :{},
-      inGoodJunkData  :{},
-      inBreakdownData :{},
-      outBreakdownData:{},
-      inBreakdownGroupedData :{},
-      outBreakdownGroupedData:{},
-      inSpamGroupedData:{},
-      inAndOutGroupedData:{},
-      topConnectingIpData:{},
-      topVirusData:{},
-      inGoodJunkLegendData:[],
-      outGoodJunkLegendData:[],
+      ordersByStatusData:{},
+      ordersByStatusLegendData:[],
+      ordersByPaymentTypeData:{},
+      ordersByPaymentTypeLegendData:[],
 
       timeChartOptions:{
         legend:{
@@ -153,18 +106,6 @@ export default {
           xAxes: [{
             stacked:true,
             type : 'time',
-            time: {
-              max: new Date().getTime(),
-              min: undefined,
-              displayFormats: {
-                'hour'   : 'MMM-DD HH:mm',
-                'day'    : 'MMM-DD',
-                'week'   : 'MMM-DD',
-                'month'  : 'MMM-DD YYYY',
-                'quarter': 'MMM-DD',
-                'year'   : 'MMM-DD YY',
-              }
-            },
             ticks:{
               display : true,
               fontSize: 10,
@@ -208,7 +149,6 @@ export default {
 
     barChartOptions:function(){
       return
-
     }
 
   },
@@ -228,13 +168,10 @@ export default {
       this.$data.showSlideOut=true;
     },
 
+    //Data Provider for Bar Chart - Time seriese
     getDailySale(){
       let me = this;
-      let goodColor="lightgray";
-      let junkColor="orangered";
-
-      Rest.getDailySale()
-      .then(function(resp){
+      Rest.getDailySale().then(function(resp){
         let dateLabels=[];
         let saleAmounts=[];
         let discounts=[];
@@ -253,7 +190,7 @@ export default {
               label: "Sale",
               data: saleAmounts,
               borderWidth:0,
-              backgroundColor: '#816C5B',
+              backgroundColor: '#484848',
               pointRadius:0, 
               pointHitRadius:10,
               pointHoverRadius:3,
@@ -263,60 +200,81 @@ export default {
               label: "Discounts",
               data: discounts,
               borderWidth:0,
-              backgroundColor: '#A9A18C',
+              backgroundColor: '#b8b8b8',
               pointRadius:0,
               pointHitRadius:10,
               pointHoverRadius:3,
               pointHoverBorderWidth:0
-            }
+            },
           ]
         }
-        console.log(me.dailySaleData);
-
 
       }).catch(() => {});
     },
 
-    refreshAllChartData(){
-      this.getDailySale();
-      /*
-      this.getInboundVsOutbound();
-      this.getThreatBreakdown("inbound" );
-      this.getThreatBreakdown("outbound");
-      this.getTopReport('topConnectingIps', 'topConnectingIpData', 'IPADDRESS', 'cornflowerblue');
-      this.getTopReport('topInboundViruses', 'topVirusData', 'VIRUSNAME', '#E45641');
-      */
+    //Data Provider for Doughnut Chart
+    getOrdersStats(statsType){
+      let me = this;
+
+      Rest.getOrdersStats(statsType).then(function(resp){
+
+        let stats={};
+        resp.data.list.map(function(dataRow){
+          stats[dataRow.category] = dataRow.count;
+        });
+        
+        if (statsType==="by-status"){
+          //For orderByStatus - Doughnut-Chart
+          me.ordersByStatusData={
+            labels: ['New', 'On Hold', 'Complete', 'Shipped'],
+            datasets: [{
+              data: [
+                stats["New"],
+                stats["On Hold"],
+                stats["Complete"],
+                stats["Shipped"]
+              ],
+              backgroundColor: ['red', 'green', 'orange', 'blue'],
+              borderWidth: 0
+            }]
+          }
+          me.ordersByStatusLegendData=[
+            {label:'New'      , value: stats["New"]      , color:'red'   },
+            {label:'On Hold'  , value: stats["On Hold"]  , color:'green' },
+            {label:'Complete' , value: stats["Complete"] , color:'orange'},
+            {label:'Shipped'  , value: stats["Shipped"]  , color:'blue'  }
+          ];
+        }
+        else{
+          //For orderByPaymentType - Doughnut-Chart
+          me.ordersByPaymentTypeData={
+            labels: ['Card', 'Cash', 'Check'],
+            datasets: [{
+              data: [
+                stats["Card"],
+                stats["Cash"],
+                stats["Check"]
+              ],
+              backgroundColor: ['red', 'green', 'orange'],
+              borderWidth: 0
+            }]
+          }
+          me.ordersByPaymentTypeLegendData=[
+            {label:'Card' , value: stats["Card"]  , color:'red'   },
+            {label:'Cash' , value: stats["Cash"]  , color:'green' },
+            {label:'Check', value: stats["Check"] , color:'orange'}
+          ];
+
+        }
+
+      })
     },
 
-    onIntervalChange(val){
-      /*
-      // Change options (Works but chart rendering has little issue)
-      this.$data.timeChartOptions = Object.assign({}, this.$data.timeChartOptions, {
-        scales:{
-          xAxes:[{
-            stacked:true,
-            type : 'time',
-            time :{
-              min:this.$_timeIntervalBasedOption[val].min,
-              max:this.$_timeIntervalBasedOption[val].max,
-              displayFormats: {
-                'hour'   : 'MMM-DD HH:mm',
-                'day'    : 'MMM-DD',
-                'week'   : 'MMM-DD',
-                'month'  : 'MMM-DD YYYY',
-                'quarter': 'MMM-DD',
-                'year'   : 'MMM-DD YY',
-              }
-            }
-          }]
-        }
-      });
-
-      */
-
-      this.$store.commit('dashboardInterval',val);
-      this.refreshAllChartData();
-    }
+    refreshAllChartData(){
+      this.getDailySale();
+      this.getOrdersStats('by-status');
+      this.getOrdersStats('by-payment-type');
+    },
 
   },
   created(){
@@ -346,64 +304,12 @@ export default {
       tooltips:{enabled:false}
     }
 
-    this.$_miniBarOptions={
-      barThickness:1,
-      legend:{display:false},
-      tooltips:{
-        mode: 'y',
-        cornerRadius:2,
-        caretSize:0,
-        bodyFontSize:11,
-        titleFontSize:11
-      },
-      scales: {
-        yAxes: [{
-          stacked:true,
-          ticks: {
-            beginAtZero: true,
-            fontSize:10
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
-          barPercentage :1,
-          categoryPercentage:0.95
-        }],
-        xAxes: [{
-          stacked: true,
-          ticks:{
-            fontSize:10
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
-          barPercentage :1,
-          categoryPercentage:0.98
-        }]
-      },
-      animation:{
-        onComplete: function () {
-          /*
-          this.config.data.datasets.forEach(function (dataset) {
-            dataset.bars.forEach(function (bar) {
-              console.log(bar.value, bar.x, bar.y - 5);
-              //ctx.fillText(bar.value, bar.x, bar.y - 5);
-            });
-          })
-          */
-        }
-      }
-    }
-
   },
 
   mounted(){
     this.refreshAllChartData();
   },
   components:{
-    GoodJunk,
     DoughnutChart,
     BaseHorizontalBarChart,
     TimeBarChart,
@@ -418,7 +324,7 @@ export default {
 .sw-row1{
   display: flex;
 }
-.sw-chart-card{
+.sw-chart-common{
   background-color: #fff;
   border:1px solid #aaa;
   border-top:3px solid #333;
@@ -426,14 +332,14 @@ export default {
 
   padding:10px;
   margin:5px 20px 0 0;
-  min-width:320px;
+  min-width:474px;
   &.sw-mini-bar-chart{
     padding:10px 5px 0 5px;
     margin:5px 0 0 0;
   }
 
   &.sw-time-bar-chart{
-    width:1044px;
+    width:1000px;
     padding:0 5px 0 5px;
     margin:20px 0 0 0;
   }
