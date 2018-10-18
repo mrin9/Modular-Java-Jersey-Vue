@@ -6,6 +6,8 @@ import com.app.model.stats.CategoryCountModel;
 import com.app.model.stats.CategoryCountModel.CategoryCountResponse;
 import com.app.model.stats.DailySaleModel;
 import com.app.model.stats.DailySaleModel.DailySaleResponse;
+import com.app.model.stats.DailyOrderCountModel;
+import com.app.model.stats.DailyOrderCountModel.DailyOrderCountResponse;
 import com.app.util.HibernateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +53,29 @@ public class StatsController extends BaseController {
             return Response.ok(resp).build();
         }
     }
+
+    @GET
+    @Path("daily-order-count")
+    @ApiOperation(value = "Get Sales by date", response = DailyOrderCountResponse.class)
+    @RolesAllowed({"ADMIN", "SUPPORT"})
+    public Response getDailyOrderCount() {
+        DailyOrderCountResponse resp = new DailyOrderCountResponse();
+
+        try {
+            Session hbrSession = HibernateUtil.getSession();
+            hbrSession.beginTransaction();
+            List<DailyOrderCountModel> dailyOrderCount = StatsDao.getDailyOrderCount(hbrSession);
+            hbrSession.getTransaction().commit();
+            resp.setSuccessMessage("Daily Order Count");
+            resp.setList(dailyOrderCount);
+            return Response.ok(resp).build();
+        }
+        catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Internal Error - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
+    }
+
 
     @GET
     @Path("{orderStats: orders-by-status|orders-by-payment-type}")
