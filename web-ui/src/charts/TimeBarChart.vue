@@ -79,7 +79,7 @@ export default {
 }
 
 .sw-chart-title{
-  color:#fff;
+  color:#333;
   font-weight:bold;
 }
 

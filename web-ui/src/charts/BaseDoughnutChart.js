@@ -11,7 +11,7 @@ export default {
         maintainAspectRatio: false,
         //rotation: -Math.PI,
         //circumference: Math.PI,
-        cutoutPercentage: 80,
+        cutoutPercentage: 70,
         legend: {
           display :true,
           position:'right'

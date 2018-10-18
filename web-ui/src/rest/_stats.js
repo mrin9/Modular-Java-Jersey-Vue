@@ -5,12 +5,17 @@ export default {
 
 
   getDailySale(){
-    let qsParams={};
     return axios.get(RestUtil.getBasePath() + "/stats/daily-sale",{
-      headers: {'Authorization': RestUtil.getToken()},
-      params:qsParams
+      headers: {'Authorization': RestUtil.getToken()}
     });
   },
+
+  getDailyOrderCount(){
+    return axios.get(RestUtil.getBasePath() + "/stats/daily-order-count",{
+      headers: {'Authorization': RestUtil.getToken()}
+    });
+  },
+
 
   getOrdersStats( groupBy ){
     if (groupBy==="by-status"){

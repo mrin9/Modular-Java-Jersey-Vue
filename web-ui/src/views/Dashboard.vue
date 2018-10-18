@@ -12,8 +12,8 @@
       <doughnut-chart
         :chartData="ordersByStatusData"
         :options="$_miniDonutOptions"
-        :width="140"
-        :height="140"
+        :width="100"
+        :height="100"
       >
         <sw-legend :legends="ordersByStatusLegendData" direction="row"></sw-legend>
       </doughnut-chart>
@@ -25,8 +25,8 @@
       <doughnut-chart
         :chartData="ordersByPaymentTypeData"
         :options="$_miniDonutOptions"
-        :width="140"
-        :height="140"
+        :width="100"
+        :height="100"
       >
         <sw-legend :legends="ordersByPaymentTypeLegendData"></sw-legend>
       </doughnut-chart>
@@ -34,6 +34,7 @@
 
 
   </div>
+  <!-- Daily Sale  -->
   <div class="sw-row1">
     <div class="sw-chart-common sw-time-bar-chart">
       <time-bar-chart
@@ -41,7 +42,7 @@
           :chartData="dailySaleData"
           :options="timeChartOptions"
           :width="1000"
-          :height="150"
+          :height="130"
           :buttons="['Table Data']"
           @button-click="onChartButtonClick($refs.dailySaleChart, ...arguments)"
           title="Daily Sale"
@@ -52,6 +53,24 @@
     </div>
   </div>
 
+  <!-- Daily Order Count  -->
+  <div class="sw-row1">
+    <div class="sw-chart-common sw-time-bar-chart">
+      <time-bar-chart
+          ref="dailyOrderCountChart"
+          :chartData="dailyOrderCountData"
+          :options="timeChartOptions"
+          :width="1000"
+          :height="130"
+          :buttons="['Table Data']"
+          @button-click="onChartButtonClick($refs.dailySaleChart, ...arguments)"
+          title="Count of orders placed on daily basis"
+          interval=""
+          style="width:100%;"
+        >
+      </time-bar-chart>
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -71,6 +90,7 @@ export default {
       showFor:'all',
       showSlideOut:false,
       dailySaleData:{},
+      dailyOrderCountData:{},
       ordersByStatusData:{},
       ordersByStatusLegendData:[],
       ordersByPaymentTypeData:{},
@@ -122,7 +142,7 @@ export default {
               lineWidth: 1.5,
               tickMarkLength: 10
             },
-            barPercentage : .55,
+            barPercentage : .90,
             //categoryPercentage:1
           }]
         }
@@ -168,7 +188,7 @@ export default {
       this.$data.showSlideOut=true;
     },
 
-    //Data Provider for Bar Chart - Time seriese
+    // Daily Sale Data (Bar chart time seriese)
     getDailySale(){
       let me = this;
       Rest.getDailySale().then(function(resp){
@@ -182,7 +202,7 @@ export default {
           discounts.push(dataRow.discount);
         });
 
-        // Daily Sale Data (Bar chart time seriese)
+        
         me.dailySaleData={
           labels: dateLabels,// Labels should be Date objects
           datasets: [
@@ -190,7 +210,7 @@ export default {
               label: "Sale",
               data: saleAmounts,
               borderWidth:0,
-              backgroundColor: '#484848',
+              backgroundColor: '#23A1FC',
               pointRadius:0, 
               pointHitRadius:10,
               pointHoverRadius:3,
@@ -200,12 +220,43 @@ export default {
               label: "Discounts",
               data: discounts,
               borderWidth:0,
-              backgroundColor: '#b8b8b8',
+              backgroundColor: 'lightgray',
               pointRadius:0,
               pointHitRadius:10,
               pointHoverRadius:3,
               pointHoverBorderWidth:0
             },
+          ]
+        }
+
+      }).catch(() => {});
+    },
+
+    // Daily Order Count (Bar chart time seriese)
+    getDailyOrderCount(){
+      let me = this;
+      Rest.getDailyOrderCount().then(function(resp){
+        let dateLabels=[];
+        let orderCounts=[];
+
+        resp.data.list.map(function(dataRow){
+          dateLabels.push(new Date(dataRow.date));
+          orderCounts.push(dataRow.count);
+        });
+       
+        me.dailyOrderCountData={
+          labels: dateLabels,// Labels should be Date objects
+          datasets: [
+            {
+              label: "Order Count",
+              data: orderCounts,
+              borderWidth:0,
+              backgroundColor: '#A5BE00',
+              pointRadius:0, 
+              pointHitRadius:10,
+              pointHoverRadius:3,
+              pointHoverBorderWidth:0
+            }
           ]
         }
 
@@ -234,15 +285,15 @@ export default {
                 stats["Complete"],
                 stats["Shipped"]
               ],
-              backgroundColor: ['red', 'green', 'orange', 'blue'],
+              backgroundColor: ['#23A1FC', 'orangered', '#A5BE00', '#FFB41E'],
               borderWidth: 0
             }]
           }
           me.ordersByStatusLegendData=[
-            {label:'New'      , value: stats["New"]      , color:'red'   },
-            {label:'On Hold'  , value: stats["On Hold"]  , color:'green' },
-            {label:'Complete' , value: stats["Complete"] , color:'orange'},
-            {label:'Shipped'  , value: stats["Shipped"]  , color:'blue'  }
+            {label:'New'      , value: stats["New"]      , color:'#23A1FC'   },
+            {label:'On Hold'  , value: stats["On Hold"]  , color:'orangered' },
+            {label:'Complete' , value: stats["Complete"] , color:'#A5BE00'},
+            {label:'Shipped'  , value: stats["Shipped"]  , color:'#FFB41E'  }
           ];
         }
         else{
@@ -255,14 +306,14 @@ export default {
                 stats["Cash"],
                 stats["Check"]
               ],
-              backgroundColor: ['red', 'green', 'orange'],
+              backgroundColor: ['#23A1FC', '#A5BE00', 'lightgray'],
               borderWidth: 0
             }]
           }
           me.ordersByPaymentTypeLegendData=[
-            {label:'Card' , value: stats["Card"]  , color:'red'   },
-            {label:'Cash' , value: stats["Cash"]  , color:'green' },
-            {label:'Check', value: stats["Check"] , color:'orange'}
+            {label:'Card' , value: stats["Card"]  , color:'#23A1FC' },
+            {label:'Cash' , value: stats["Cash"]  , color:'#A5BE00' },
+            {label:'Check', value: stats["Check"] , color:'lightgray' }
           ];
 
         }
@@ -272,6 +323,7 @@ export default {
 
     refreshAllChartData(){
       this.getDailySale();
+      this.getDailyOrderCount();
       this.getOrdersStats('by-status');
       this.getOrdersStats('by-payment-type');
     },
@@ -297,7 +349,7 @@ export default {
     }
     
     this.$_miniDonutOptions = {
-      cutoutPercentage:80,
+      cutoutPercentage:75,
       legend:{
         display:false
       },
