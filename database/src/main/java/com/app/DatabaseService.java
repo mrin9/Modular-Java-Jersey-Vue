@@ -20,7 +20,8 @@ public class DatabaseService {
 
         try {
             getDBConnection();
-            dbWebServer = Server.createWebServer("-webAllowOthers","-webPort","9000").start();
+            //dbWebServer = Server.createWebServer("-webPort","9000", "-webAllowOthers").start();
+            dbWebServer = Server.createTcpServer("-tcpPort", "9092", "-tcpAllowOthers").start();
         }
         catch (SQLException e) {
             e.printStackTrace();
