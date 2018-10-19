@@ -15,7 +15,7 @@
 
     <!-- Build order of these modules is evaluated based of dependency graph -->
     <modules>
-        <module>web-ui</module>  <!-- Build web-ui first so that the static files can be copied into the final jar -->
+        <!-- module>web-ui</module -->  <!-- Build web-ui first so that the static files can be copied into the final jar -->
         <module>database</module>
         <module>web-api</module> <!-- to exclude web-ui during build >>> mvn -pl '!web-ui' install -->
     </modules>
