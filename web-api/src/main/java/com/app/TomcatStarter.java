@@ -15,10 +15,8 @@ import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.slf4j.*;
-import org.hibernate.SessionFactory;
 
 import java.io.*;
-import java.util.List;
 import java.util.concurrent.*;
 
 
@@ -109,12 +107,13 @@ public class TomcatStarter {
         Future futureTask = scheduledThreadPool.scheduleAtFixedRate(refreshDBTask, 0, period, timeUnit);
         log.info(String.format("\n\nRefreshDB Task Scheduled (The task refreshes the Database every %s %s)", period, timeUnit.toString()));
 
-
-
-
-
         //Start Web API Server
-        tomcat.setPort(port);
+        String webPort = System.getenv("PORT");
+        if(webPort == null || webPort.isEmpty()) {
+            webPort = "8080";
+        }
+
+        tomcat.setPort(Integer.valueOf(webPort));
         tomcat.start();
         tomcat.getConnector(); // Trigger the creation of the default connector
 

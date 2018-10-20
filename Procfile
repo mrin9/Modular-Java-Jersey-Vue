@@ -1,1 +1,1 @@
-web: java -jar web-api/target/modules/web-api-1.0.0.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT  -jar web-api/target/modules/web-api-1.0.0.jar
