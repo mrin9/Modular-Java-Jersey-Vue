@@ -65,7 +65,7 @@ PROJECT_FOLDER
 - Build Frontend (optional step, requiered only if you make changes to fronend code )
 - Build Backend 
 
-### Build Frontend (optional step)
+#### To build frontend (optional step)
 ```bash
 # run these commands from web-ui folder
 
@@ -74,7 +74,7 @@ yarn build
 
 ```
 
-### Build Backend
+#### To build backend
 ```bash
 # run these commands from root folder where top-level pom.xml is present
 
@@ -88,9 +88,9 @@ java -jar ./web-api/target/modules/web-api-1.0.0.jar
 ##### Once the App is running
 App Component       | URLs
 ---                 | ---
-URL for API Docs    | http://localhost:8080/api-docs/index.html
-URL to Access H2 DB | http://localhost:8082
+Access the web app  | http://localhost:8080
 URL for REST APIs   | http://localhost:8080/api
+URL for API Docs    | http://localhost:8080/api-docs/index.html
 
 ## Backers
 Help me to host this app on AWS or Google-Cloud, for everyone to checkout the app.
