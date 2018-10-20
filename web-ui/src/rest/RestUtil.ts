@@ -27,8 +27,8 @@ setToken(tokenValue:string){
 },
 
 getBasePath(){
-  //return window.location.origin + restServiceRoot;
-  return "http://localhost:8080" + restServiceRoot;
+  return window.location.origin + restServiceRoot;
+  //return "http://localhost:8080" + restServiceRoot;
 },
 
 globalErrorParser(err:AxiosError){
