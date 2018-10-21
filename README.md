@@ -1,7 +1,7 @@
 ## Modular Java, Embedded Tomcat, Fat Jar, Vue JS 
 Application to demonstrate various parts of a service oriented RESTfull application.
 
-#### Heroku Hosted
+## Demo (Heroku Hosted)
 Allow about 2-3 mins for the instanse to start  
 - [WebApp](https://modular-java-jersey-vue.herokuapp.com)
 - [API Reference (Open API Spec)](https://modular-java-jersey-vue.herokuapp.com/api-docs/index.html)
