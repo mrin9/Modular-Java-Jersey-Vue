@@ -46,8 +46,7 @@
           <el-button class="sw-orange"  size="small" @click="userName='support';password='support'"   :loading="disableLogin">SUPPORT</el-button>
         </div>
         <div class="sw-login-as-buttons sw-row-width">
-          <el-button style="width:135px" class="sw-gray" size="small" @click="win.location=(win.location.origin+'/api-docs/index.html')">API DOCS</el-button>
-          <el-button style="width:135px" class="sw-gray" size="small" @click="userName='customer';password='customer'">DB WEB CONSOLE</el-button>
+          <el-button style="flex:1" class="sw-gray" size="small" @click="win.location=(win.location.origin+'/api-docs/index.html')">API DOCS</el-button>
         </div>
 
       </div>

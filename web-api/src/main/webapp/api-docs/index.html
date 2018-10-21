@@ -148,11 +148,12 @@
       <input placeholder="User Name" id="sonic_username" name="username" type="text" value="admin" list="users" style="width:150px;vertical-align: middle;"/>
       <datalist id="users">
 	    <option value="admin">
-	    <option value="ouadmin@example.com">
-	    <option value="user@example.com">
+	    <option value="customer">
+	    <option value="support">
   	  </datalist>
-      <input placeholder="Password" id="sonic_password"  name="password" type="password" value="admin" style="width:75px;vertical-align: middle;"/>
+      <input placeholder="Password" id="sonic_password"  name="password" type="admin" value="admin" style="width:75px;vertical-align: middle;"/>
       <button id="loginBtn" type="button" class="header__btn"  style="border:0; color:white; cursor:pointer" onclick="login()">Login</button>
+      <button id="backBtn"  type="button" class="header__btn"  style="border:0; color:white; cursor:pointer" onclick="window.location=(window.location.origin+'/ui/index.html#login')">To App</button>
       <!-- END Added by Mrin -->
     </form>
   </div>

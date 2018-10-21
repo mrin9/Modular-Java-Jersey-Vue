@@ -86,11 +86,11 @@ java -jar ./web-api/target/modules/web-api-1.0.0.jar
 ```
 
 ##### Once the App is running
-App Component       | URLs
----                 | ---
-Access the web app  | http://localhost:8080
-URL for REST APIs   | http://localhost:8080/api
-URL for API Docs    | http://localhost:8080/api-docs/index.html
+App Component        | URLs
+---                  | ---
+URL for the web app  | http://localhost:8080 or http://localhost:8080/ui/index.html
+URL for API Docs     | http://localhost:8080/api-docs/index.html
+BaseURL for REST APIs| http://localhost:8080/api
 
 ## Backers
 Help me to host this app on AWS or Google-Cloud, for everyone to checkout the app.
