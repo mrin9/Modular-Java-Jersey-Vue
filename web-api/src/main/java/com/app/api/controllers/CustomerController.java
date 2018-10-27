@@ -143,9 +143,14 @@ public class CustomerController extends BaseController {
     @Path("{customerId}")
     @ApiOperation(value = "Delete a Customer", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
-    public Response deleteCustomer(@ApiParam(value="Customer Id", example="1") @PathParam("customerId") Integer customerId) {
+    public Response deleteCustomer(@ApiParam(value="Customer Id", example="2") @PathParam("customerId") Integer customerId) {
 
         BaseResponse resp = new BaseResponse();
+        if (customerId == 1 ){
+            resp.setErrorMessage("Customer with Id 1 is special, cannot be deleted");
+            return Response.ok(resp).build();
+        }
+
         Session hbrSession = HibernateUtil.getSession();
         try {
             CustomerModel foundCust  = CustomerDao.getById(hbrSession, customerId);

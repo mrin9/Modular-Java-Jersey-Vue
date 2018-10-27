@@ -37,7 +37,7 @@ public class EmployeeController extends BaseController {
     @ApiOperation(value = "Get list of employees", response = EmployeeUserResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
     public Response getEmployeeList(
-        @ApiParam(value="Employee Id", example="201") @QueryParam("employee-id") int employeeId,
+        @ApiParam(value="Employee Id", example="202") @QueryParam("employee-id") int employeeId,
         @ApiParam(value="User Id") @QueryParam("user-id") String userId,
         @ApiParam(value="Department")  @QueryParam("department") String dept,
         @ApiParam(value="Search by name or email - Use % for wildcard like '%ra%'", example="%ra%")    @QueryParam("search") String search,
@@ -47,6 +47,7 @@ public class EmployeeController extends BaseController {
 
         int recordFrom=0;
         Criteria criteria = HibernateUtil.getSessionFactory().openSession().createCriteria(EmployeeUserModel.class);
+
         if (employeeId > 0){
             criteria.add(Restrictions.eq("employeeId",  employeeId ));
         }
@@ -149,6 +150,11 @@ public class EmployeeController extends BaseController {
     public Response deleteEmployee(@ApiParam(value="Employee Id", example="1") @PathParam("employeeId") Integer employeeId) {
 
         BaseResponse resp = new BaseResponse();
+        if (employeeId == 201 || employeeId == 205){
+            resp.setErrorMessage("Employee 201 and 205 are special, they cannot be deleted");
+            return Response.ok(resp).build();
+        }
+
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
         try {
