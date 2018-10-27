@@ -2,7 +2,7 @@
 Application to demonstrate various parts of a service oriented RESTfull application.
 
 ## Demo (Heroku Hosted)
-Allow about 2-3 mins for the instanse to start  
+Allow about 2-3 mins for the instance to start  
 - [WebApp](https://modular-java-jersey-vue.herokuapp.com)
 - [API Reference (Open API Spec)](https://modular-java-jersey-vue.herokuapp.com/api-docs/index.html)
 
@@ -12,7 +12,7 @@ Component          | Technology
 Backend Lang       | Java 11 (with modules)
 Restfull Framwork  | Jersey 
 Container          | Tomcat 9 (Embeded Mode)
-Server Build Tools | maven 3.5.4 (Creates a Executable Jar with tomcat embeded )
+Server Build Tools | maven 3.5.4 (Creates a Executable Jar with embeded tomcat)
 Security           | Token Based (Spring Security and [JWT](https://github.com/auth0/java-jwt) )
 REST Spec          | [Open API Standard](https://www.openapis.org/) 
 In Memory DB       | H2 
@@ -34,7 +34,7 @@ PROJECT_FOLDER
 │  README.md
 │  pom.xml       # Parent maven project (contains other sub projects)
 │
-└──[database]    # Java-Module ( Java project that contains Database related services )  
+└──[database]    # Java-Project/Java-Module (contains H2 database related services )  
 │  │  pom.xml       
 │  └──[src]      
 │     └──[main]      
@@ -43,28 +43,28 @@ PROJECT_FOLDER
 │              schema.sql  # Contains sql script to generate database tables and views in H2
 │              data.sql    # Contains sql script to fill the tables with sample data
 │
-└──[web-api]     # Java-Module ( Java project for RESTfull APIs )  
+└──[web-api]     # Java-Project/Java-Module ( The Main WebApp contating RESTfull APIs )  
 │  │  pom.xml      
 │  └──[src]      
 │     └──[main]      
 │        └──[java]        # java source files   
 │        └──[resources]
 │        └──[webapp]      # files/folders under webapp is accessible from web-browser
-│           └──[ui]       # the pom.xml copies web-ui/dist into this folder, to make UI available from the browser
+│           └──[ui]       # maven build script would copy web-ui/dist into this folder, to make UI available from the browser
 │           └──[api-docs] # contains swagger-ui source for API documentation and try-out
 │
-└──[web-ui]     # A regular folder that contains UI source code 
+└──[web-ui]     # A regular folder that contains VueJS based UI source code 
 │  │  package.json  
 │  │  vue.config.js  
 │  │  package.json   
-│  └──[node_modules] # files under this is dounloaded by 'yarn install' command       
+│  └──[node_modules] # files under this is downloaded by 'yarn install' command       
 │  └──[dist]         # VueJs source is compiled, bundled and minified into this folder 
 │  └──[src]          # contains ui source code
 ```
 
 ### Build Process 
-- Build Frontend (optional step, requiered only if you make changes to fronend code )
-- Build Backend 
+- 1st Build Frontend (optional, requiered only if you make changes to fronend code )
+- Then Build Backend (backend build script will copy UI code build above into itsself)  
 
 #### To build frontend (optional step)
 ```bash
