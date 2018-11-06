@@ -93,16 +93,6 @@ URL for the web app  | http://localhost:8080 or http://localhost:8080/ui/index.h
 URL for API Docs     | http://localhost:8080/api-docs/index.html
 BaseURL for REST APIs| http://localhost:8080/api
 
-## Backers
-Help me to host this app on AWS or Google-Cloud, for everyone to checkout the app.
-[[Become a backer](https://opencollective.com/angular-springboot-rest-jwt#backer)]
-
-<a href="https://opencollective.com/angular-springboot-rest-jwt#backers" target="_blank"><img src="https://opencollective.com/angular-springboot-rest-jwt/backers.svg?width=890"></a>
-
-
-## Sponsors
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/angular-springboot-rest-jwt#sponsor)]
-
 
 ### Screenshots
 #### Login
@@ -119,3 +109,15 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <kbd>
     <img src="/screenshots/api_reference.png?raw=true">
 </kbd>
+
+## Backers
+Help me to host this app on AWS or Google-Cloud, for everyone to checkout the app.
+[[Become a backer](https://opencollective.com/angular-springboot-rest-jwt#backer)]
+
+<a href="https://opencollective.com/angular-springboot-rest-jwt#backers" target="_blank"><img src="https://opencollective.com/angular-springboot-rest-jwt/backers.svg?width=890"></a>
+
+
+## Sponsors
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/angular-springboot-rest-jwt#sponsor)]
+
+
