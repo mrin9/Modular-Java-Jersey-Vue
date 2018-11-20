@@ -16,12 +16,12 @@
 
         <tomcat-version>9.0.12</tomcat-version>
         <jersey-version>2.27</jersey-version>
-        <swagger-version>1.5.17</swagger-version>
+        <swagger-version>1.5.21</swagger-version>
         <jackson-version>2.9.6</jackson-version>
         <hibernate-version>4.3.11.Final</hibernate-version> <!-- Hibernate 5 (5.3.6.Final) and above gives a classCastException -->
         <maven-jar-plugin-version>3.1.0</maven-jar-plugin-version>
         <maven-dependency-plugin-version>3.1.1</maven-dependency-plugin-version>
-        <jackson-version>2.9.6</jackson-version>
+        <jackson-version>2.9.7</jackson-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -120,7 +120,7 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.7.0</version>
+            <version>0.9.1</version>
         </dependency>
 
         <!-- Swagger -->
