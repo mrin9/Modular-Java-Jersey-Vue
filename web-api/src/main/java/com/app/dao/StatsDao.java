@@ -1,23 +1,13 @@
 package com.app.dao;
 
-import com.app.model.order.OrderWithNestedDetailModel;
 import com.app.model.stats.CategoryCountModel;
 import com.app.model.stats.DailyOrderCountModel;
 import com.app.model.stats.DailySaleModel;
-import com.app.util.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import org.hibernate.*;
+import java.math.*;
+import java.util.*;
 
 public class StatsDao {
-
     public static List<DailySaleModel> getDailySales(Session hbrSession) {
         String sql = "select sum( (unit_price * quantity) - discount) as sale_amount, sum(discount) as discount, order_date as date from  NORTHWIND.ORDER_DETAILS "
             + " where order_date > DATEADD(DAY, -100 , CURDATE()) "
@@ -52,8 +42,6 @@ public class StatsDao {
         return dailyOrderCount;
     }
 
-
-
     public static List<CategoryCountModel> getOrdersByPaymentType(Session hbrSession) {
         String sql = "select count(*) as count, payment_type as category from NORTHWIND.orders where order_date > DATEADD(DAY, -100 , CURDATE()) group by payment_type" ;
 
@@ -83,6 +71,4 @@ public class StatsDao {
         }
         return categoryCountList;
     }
-
-
 }

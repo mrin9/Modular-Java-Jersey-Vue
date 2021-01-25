@@ -1,10 +1,8 @@
 package com.app.model.product;
 
 import javax.persistence.*;
-
 import com.app.model.PageResponse;
-import io.swagger.annotations.ApiModelProperty;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,7 +11,9 @@ import java.util.List;
 public class ProductModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false) private Integer id;
-    @Column(name = "product_code")      @ApiModelProperty(example = "601") private String  productCode;
+
+    @Schema(example="601")
+    @Column(name = "product_code")       private String  productCode;
     @Column(name = "product_name")      private String  productName;
     @Column(name = "description")       private String  description;
     @Column(name = "standard_cost")     private BigDecimal standardCost;
@@ -21,10 +21,11 @@ public class ProductModel {
     @Column(name = "target_level")      private Integer targetLevel;
     @Column(name = "reorder_level")     private Integer reorderLevel;
     private Integer discontinued;
-    @ApiModelProperty(allowableValues = "Camera, Laptop, Tablet, Phone") private String category;
+
+    @Schema(allowableValues =  {"Camera", "Laptop", "Tablet", "Phone"}, example="Camera")
+    private String category;
 
     //Getters and Setters
-
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -60,7 +61,5 @@ public class ProductModel {
 
         public List<ProductModel> getList() {return list; }
         public void setList(List<ProductModel> list) { this.list = list; }
-
-
     }
 }

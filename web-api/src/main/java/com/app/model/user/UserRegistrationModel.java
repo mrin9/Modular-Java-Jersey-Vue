@@ -1,26 +1,24 @@
 package com.app.model.user;
 
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class UserRegistrationModel {
-
-    @ApiModelProperty(example = "mickey", required=true) private String userId;
-    @ApiModelProperty(example = "mickey", required=true) private String password;
-    @ApiModelProperty(example = "CUSTOMER", allowableValues="ADMIN, SUPPORT, CUSTOMER", required=true) private String role;
-    @ApiModelProperty(example = "Mouse" , required=true) private String lastName;
-    @ApiModelProperty(example = "Mickey", required=true) private String firstName;
-    @ApiModelProperty(example = "mmouse@example.com")    private String email;
-    @ApiModelProperty(example = "Desney")                private String company;
-    @ApiModelProperty(example = "800-200-3490")          private String phone;
-    @ApiModelProperty(example = "1313 Disneyland Dr")    private String address1;
-    @ApiModelProperty(example = "Adventure Park")        private String address2;
-    @ApiModelProperty(example = "Anaheim")               private String city;
-    @ApiModelProperty(example = "CA")                    private String state;
-    @ApiModelProperty(example = "92802")                 private String postalCode;
-    @ApiModelProperty(example = "USA")                   private String country;
-    @ApiModelProperty(value="applicable for ROLES - ADMIN and SUPPORT only ", example = "Sales") private String department;
-    @ApiModelProperty(value="applicable for ROLES - ADMIN and SUPPORT only ", example = "201")   private Integer managerId;
+    @Schema(example = "mickey", required=true) private String userId;
+    @Schema(example = "mickey", required=true) private String password;
+    @Schema(example = "CUSTOMER", allowableValues="ADMIN, SUPPORT, CUSTOMER", required=true) private String role;
+    @Schema(example = "Mouse" , required=true) private String lastName;
+    @Schema(example = "Mickey", required=true) private String firstName;
+    @Schema(example = "mmouse@example.com") private String email;
+    @Schema(example = "Disney") private String company;
+    @Schema(example = "800-200-3490") private String phone;
+    @Schema(example = "1313 Disneyland Dr") private String address1;
+    @Schema(example = "Adventure Park") private String address2;
+    @Schema(example = "Anaheim") private String city;
+    @Schema(example = "CA") private String state;
+    @Schema(example = "92802") private String postalCode;
+    @Schema(example = "USA") private String country;
+    @Schema(description="applicable for ROLES - ADMIN and SUPPORT only ", example = "Sales") private String department;
+    @Schema(description="applicable for ROLES - ADMIN and SUPPORT only ", example = "201") private Integer managerId;
 
     //Getters and Setters
     public String getUserId() {return userId;}

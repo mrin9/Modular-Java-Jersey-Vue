@@ -2,21 +2,13 @@ package com.app.dao;
 
 import com.app.model.order.OrderModel;
 import com.app.model.order.OrderWithNestedDetailModel;
-import com.app.model.order.OrderWithNestedDetailResponse;
-import com.app.util.HibernateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
-
 import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.math.*;
+import java.util.*;
 
 public class OrderDao {
-
     public static OrderModel getById(Session hbrSession, Integer orderId) {
         String hql = "from OrderModel where id = :orderId";
         Query q = hbrSession.createQuery(hql);
@@ -24,9 +16,7 @@ public class OrderDao {
         return  (OrderModel)q.uniqueResult();
     }
 
-
     private static String createSqlWhereString(Integer orderId, Integer customerId, String paymetType, String orderStatus){
-
         String sqlWhere = " where  1 = 1 ";
 
         if (orderId > 0)   { sqlWhere = sqlWhere + " and id = :orderId "; }
@@ -35,7 +25,6 @@ public class OrderDao {
         if (StringUtils.isNotBlank(orderStatus)){ sqlWhere = sqlWhere + " and order_status = :orderStatus "; }
 
         return " from northwind.orders " + sqlWhere;
-
     }
 
     public static BigInteger getOrderCount(Session hbrSession, Integer orderId, Integer customerId, String paymetType, String orderStatus)  throws HibernateException{
@@ -57,20 +46,16 @@ public class OrderDao {
         String sqlLimit = "";
         if ( limit <= 0 || limit > 1000 ){
             sqlLimit = " limit 1000 ";
-        }
-        else{
+        } else {
             sqlLimit = " limit " +  limit;
         }
         if (from <= 0) {
             from = 0;
-        }
-        else{
+        } else {
             from = (from - 1) * limit;
         }
 
         sqlLimit = sqlLimit + " offset " + from;
-
-
         String finalSql = "select order_id, product_id   , customer_id   , order_date, order_status  , shipped_date    , payment_type, paid_date, "
             + " ship_name            , ship_address1, ship_address2 , ship_city , ship_state    , ship_postal_code, ship_country, "
             + " product_code         , product_name , category      , quantity  , unit_price    , discount        , date_allocated, order_item_status, "
@@ -89,7 +74,6 @@ public class OrderDao {
         List rowList = q.list();
         long prevOrderId = -1, newOrderId=0;
         BigDecimal orderTotal = new BigDecimal(0);
-
 
         List<OrderWithNestedDetailModel> orderDetailList = new ArrayList<>();
         OrderWithNestedDetailModel orderDetail = new OrderWithNestedDetailModel();
@@ -137,8 +121,7 @@ public class OrderDao {
                 prevOrderId = newOrderId;
                 BigDecimal lineTotal = ((BigDecimal)row.get("UNIT_PRICE")).multiply((BigDecimal)row.get("QUANTITY")).subtract((BigDecimal)row.get("DISCOUNT"));
                 orderTotal = orderTotal.add(lineTotal);
-            }
-            else {
+            } else {
                 orderDetail.addOrderLine(
                     (int) row.get("PRODUCT_ID"),
                     (String) row.get("PRODUCT_CODE"),
@@ -156,7 +139,6 @@ public class OrderDao {
         }
         // Set the last ones order total;
         orderDetail.setOrderTotal(orderTotal);
-        
         return orderDetailList;
     }
 
@@ -176,7 +158,6 @@ public class OrderDao {
 
     public static int deleteOrderLine(Session hbrSession, Integer orderId, Integer productId)  throws HibernateException, ConstraintViolationException {
         String hql = "delete OrderItemModel where orderId = :orderId and productId = :productId";
-
         Query q = hbrSession.createQuery(hql);
         q.setParameter("orderId"  , orderId);
         q.setParameter("productId", productId);

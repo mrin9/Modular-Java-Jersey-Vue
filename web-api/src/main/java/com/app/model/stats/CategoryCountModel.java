@@ -1,13 +1,10 @@
 package com.app.model.stats;
 
 import com.app.model.BaseResponse;
-
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 public class CategoryCountModel {
-
     private String category;
     private BigInteger count;
 
@@ -24,7 +21,6 @@ public class CategoryCountModel {
     public BigInteger getCount() { return count; }
     public void setCount(BigInteger count) { this.count = count; }
 
-
     //Response Model Class used as API response
     public static class CategoryCountResponse  extends BaseResponse {
         private List<CategoryCountModel> list;
@@ -32,5 +28,4 @@ public class CategoryCountModel {
         public List<CategoryCountModel> getList() {return list; }
         public void setList(List<CategoryCountModel> list) { this.list = list; }
     }
-
 }

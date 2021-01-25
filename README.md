@@ -63,8 +63,8 @@ PROJECT_FOLDER
 ```
 
 ### Build Process 
-- 1st Build Frontend (optional, requiered only if you make changes to fronend code )
-- Then Build Backend (backend build script will copy UI code build above into itsself)  
+- 1st Build Frontend (optional, required only if you make changes to frontend code )
+- Then Build Backend (backend build script will copy UI code build above into itself)  
 
 #### To build frontend (optional step)
 ```bash

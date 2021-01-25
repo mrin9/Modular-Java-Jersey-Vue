@@ -1,13 +1,10 @@
 package com.app.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.StringUtils;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.security.Principal;
 import javax.persistence.*;
-
 
 @Entity
 @Table(name = "users")
@@ -16,7 +13,7 @@ public class User implements Serializable, Principal {
     @Column(name = "user_id") private String userId;
     private String password;
 
-    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER")
+    @Schema(allowableValues =  {"ADMIN", "SUPPORT", "CUSTOMER"}, example="ADMIN")
     private String role;
 
     @Column(name = "employee_id")
@@ -34,8 +31,7 @@ public class User implements Serializable, Principal {
         this.setRole(role);
         if (employeeId != null){
             this.setEmployeeId(employeeId);
-        }
-        else {
+        } else {
             this.setCustomerId(customerId);
         }
     }
@@ -58,5 +54,4 @@ public class User implements Serializable, Principal {
 
     public Integer getCustomerId() { return customerId; }
     public void setCustomerId(Integer customerId) { this.customerId = customerId; }
-
 }

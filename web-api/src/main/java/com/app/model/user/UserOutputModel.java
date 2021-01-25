@@ -3,23 +3,22 @@ package com.app.model.user;
 import com.app.model.BaseResponse;
 import com.app.model.PageResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.List;
 
-
 public class UserOutputModel implements Serializable, Principal {
     private String userId;
-    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER")
+
+    @Schema(allowableValues =  {"ADMIN", "SUPPORT", "CUSTOMER"}, example="ADMIN")
     private String role;
+
     private String fullName;
     private String email;
     private Integer customerId;
     private Integer employeeId;
     private String token;
-
 
     //Constructors
     public UserOutputModel(){}
@@ -70,27 +69,20 @@ public class UserOutputModel implements Serializable, Principal {
     public String getToken() {return token; }
     public void setToken(String token) {this.token = token; }
 
-
-
     //User Response Classes
-
     public static class UserListResponse extends PageResponse {
-
         private List<UserOutputModel> list = null;
 
         // ===== Getters & Setters =====
         public List<UserOutputModel> getList() {return list;}
         public void setList(List<UserOutputModel> list) {this.list = list;}
-
     }
 
     public static class UserResponse extends BaseResponse {
-
         private UserOutputModel data = null;
 
         // ===== Getters & Setters =====
         public UserOutputModel getData() {return data;}
         public void setData(UserOutputModel data) {this.data = data;}
-
     }
 }

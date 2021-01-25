@@ -1,15 +1,10 @@
 package com.app.dao;
 
 import com.app.model.employee.EmployeeModel;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
+import org.hibernate.*;
 import javax.validation.ConstraintViolationException;
 
 public class EmployeeDao {
-
-
     public static EmployeeModel getById(Session hbrSession, Integer employeeId){
         String hql = "from EmployeeModel where id = :employeeId";
         Query q = hbrSession.createQuery(hql);
@@ -30,6 +25,4 @@ public class EmployeeDao {
         queryDeleteUser.executeUpdate();
         queryDeleteEmployee.executeUpdate();
     }
-
-
 }

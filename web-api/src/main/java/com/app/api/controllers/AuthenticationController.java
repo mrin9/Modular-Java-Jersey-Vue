@@ -7,9 +7,13 @@ import javax.ws.rs.core.*;
 import com.app.api.BaseController;
 import com.app.model.user.*;
 import com.app.model.user.LoginModel.LoginResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 
-import io.swagger.annotations.*;
 import com.app.model.BaseResponse;
 import com.app.util.HibernateUtil;
 
@@ -19,18 +23,20 @@ import org.hibernate.Query;
 import com.app.util.TokenUtil;
 import org.slf4j.Logger;
 
-
+@Tag(name = "1st Authenticate Yourself")
 @Path("/authenticate")
-@Api(value = "1st Authenticate Yourself")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthenticationController extends BaseController {
-    private static Logger log = LoggerFactory.getLogger(AuthenticationController.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     @POST
     @PermitAll
-    @ApiOperation(value = "Authenticates user to access Email Security Application", response = LoginResponse.class)
     @Path("/user")
+    @Operation(
+      summary = "Authenticates user to access Application",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = LoginResponse.class)))}
+    )
     public Response authenticateUser(LoginModel loginModel) {
         String uid = loginModel.getUsername();
         String pwd = loginModel.getPassword();
@@ -62,14 +68,9 @@ public class AuthenticationController extends BaseController {
             );
             LoginResponse successResp = new LoginResponse(usrOutput);
             return Response.status(Response.Status.OK).entity(successResp).build();
-
         }
 
         resp.setErrorMessage("Incorrect username/password");
         return Response.status(Response.Status.UNAUTHORIZED).entity(resp).build();
     }
-
-
-
-
 }

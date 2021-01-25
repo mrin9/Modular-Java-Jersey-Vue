@@ -1,14 +1,10 @@
 package com.app.dao;
 
 import com.app.model.customer.CustomerModel;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
+import org.hibernate.*;
 import javax.validation.ConstraintViolationException;
 
 public class CustomerDao {
-
 
     public static CustomerModel getById(Session hbrSession, Integer customerId){
         String hql = "from CustomerModel where id = :customerId";
@@ -18,7 +14,6 @@ public class CustomerDao {
     }
 
     public static void delete(Session hbrSession, Integer customerId)  throws HibernateException, ConstraintViolationException {
-
         // Remove customer from all the related tables (do not change the sequence of deleteion else it may give a referal intigrity error)
         String sqlDeleteOrderItems = "delete from northwind.order_items where order_id in (select id from northwind.orders where customer_id = :customerId)";
         String sqlDeleteOrders   = "delete from northwind.orders where customer_id = :customerId" ;
@@ -41,13 +36,10 @@ public class CustomerDao {
         Query queryDeleteCustomer = hbrSession.createSQLQuery(sqlDeleteCustomer);
         queryDeleteCustomer.setParameter("customerId", customerId);
 
-
         queryDeleteOrderItems.executeUpdate();
         queryDeleteOrders.executeUpdate();
         queryDeleteCart.executeUpdate();
         queryDeleteUser.executeUpdate();
         queryDeleteCustomer.executeUpdate();
     }
-
-
 }

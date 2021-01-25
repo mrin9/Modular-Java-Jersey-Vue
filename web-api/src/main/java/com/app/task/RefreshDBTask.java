@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RefreshDBTask  implements Runnable {
-    private static Logger log = LoggerFactory.getLogger(RefreshDBTask.class);
+    private static final Logger log = LoggerFactory.getLogger(RefreshDBTask.class);
     @Override
     public void run() {
 
@@ -16,7 +16,5 @@ public class RefreshDBTask  implements Runnable {
             log.warn("Refresh DB Task Interupted");
             return;
         }
-
     }
-
 }

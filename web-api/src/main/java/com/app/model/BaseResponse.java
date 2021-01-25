@@ -1,5 +1,6 @@
 package com.app.model;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BaseResponse {
     public enum MessageTypeEnum {SUCCESS, ERROR, WARNING, NO_ACCESS, BAD_TOKEN};
@@ -7,11 +8,11 @@ public class BaseResponse {
     protected MessageTypeEnum  msgType;
     protected String  msg;
 
-    @ApiModelProperty(value = "Can be either SUCCESS, ERROR", example = "SUCCESS", required = true)
+    @Schema(description = "Can be either SUCCESS, ERROR", example = "SUCCESS", required = true)
     public MessageTypeEnum getMsgType() {return msgType;}
     public void setMsgType(MessageTypeEnum msgType) {this.msgType = msgType;}
 
-    @ApiModelProperty(value = "Overall message for the operation", example = "Operation was success", required = true)
+    @Schema(description = "Overall message for the operation", example = "Operation was success", required = true)
     public String getMsg() {return msg;}
     public void setMsg(String msg) {this.msg = msg;}
 
@@ -38,6 +39,4 @@ public class BaseResponse {
         this.msgType = msgType;
         this.msg = msg;
     }
-
-
 }

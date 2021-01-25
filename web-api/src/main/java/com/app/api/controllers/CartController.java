@@ -8,9 +8,12 @@ import com.app.model.cart.CartViewModel.CartViewResponse;
 import com.app.model.user.UserViewModel;
 import com.app.util.Constants;
 import com.app.util.HibernateUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,19 +28,20 @@ import com.app.dao.CartDao;
 
 
 @Path("cart")
-@Api(value = "Shopping Cart")
+@Tag(name = "Shopping Cart")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CartController extends BaseController {
-    private static Logger log = LoggerFactory.getLogger(CartController.class);
+    private static final Logger log = LoggerFactory.getLogger(CartController.class);
 
     @GET
-    @ApiOperation(value = "Get cart Items of an User", response = CartViewResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
-    public Response getCartItemsByUser(@ApiParam(value="User Id", example="customer") @QueryParam("user-id") String userId) {
-
+    @Operation(
+      summary = "Get cart Items of an User",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = CartViewResponse.class)))}
+    )
+    public Response getCartItemsByUser( @Parameter(description="User Id", example="customer") @QueryParam("user-id") String userId) {
         CartViewResponse resp = new CartViewResponse();
-
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
         //Customers can query their own cart only
         if (userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_CUSTOMER)){
@@ -54,14 +58,16 @@ public class CartController extends BaseController {
     }
 
     @POST
-    @ApiOperation(value = "Add a new product to cart", response = BaseResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT", "CUSTOMER"})
+    @Operation(
+      summary = "Add a new product to cart",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
+    )
     public Response getCartItemsByUser(
-        @ApiParam(value="User Id"   , example="customer") @QueryParam("user-id")    String userId,
-        @ApiParam(value="Product Id", example="610")      @QueryParam("product-id") Integer productId,
-        @ApiParam(value="Quantity"  , example="2")        @QueryParam("quantity")   Long quantity
+        @Parameter(description="User Id", example="customer") @QueryParam("user-id") String userId,
+        @Parameter(description="Product Id", example="610") @QueryParam("product-id") Integer productId,
+        @Parameter(description="Quantity"  , example="2") @QueryParam("quantity") Long quantity
     ) {
-
         BaseResponse resp = new BaseResponse();
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
 
@@ -82,10 +88,12 @@ public class CartController extends BaseController {
 
     @DELETE
     @Path("{userId}")
-    @ApiOperation(value = "Delete all cart Items of an User", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
-    public Response deleteCartItemsByUser(@ApiParam(value="User Id", example="customer") @PathParam("userId") String userId) {
-
+    @Operation(
+      summary = "Delete all cart Items of an User",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
+    )
+    public Response deleteCartItemsByUser(@Parameter(description="User ID", example="customer") @PathParam("userId") String userId) {
         BaseResponse resp = new BaseResponse();
         try {
             Session hbrSession = HibernateUtil.getSession();
@@ -94,8 +102,7 @@ public class CartController extends BaseController {
             hbrSession.getTransaction().commit();
             resp.setSuccessMessage(String.format("All the Items from cart are removed for user:%s (Items Removed:%s)", userId, result));
             return Response.ok(resp).build();
-        }
-        catch (HibernateException | ConstraintViolationException e) {
+        } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Cannot update cart item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
@@ -103,13 +110,15 @@ public class CartController extends BaseController {
 
     @DELETE
     @Path("{userId}/{productId}")
-    @ApiOperation(value = "Removes a product from cart of a user", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
+    @Operation(
+      summary = "Removes a product from cart of a user",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
+    )
     public Response removeProductFromCartOfUser(
-       @ApiParam(value="User Id"   , example="customer") @PathParam("userId") String userId,
-       @ApiParam(value="Product Id", example="601") @PathParam("productId") int productId
+       @Parameter(description = "User ID", example="customer") @PathParam("userId") String userId,
+       @Parameter(description = "Product ID", example="601") @PathParam("productId") int productId
     ) {
-
         BaseResponse resp = new BaseResponse();
         try {
             Session hbrSession = HibernateUtil.getSession();
@@ -118,8 +127,7 @@ public class CartController extends BaseController {
             hbrSession.getTransaction().commit();
             resp.setSuccessMessage(String.format("Product:%s from cart is removed for user:%s (Items Removed:%s)", productId, userId, result));
             return Response.ok(resp).build();
-        }
-        catch (HibernateException | ConstraintViolationException e) {
+        } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Cannot update cart item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
@@ -127,14 +135,16 @@ public class CartController extends BaseController {
 
     @PUT
     @Path("{userId}/{productId}/quantity")
-    @ApiOperation(value = "Modify cart of a user (by adding, removing or updating) product quantities", response = BaseResponse.class)
     @RolesAllowed({"ADMIN"})
+    @Operation(
+      summary = "Modify cart of a user (by adding, removing or updating) product quantities",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
+    )
     public Response addCartItemsForAnUser(
-        @ApiParam(value="User Id"   , example="customer") @PathParam("userId") String userId,
-        @ApiParam(value="Product Id", example="603")      @PathParam("productId") int productId,
-        @ApiParam(value="Quantity"  , example="2")        @QueryParam("quantity") Long quantity,
-        @ApiParam(value="action"    , example="add", allowableValues = "add, remove, update") @QueryParam("action") String action
-
+        @Parameter(description = "User ID", example="customer") @PathParam("userId") String userId,
+        @Parameter(description="Product Id", example="603") @PathParam("productId") int productId,
+        @Parameter(description="Quantity", example="2") @QueryParam("quantity") Long quantity,
+        @Parameter(example="add", schema = @Schema(allowableValues =  {"add","remove","update"})) @QueryParam("action") String action
     ) {
         BaseResponse resp = new BaseResponse();
         int resultCount;
@@ -158,8 +168,7 @@ public class CartController extends BaseController {
                     cartItem = new CartModel(userId, productId, quantity);
                     hbrSession.save(cartItem);
                     msg = "Product Added with specified quantities";
-                }
-                else {
+                } else {
                     Long existingQuantity = cartItem.getQuantity();
                     Long newQuantity = existingQuantity + quantity;
                     hbrSession.beginTransaction();
@@ -171,22 +180,19 @@ public class CartController extends BaseController {
                 resp.setSuccessMessage("Product added to Cart " );
                 return Response.ok(resp).build();
 
-            }
-            else if (action.equalsIgnoreCase("remove")){
+            } else if (action.equalsIgnoreCase("remove")){
                 String msg="";
                 if (cartItem == null) {
                     resp.setErrorMessage("Cannot Remove - Product dont exist in the cart");
                     return Response.ok(resp).build();
-                }
-                else{
+                } else {
                     Long existingQuantity = cartItem.getQuantity();
                     Long newQuantity = existingQuantity- quantity;
                     hbrSession.beginTransaction();
                     if (newQuantity.intValue() <= 0){
                         resultCount = CartDao.removeFromCart(hbrSession, userId, productId);
                         msg = "Product completely removed from cart";
-                    }
-                    else{
+                    } else {
                         resultCount = CartDao.updateProductQuantityInCart(hbrSession, userId, productId, newQuantity);
                         msg = "Product quantity updated after removal";
                     }
@@ -194,28 +200,23 @@ public class CartController extends BaseController {
                     resp.setSuccessMessage(msg);
                     return Response.ok(resp).build();
                 }
-            }
-            else if (action.equalsIgnoreCase("update")){
+            } else if (action.equalsIgnoreCase("update")){
                 if (cartItem == null) {
                     resp.setErrorMessage("Cannot update - Product dont exist in the cart");
-                }
-                else{
+                } else {
                     hbrSession.beginTransaction();
                     resultCount = CartDao.updateProductQuantityInCart(hbrSession, userId, productId, quantity);
                     hbrSession.getTransaction().commit();
                     resp.setSuccessMessage("Product Quantity updated " );
                 }
                 return Response.ok(resp).build();
-            }
-            else{
+            } else {
                 resp.setErrorMessage("Invalid action  - only add, remove and update are allowed");
                 return Response.ok(resp).build();
             }
-        }
-        catch (HibernateException | ConstraintViolationException e) {
+        } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Cannot add cart item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
     }
-
 }

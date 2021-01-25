@@ -1,7 +1,6 @@
 package com.app.model.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +10,6 @@ import java.util.Date;
 @Table(name = "order_items")
 @IdClass(OrderItemModel.OrderItemPrimaryKeys.class)
 public class OrderItemModel {
-
     @Id @Column(name = "order_id")      private Integer    orderId;
     @Id @Column(name = "product_id")    private Integer    productId;
     @Column(name = "quantity")          private BigDecimal quantity;

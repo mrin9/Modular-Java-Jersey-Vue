@@ -8,13 +8,10 @@ import com.app.model.order.OrderItemModel;
 import com.app.model.user.UserViewModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-//import org.hibernate.boot.Metadata;
-//import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry; // Hibernate 4
-
 import com.app.model.user.User;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
@@ -24,7 +21,6 @@ import com.app.model.order.OrderInfoModel;
 
 
 public class HibernateUtil {
-
     private static SessionFactory sessionFactory;
     private static StandardServiceRegistry registry;
 
@@ -102,5 +98,4 @@ public class HibernateUtil {
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }
-
 }

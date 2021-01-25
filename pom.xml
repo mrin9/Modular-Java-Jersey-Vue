@@ -1,95 +1,94 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.mrin</groupId>
-    <artifactId>jersey-vue</artifactId>
-    <version>1.0.0</version>
-    <packaging>pom</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mrin</groupId>
+  <artifactId>jersey-vue</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
 
-    <repositories>
-        <repository>
-            <id>projectlombok.org</id>
-            <url>https://projectlombok.org/edge-releases</url>
-        </repository>
-    </repositories>
+  <!-- Build order of these modules is evaluated based of dependency graph -->
+  <modules>
+    <!-- module>web-ui</module -->  <!-- Build web-ui first so that the static files can be copied into the final jar -->
+    <module>database</module>
+    <module>web-api</module> <!-- to exclude web-ui during build >>> mvn -pl '!web-ui' install -->
+  </modules>
 
-    <!-- Build order of these modules is evaluated based of dependency graph -->
-    <modules>
-        <!-- module>web-ui</module -->  <!-- Build web-ui first so that the static files can be copied into the final jar -->
-        <module>database</module>
-        <module>web-api</module> <!-- to exclude web-ui during build >>> mvn -pl '!web-ui' install -->
-    </modules>
-    
-    <!-- Common Properties for all modules -->
-    <properties>
-        <log4j-version>2.11.1</log4j-version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <!-- Common Properties for all modules -->
+  <properties>
+    <log4j-version>2.14.0</log4j-version>
+    <tomcat-version>9.0.41</tomcat-version>
+    <jersey-version>2.33</jersey-version>
+    <swagger-version>1.5.21</swagger-version>
+    <jackson-version>2.12.1</jackson-version>
+    <hibernate-version>4.3.11.Final</hibernate-version> <!-- Hibernate 5 (5.3.6.Final) and above gives a classCastException -->
+    <maven-jar-plugin-version>3.1.0</maven-jar-plugin-version>
+    <maven-dependency-plugin-version>3.1.1</maven-dependency-plugin-version>
+    <commons-lang-version>3.11</commons-lang-version>
+    <commons-text-version>1.9</commons-text-version>
+    <h2-database-version>1.4.200</h2-database-version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <!-- Check dependency updates using:
+      mvn versions:display-dependency-updates
+  -->
 
+  <!-- Jars added in Parent POM will auto included in children -->
+  <dependencies>
+    <!-- Log4J -->
+    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j18-impl -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j18-impl</artifactId>
+      <version>${log4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.0-alpha1</version>
+    </dependency>
 
-    <!-- Jars added in Parent POM will auto included in children -->
-    <dependencies> 
-        <!-- Log4J -->
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j18-impl -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j18-impl</artifactId>
-            <version>${log4j-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.8.0-beta2</version>
-        </dependency>
+    <!-- commons-text -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>${commons-text-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang-version}</version>
+    </dependency>
+  </dependencies>
 
-        <!-- commons-text -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.8.1</version>
-        </dependency>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <!-- Source & target are not necessary, but intelliJ depends on it to set the Java compiler settings  -->
+          <source>11</source>
+          <target>11</target>
+          <release>11</release>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
 
-        
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <!-- Source & target are not necessary, but intelliJ depends on it to set the Java compiler settings  -->
-                    <source>11</source>
-                    <target>11</target>
-                    <release>11</release>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-
-            <!-- mvn versions:display-dependency-updates -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.7</version>
-            </plugin>
-        </plugins>
-    </build>
-
-
-
-    
+      <!-- mvn versions:display-dependency-updates -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.7</version>
+      </plugin>
+    </plugins>
+  </build>
 </project>

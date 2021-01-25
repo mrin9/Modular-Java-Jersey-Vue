@@ -1,13 +1,11 @@
 package com.app.model.order;
 
-import javax.persistence.*;
-
 import com.app.model.PageResponse;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.Immutable;
-
 import java.util.*;
 import java.math.*;
+import javax.persistence.*;
 
 @Entity
 @Immutable //Indicates its a View not a table (cannot be updated)
@@ -27,8 +25,12 @@ public class OrderInfoModel {
     @Column(name = "ship_postal_code") private String  shipPostalCode;
     @Column(name = "ship_country")  private String  shipCountry;
     @Column(name = "shipping_fee")  private BigDecimal shippingFee;
-    @Column(name = "payment_type") @ApiModelProperty(allowableValues = "Check, Cash, Card") private String paymentType;
-    @Column(name = "order_status") @ApiModelProperty(allowableValues = "On Hold, Shipped, Complete, New")private String orderStatus;
+
+    @Schema(allowableValues =  {"Check","Cash","Card"})
+    @Column(name = "payment_type") private String paymentType;
+
+    @Schema(allowableValues =  {"On Hold", "Shipped", "Complete", "New"})
+    @Column(name = "order_status") private String orderStatus;
 
     @Column(name = "customer_name")    private String customerName;
     @Column(name = "customer_phone")   private String customerPhone;
@@ -39,7 +41,6 @@ public class OrderInfoModel {
 
 
     //Getters and Setters
-
     public Integer getOrderId() { return orderId; }
     public void setOrderId(Integer orderId) { this.orderId = orderId; }
 
@@ -103,7 +104,5 @@ public class OrderInfoModel {
 
         public List<OrderInfoModel> getList() {return list; }
         public void setList(List<OrderInfoModel> list) { this.list = list; }
-
-
     }
 }

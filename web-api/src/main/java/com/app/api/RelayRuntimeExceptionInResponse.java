@@ -2,15 +2,10 @@ package com.app.api;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-
-
 import com.app.model.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 @Provider
 public class RelayRuntimeExceptionInResponse implements ExceptionMapper<RuntimeException> {
-    private static Logger log = LoggerFactory.getLogger(RelayRuntimeExceptionInResponse.class);
+    private static final Logger log = LoggerFactory.getLogger(RelayRuntimeExceptionInResponse.class);
 
     @Override
     public Response toResponse(RuntimeException e) {
@@ -42,6 +37,4 @@ public class RelayRuntimeExceptionInResponse implements ExceptionMapper<RuntimeE
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
-
-
 }

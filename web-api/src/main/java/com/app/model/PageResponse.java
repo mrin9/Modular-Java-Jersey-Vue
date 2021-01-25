@@ -39,6 +39,4 @@ public class PageResponse extends BaseResponse {
             this.pagingMsg = pagingMsg;
         }
     }
-
-
 }

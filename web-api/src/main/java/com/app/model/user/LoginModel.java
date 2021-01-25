@@ -1,15 +1,14 @@
 package com.app.model.user;
 
 import com.app.model.BaseResponse;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(value = "LoginModel", description="Login object")
+@Schema(name = "LoginModel" , description = "Login object")
 public class LoginModel {
-
-    @ApiModelProperty(value = "User Name", example = "admin", required=true)
+    @Schema(description = "User Name", example = "admin", required=true)
     private String  username;
 
-    @ApiModelProperty(value = "Password", example = "admin",required=true)
+    @Schema(description = "Password", example = "admin", required=true)
     private String  password;
 
     public String getUsername() {return username;}
@@ -18,9 +17,8 @@ public class LoginModel {
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
 
-    @ApiModel(value = "LoginResponseModel", description="Login response object")
+    @Schema(name = "LoginResponseModel" , description = "Login response object")
     public static class LoginResponse extends BaseResponse {
-
         private UserOutputModel data;
 
         public LoginResponse(){}

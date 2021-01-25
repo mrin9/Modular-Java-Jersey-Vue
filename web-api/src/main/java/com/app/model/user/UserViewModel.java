@@ -1,13 +1,11 @@
 package com.app.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.Immutable;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.security.Principal;
-
 
 @Entity
 @Immutable //Indicates its a View not a table (cannot be updated)
@@ -17,7 +15,7 @@ public class UserViewModel implements Serializable, Principal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")  private String userId;
     @Column(name = "password") private String password;
-    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER") private String role;
+    @Schema(allowableValues="ADMIN, SUPPORT, CUSTOMER") private String role;
     @Column(name = "employee_id") private Integer employeeId;
     @Column(name = "customer_id") private Integer customerId;
     @Column(name = "full_name")   private String fullName;
@@ -57,5 +55,4 @@ public class UserViewModel implements Serializable, Principal {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
 }

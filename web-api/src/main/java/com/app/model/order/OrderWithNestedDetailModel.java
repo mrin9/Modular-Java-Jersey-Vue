@@ -1,28 +1,23 @@
 package com.app.model.order;
+
 import java.math.BigDecimal;
 import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * OrderWithNestedDetails contains extra details of the order
  * Such as Customer Info (Name, Company , Email)
  * and List of Products in each order
  */
-
-
 public class OrderWithNestedDetailModel  extends OrderModel {
-
     private String customerName;
     private String customerEmail;
     private String customerCompany;
     private BigDecimal orderTotal;
-
     private List<OrderLine> orderLine;
 
     public OrderWithNestedDetailModel(){}
-
     public OrderWithNestedDetailModel(
         Integer orderId,
         Date orderDate,
@@ -56,7 +51,6 @@ public class OrderWithNestedDetailModel  extends OrderModel {
     }
 
     //Getters and Setters
-
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }
 
@@ -71,14 +65,9 @@ public class OrderWithNestedDetailModel  extends OrderModel {
 
     public List<OrderLine> getOrderLine() { return orderLine; }
     public void setOrderLine(List<OrderLine> orderLine) { this.orderLine = orderLine; }
-
-
-
 }
 
-
 class OrderLine  {
-
     private int        productId;
     private String     productCode;
     private String     productName;
@@ -87,10 +76,11 @@ class OrderLine  {
     private BigDecimal unitPrice;
     private BigDecimal discount;
 
+    @Schema(example="2021-01-28T11:55:00",  pattern="yyyy-MM-dd'T'HH:mm:ss")
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date       dateAllocated;
 
-    @ApiModelProperty(allowableValues = "On Order, Allocated, No Stock")
+    @Schema(allowableValues =  {"On Order", "Allocated", "No Stock"}, example="On Order")
     private String orderItemStatus;
 
 

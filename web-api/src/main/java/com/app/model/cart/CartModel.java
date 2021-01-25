@@ -1,7 +1,6 @@
 package com.app.model.cart;
 
 import com.app.model.PageResponse;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +22,6 @@ public class CartModel {
     }
 
     //Getters and Setters
-
     public String getUserId() {return userId;}
     public void setUserId(String userId) { this.userId = userId; }
 
@@ -44,10 +42,8 @@ public class CartModel {
         public void setProductId(Integer productId) { this.productId = productId; }
     }
 
-
     //Response for CartModel
     public static class CartResponse extends PageResponse {
-
         private List<CartModel> list;
 
         public List<CartModel> getList() {return list; }

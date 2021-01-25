@@ -2,24 +2,16 @@ package com.app.dao;
 
 import com.app.model.cart.CartModel;
 import com.app.model.cart.CartViewModel;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
+import org.hibernate.*;
 import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class CartDao {
-
-
     public static CartModel getProductsInCart(Session hbrSession, String userId, Integer productId) throws HibernateException, ConstraintViolationException {
         Query q = hbrSession.createQuery( "From CartModel where userId = :userId and productId = :productId");
         q.setParameter("userId", userId);
         q.setParameter("productId", productId);
-
-        CartModel cartItems = (CartModel)q.uniqueResult();  // can throw org.hibernate.NonUniqueResultException
-        return cartItems;
+        return (CartModel)q.uniqueResult();
     }
 
     public static List<CartModel> getProductsInCart(Session hbrSession, String userId) throws HibernateException, ConstraintViolationException {
@@ -27,7 +19,6 @@ public class CartDao {
         q.setParameter("userId", userId);
         return q.list();
     }
-
 
     public static int updateProductQuantityInCart(Session hbrSession, String userId, Integer productId, Long quantity)  throws HibernateException, ConstraintViolationException {
         Query q = hbrSession.createQuery("Update CartModel set quantity = :quantity where userId = :userId and productId = :productId");
@@ -41,8 +32,7 @@ public class CartDao {
         String hql = "";
         if (productId != null){
             hql = "delete CartModel where userId = :userId and productId = :productId";
-        }
-        else{
+        } else {
             hql = "delete CartModel where userId = :userId";
         }
         Query q = hbrSession.createQuery(hql);
@@ -58,6 +48,4 @@ public class CartDao {
         q.setParameter("userId", userId);
         return q.list();
     }
-
-
 }

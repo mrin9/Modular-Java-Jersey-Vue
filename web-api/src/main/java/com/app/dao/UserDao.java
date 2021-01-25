@@ -1,10 +1,7 @@
 package com.app.dao;
 
 import com.app.model.user.UserViewModel;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
-import javax.ws.rs.core.Response;
+import org.hibernate.*;
 
 public class UserDao {
 
@@ -15,7 +12,7 @@ public class UserDao {
         return  (UserViewModel)q.uniqueResult();
     }
 
-    public static void delete(Session hbrSession, UserViewModel user, boolean deleteRelatedData){
+    public static void delete(Session hbrSession, UserViewModel user, boolean deleteRelatedData ){
 
        /* To cleanly remove an user
           1. First delete the order-items and order that belong to the associated customer
@@ -58,7 +55,6 @@ public class UserDao {
             queryDeleteCustomer.setParameter("customerId", user.getCustomerId());
         }
 
-
         Query queryDeleteEmployee = hbrSession.createSQLQuery(sqlDeleteEmployee);
         if (deleteRelatedData && user.getEmployeeId() != null) {
             queryDeleteEmployee.setParameter("employeeId", user.getEmployeeId());
@@ -78,8 +74,5 @@ public class UserDao {
         if (deleteRelatedData && user.getEmployeeId() != null) {
             queryDeleteEmployee.executeUpdate();
         }
-
     }
-
-
 }

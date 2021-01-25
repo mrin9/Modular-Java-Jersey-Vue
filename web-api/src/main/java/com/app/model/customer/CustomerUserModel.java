@@ -1,9 +1,8 @@
 package com.app.model.customer;
 
 import com.app.model.PageResponse;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.Immutable;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class CustomerUserModel {
     @Column(name = "user_id") private String userId;
     @Column(name = "password") private String password;
 
-    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER")
+    @Schema(allowableValues =  {"ADMIN", "SUPPORT", "CUSTOMER"}, example="ADMIN")
     @Column(name = "role") private String role;
 
     @Column(name = "last_name") private String lastName;
@@ -79,7 +78,6 @@ public class CustomerUserModel {
     public void setCountry(String country) { this.country = country; }
 
     public static class CustomerUserResponse extends PageResponse {
-
         private List<CustomerUserModel> list;
 
         public List<CustomerUserModel> getList() {return list; }

@@ -3,15 +3,13 @@ package com.app.model.order;
 import java.math.BigDecimal;
 import java.util.*;
 import javax.persistence.*;
-
 import com.app.model.PageResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "orders")
 public class OrderModel {
-
     @Id @GeneratedValue private Integer id;
     @Column(name = "customer_id")   private Integer customerId;
 
@@ -32,14 +30,19 @@ public class OrderModel {
     @Column(name = "ship_postal_code") private String  shipPostalCode;
     @Column(name = "ship_country")  private String  shipCountry;
     @Column(name = "shipping_fee")  private BigDecimal shippingFee;
-    @Column(name = "payment_type") @ApiModelProperty(allowableValues = "Check, Cash, Card") private String paymentType;
-    @Column(name = "order_status") @ApiModelProperty(allowableValues = "On Hold, Shipped, Complete, New")private String orderStatus;
+
+    @Schema(allowableValues =  {"Check","Cash","Card"})
+    @Column(name = "payment_type") private String paymentType;
+
+    @Schema(allowableValues =  {"On Hold", "Shipped", "Complete", "New"})
+    @Column(name = "order_status") private String orderStatus;
 
     //Constructors
     public OrderModel(){}
-    public OrderModel(Integer id, Integer customerId  , Date   orderDate   , String orderStatus,
-                      Date        shippedDate , String  shipName    , String  shipAddress1, String shipAddress2, String shipCity   , String shipState, String shipPostalCode, String shipCountry,
-                      BigDecimal  shippingFee , String  paymentType , Date    paidDate
+    public OrderModel(
+      Integer id, Integer customerId  , Date   orderDate   , String orderStatus,
+      Date        shippedDate , String  shipName    , String  shipAddress1, String shipAddress2, String shipCity   , String shipState, String shipPostalCode, String shipCountry,
+      BigDecimal  shippingFee , String  paymentType , Date    paidDate
     ){
         this.id=id;
         this.customerId  = customerId ;
@@ -109,7 +112,5 @@ public class OrderModel {
 
         public List<OrderModel> getList() {return list; }
         public void setList(List<OrderModel> list) { this.list = list; }
-
-
     }
 }

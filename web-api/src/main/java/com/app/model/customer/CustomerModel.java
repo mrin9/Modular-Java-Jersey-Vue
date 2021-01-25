@@ -40,7 +40,6 @@ public class CustomerModel {
     }
 
     //Getters and Setters
-
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -78,7 +77,6 @@ public class CustomerModel {
     public void setCountry(String country) { this.country = country; }
 
     public static class CustomerResponse extends PageResponse {
-
         private List<CustomerModel> list;
 
         public List<CustomerModel> getList() {return list; }

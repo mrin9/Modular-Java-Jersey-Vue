@@ -9,9 +9,12 @@ import com.app.model.stats.DailySaleModel.DailySaleResponse;
 import com.app.model.stats.DailyOrderCountModel;
 import com.app.model.stats.DailyOrderCountModel.DailyOrderCountResponse;
 import com.app.util.HibernateUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -24,9 +27,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-
 @Path("stats")
-@Api(value = "Statistics")
+@Tag(name = "Statistics")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StatsController extends BaseController {
@@ -34,8 +36,11 @@ public class StatsController extends BaseController {
 
     @GET
     @Path("daily-sale")
-    @ApiOperation(value = "Get Sales by date", response = DailySaleResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
+    @Operation(
+      summary = "Get Sales by date",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = DailySaleResponse.class)))}
+    )
     public Response getDailySale() {
         DailySaleResponse resp = new DailySaleResponse();
 
@@ -47,8 +52,7 @@ public class StatsController extends BaseController {
             resp.setSuccessMessage("Daily Sales");
             resp.setList(dailySales);
             return Response.ok(resp).build();
-        }
-        catch (HibernateException | ConstraintViolationException e) {
+        } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Internal Error - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
@@ -56,11 +60,13 @@ public class StatsController extends BaseController {
 
     @GET
     @Path("daily-order-count")
-    @ApiOperation(value = "Get Sales by date", response = DailyOrderCountResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
+    @Operation(
+      summary = "Get Daily order count",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = DailyOrderCountResponse.class)))}
+    )
     public Response getDailyOrderCount() {
         DailyOrderCountResponse resp = new DailyOrderCountResponse();
-
         try {
             Session hbrSession = HibernateUtil.getSession();
             hbrSession.beginTransaction();
@@ -69,19 +75,23 @@ public class StatsController extends BaseController {
             resp.setSuccessMessage("Daily Order Count");
             resp.setList(dailyOrderCount);
             return Response.ok(resp).build();
-        }
-        catch (HibernateException | ConstraintViolationException e) {
+        } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Internal Error - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
     }
 
-
     @GET
     @Path("{orderStats: orders-by-status|orders-by-payment-type}")
-    @ApiOperation(value = "Get Orders by status", response = CategoryCountResponse.class)
     @RolesAllowed({"ADMIN", "SUPPORT"})
-    public Response getOrdersByStatus(@ApiParam(allowableValues = "orders-by-status,orders-by-payment-type", example="orders-by-status") @PathParam("orderStats") String orderStats) {
+    @Operation(
+      summary = "Get Orders by status",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = CategoryCountResponse.class)))}
+    )
+    public Response getOrdersByStatus(
+      @Parameter(schema = @Schema(allowableValues = {"orders-by-status","orders-by-payment-type"}), example="orders-by-status")
+      @PathParam("orderStats") String orderStats
+    ) {
         CategoryCountResponse resp = new CategoryCountResponse();
         List<CategoryCountModel> categoryCountList;
         try {
@@ -89,22 +99,16 @@ public class StatsController extends BaseController {
             hbrSession.beginTransaction();
             if (orderStats.equals("orders-by-status")) {
                 categoryCountList = StatsDao.getOrdersByStatus(hbrSession);
-            }
-            else{
+            } else {
                 categoryCountList = StatsDao.getOrdersByPaymentType(hbrSession);
             }
             hbrSession.getTransaction().commit();
             resp.setSuccessMessage("Orders by status");
             resp.setList(categoryCountList);
             return Response.ok(resp).build();
-        }
-        catch (HibernateException | ConstraintViolationException e) {
+        } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Internal Error - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
     }
-
-
-
-
 }

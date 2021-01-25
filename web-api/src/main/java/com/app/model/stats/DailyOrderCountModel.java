@@ -2,18 +2,13 @@ package com.app.model.stats;
 
 import com.app.model.BaseResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class DailyOrderCountModel {
-
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date date;
     private BigInteger count;
-
 
     //Constructor
     public DailyOrderCountModel(Date date, BigInteger count) {
@@ -28,7 +23,6 @@ public class DailyOrderCountModel {
     public BigInteger getCount() { return count; }
     public void setCount(BigInteger count) { this.count = count; }
 
-
     //Response Class
     public static class DailyOrderCountResponse  extends BaseResponse {
         private List<DailyOrderCountModel> list;
@@ -36,5 +30,4 @@ public class DailyOrderCountModel {
         public List<DailyOrderCountModel> getList() {return list; }
         public void setList(List<DailyOrderCountModel> list) { this.list = list; }
     }
-
 }

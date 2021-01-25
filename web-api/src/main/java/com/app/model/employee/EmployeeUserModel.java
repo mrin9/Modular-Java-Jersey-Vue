@@ -1,9 +1,8 @@
 package com.app.model.employee;
 
 import com.app.model.PageResponse;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.Immutable;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,14 +10,12 @@ import java.util.List;
 @Immutable //Indicates its a View not a table (cannot be updated)
 @Table(name = "employee_user_view")
 public class EmployeeUserModel {
-
-
     @Id
     @Column(name = "employee_id") private Integer employeeId;
     @Column(name = "user_id") private String userId;
     @Column(name = "password") private String password;
 
-    @ApiModelProperty(allowableValues="ADMIN, SUPPORT, CUSTOMER")
+    @Schema(allowableValues =  {"ADMIN", "SUPPORT", "CUSTOMER"}, example="ADMIN")
     @Column(name = "role") private String role;
 
     @Column(name = "last_name") private String  lastName;
@@ -37,7 +34,6 @@ public class EmployeeUserModel {
     private String  country;
 
     // Getter and Setters
-
     public Integer getEmployeeId() { return employeeId; }
     public void setEmployeeId(Integer employeeId) { this.employeeId = employeeId; }
 
@@ -93,12 +89,9 @@ public class EmployeeUserModel {
     public void setCountry(String country) { this.country = country; }
 
     public static class EmployeeUserResponse extends PageResponse {
-
         private List<EmployeeUserModel> list;
 
         public List<EmployeeUserModel> getList() {return list; }
         public void setList(List<EmployeeUserModel> list) { this.list = list; }
-
-
     }
 }

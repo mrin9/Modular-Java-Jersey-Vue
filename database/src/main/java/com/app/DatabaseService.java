@@ -7,8 +7,7 @@ import org.h2.tools.Server;
 import org.slf4j.*;
 
 public class DatabaseService {
-    private static Logger log = LoggerFactory.getLogger(DatabaseService.class);
-    //private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(DatabaseService.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(DatabaseService.class);
 
     private static final String DB_DRIVER = "org.h2.Driver";
     private static final String DB_CONNECTION = "jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'classpath:schema.sql'\\;runscript from 'classpath:data.sql'";
@@ -17,13 +16,11 @@ public class DatabaseService {
     private static Server dbWebServer = null;
 
     public static void initDB() {
-
         try {
             getDBConnection();
             //dbWebServer = Server.createWebServer("-webPort","9000", "-webAllowOthers").start();
             dbWebServer = Server.createTcpServer("-tcpPort", "9092", "-tcpAllowOthers").start();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         log.info("\n\n *** Database Initiated  ***"+
@@ -33,23 +30,20 @@ public class DatabaseService {
             "\n Password   : "+DB_PASSWORD +
             "\n *** *** *** *** *** \n"
         );
-
     }
 
     private static Connection getDBConnection() {
         Connection dbConnection = null;
         try {
             Class.forName(DB_DRIVER);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             log.error(e.getMessage());
         }
 
         try {
             dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
             return dbConnection;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             log.error(e.getMessage());
         }
 
@@ -65,6 +59,4 @@ public class DatabaseService {
         InputStream is = DatabaseService.class.getClassLoader().getResourceAsStream(fileName);
         return is;
     }
-
-
 }

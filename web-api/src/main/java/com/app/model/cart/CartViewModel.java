@@ -21,7 +21,6 @@ public class CartViewModel {
     @Column(name = "list_price")     private Long listPrice;
 
     public CartViewModel(){}
-
     public CartViewModel(Integer productId, String productCode, String productName, String description, Long standardCost, Long listPrice) {
         this.productId = productId;
         this.productCode = productCode;
@@ -55,10 +54,8 @@ public class CartViewModel {
     public Long getListPrice() { return listPrice; }
     public void setListPrice(Long listPrice) { this.listPrice = listPrice; }
 
-
     //Response Class for API
     public static class CartViewResponse extends PageResponse {
-
         private List<CartViewModel> list;
 
         public List<CartViewModel> getList() {return list; }

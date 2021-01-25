@@ -1,14 +1,12 @@
 package com.app.model.employee;
 
 import com.app.model.PageResponse;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "employees")
 public class EmployeeModel {
-
     @Id @GeneratedValue private Integer id;
     @Column(name = "last_name") private String  lastName;
     @Column(name = "first_name") private String  firstName;
@@ -44,9 +42,7 @@ public class EmployeeModel {
         this.country = country;
     }
 
-
     // Getter and Setters
-
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -93,12 +89,9 @@ public class EmployeeModel {
     public void setCountry(String country) { this.country = country; }
 
     public static class EmployeeResponse extends PageResponse {
-
         private List<EmployeeModel> list;
 
         public List<EmployeeModel> getList() {return list; }
         public void setList(List<EmployeeModel> list) { this.list = list; }
-
-
     }
 }

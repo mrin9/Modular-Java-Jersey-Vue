@@ -1,15 +1,11 @@
 package com.app.dao;
 
 import com.app.model.product.ProductModel;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
+import org.hibernate.*;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 
 public class ProductDao {
-
 
     public static BigDecimal getReferenceCount(Session hbrSession, Integer productId){
         String sql = "Select sum(cnt) from ("+
@@ -35,9 +31,4 @@ public class ProductDao {
         q.setParameter("productId", productId);
         return q.executeUpdate();
     }
-
-
-
-
-
 }
