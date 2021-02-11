@@ -1,0 +1,33 @@
+@import "~@/assets/styles/_vars.scss";
+
+//Light
+@font-face {
+  font-family: 'clarity';
+  src: url($font_path + 'ClarityCity-Light.woff2')format('woff2') ;
+  font-weight: 200;
+  font-style: normal;
+}
+
+//Regular
+@font-face {
+  font-family: 'clarity';
+  src: url($font_path + 'ClarityCity-Regular.woff2')format('woff2') ;
+  font-weight: 400;
+  font-style: normal;
+}
+
+//Semibold
+@font-face {
+  font-family: 'clarity';
+  src: url($font_path + 'ClarityCity-Medium.woff2')format('woff2') ;
+  font-weight: 500;
+  font-style: normal;
+}
+
+//Bold
+@font-face {
+  font-family: 'clarity';
+  src: url($font_path + 'ClarityCity-SemiBold.woff2')format('woff2') ;
+  font-weight: 600;
+  font-style: normal;
+}
