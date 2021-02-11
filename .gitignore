@@ -13,5 +13,4 @@ apache-tomcat*
 **/.postcssrc
 **/*.iml
 **/node_modules/
-**/webapp/ui
 **/web-ui/node
