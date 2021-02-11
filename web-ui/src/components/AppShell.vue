@@ -46,7 +46,6 @@ export default defineComponent({
         showAppDlg.value = true;
         console.log('event-handler for %o', data);
       }); // listen
-      store.commit('baseUrl', 'http://localhost:8080/');
     });
 
     const onDlgOkClick = () => {
