@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/custom-elements/1.1.0/custom-elements.min.js"></script -->
-    <!-- script src="../node_modules/@webcomponents/custom-elements/custom-elements.min.js"></script -->
-    <script src="/scripts/custom-elements.min.js"></script>
+    <title>MRIN Order Processing System</title>
+    <link rel="icon" type="image/ico" href="images/favicon.ico" />
   </head>
   <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected here -->
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app" style="width:100vw; height:100vh"></div>
+    <!-- built files will be auto injected -->
   </body>
 </html>

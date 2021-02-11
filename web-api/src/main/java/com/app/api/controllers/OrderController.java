@@ -23,6 +23,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("")
@@ -114,7 +115,7 @@ public class OrderController extends BaseController {
       summary = "Delete an order line-item",
       responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
     )
-    public Response getOrderDetail(
+    public Response deleteOrderItem(
         @Parameter(description = "Order Id") @PathParam("orderId") int orderId,
         @Parameter(description = "Order-Item Id") @PathParam("productId") int productId
     ) {
@@ -138,6 +139,36 @@ public class OrderController extends BaseController {
         return Response.ok(resp).build();
     }
 
+    @DELETE
+    @Path("/order-item/{orderId}")
+    @RolesAllowed({"USER"})
+    @Operation(
+      summary = "Delete all order line-item by product-id",
+      responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
+    )
+    public Response deleteOrderItems(
+      @Parameter(description = "Order Id") @PathParam("orderId") int orderId,
+      @Parameter(description = "Comma separated list of product ids") @QueryParam("product-ids") String commaSeparatedIds
+    ) {
+        BaseResponse resp = new BaseResponse();
+        String[] productIdArr = commaSeparatedIds.split(",");
+        ArrayList<Integer> productIdList = new ArrayList<Integer>();
+        for (String productIdStr : productIdArr) {
+            productIdList.add(Integer.parseInt(productIdStr.trim()));
+        }
+        Session hbrSession = HibernateUtil.getSession();
+        hbrSession.setFlushMode(FlushMode.ALWAYS);
+        try {
+            hbrSession.beginTransaction();
+            OrderDao.deleteOrderLines(hbrSession, orderId, productIdList);
+            hbrSession.getTransaction().commit();
+        } catch (HibernateException | ConstraintViolationException e) {
+            resp.setErrorMessage("Cannot delete Order-Item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
+            return Response.ok(resp).build();
+        }
+        resp.setSuccessMessage("Deleted all order lines");
+        return Response.ok(resp).build();
+    }
 
     @POST
     @Path("/order-item")
@@ -157,7 +188,6 @@ public class OrderController extends BaseController {
         } catch (HibernateException | ConstraintViolationException  e) {
             resp.setErrorMessage("Cannot add Order-Item - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
         }
-
         return Response.ok(resp).build();
     }
 }

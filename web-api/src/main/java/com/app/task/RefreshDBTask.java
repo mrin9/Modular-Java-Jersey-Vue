@@ -13,7 +13,7 @@ public class RefreshDBTask  implements Runnable {
         DatabaseService.initDB();
         //System.out.print(" ...... " + Thread.currentThread().getName()+" DONE: "+new Date());
         if (Thread.interrupted()){
-            log.warn("Refresh DB Task Interupted");
+            log.warn("Refresh DB Task Interrupted");
             return;
         }
     }

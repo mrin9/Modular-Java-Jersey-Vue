@@ -18,7 +18,7 @@ import org.slf4j.*;
 
 public class TomcatStarter {
     private static final Logger log = LoggerFactory.getLogger(TomcatStarter.class);
-    public static int port=8080;
+    public static int port = 8080;
 
     private static File getRootFolder() {
         try {

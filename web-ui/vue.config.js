@@ -1,19 +1,11 @@
-const path = require('path')
-module.exports = {
-  baseUrl:'/ui/', 
-  lintOnSave: false,
-  devServer: {
-    port:8081
-  },
-  configureWebpack:{
-    resolve: {
-      alias: {
-        'vue$': 'vue/dist/vue.esm.js'
-      },
-      extensions: ['*', '.js', '.vue', '.json']
-    }
-  },
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path');
 
+module.exports = {
+  assetsDir: './ui',
+  devServer: {
+    port: 8081,
+  },
   pages: {
     index: {
       // entry for the page
@@ -27,8 +19,7 @@ module.exports = {
       title: 'Mrin - Order Processing System',
       // chunks to include on this page, by default includes
       // extracted common chunks and vendor chunks.
-      chunks: ['chunk-vendors', 'chunk-common', 'index']
-    }
-  }
-
-}
+      chunks: ['chunk-vendors', 'chunk-common', 'index'],
+    },
+  },
+};

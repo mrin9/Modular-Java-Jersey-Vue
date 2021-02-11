@@ -103,10 +103,10 @@ public class EmployeeController extends BaseController {
             hbrSession.beginTransaction();
             hbrSession.save(emp);
             hbrSession.getTransaction().commit();
+            resp.setSuccessMessage("Employee Added");
         } catch (HibernateException | ConstraintViolationException e) {
             resp.setErrorMessage("Cannot add employee - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
         }
-
         return Response.ok(resp).build();
     }
 

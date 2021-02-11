@@ -82,8 +82,7 @@ public class ProductController extends BaseController {
       summary = "Add a Product",
       responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
     )
-    public Response addCustomer(ProductModel prod) {
-
+    public Response addProduct(ProductModel prod) {
         BaseResponse resp = new BaseResponse();
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
@@ -125,7 +124,6 @@ public class ProductController extends BaseController {
             resp.setErrorMessage("Cannot update Product - " + e.getMessage() + ", " + (e.getCause()!=null? e.getCause().getMessage():""));
             return Response.ok(resp).build();
         }
-
     }
 
     @DELETE
@@ -142,7 +140,7 @@ public class ProductController extends BaseController {
         try {
             BigDecimal referenceCount = ProductDao.getReferenceCount(hbrSession, productId);
             if (referenceCount.intValue() > 0) {
-                resp.setErrorMessage("Cannot delete product, Referenced in other tables");
+                resp.setErrorMessage("Cannot remove product as this product is still being referred in orders");
                 return Response.ok(resp).build();
             } else {
                 ProductModel foundProd  = ProductDao.getById(hbrSession, productId);

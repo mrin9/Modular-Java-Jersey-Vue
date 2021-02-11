@@ -1,247 +1,180 @@
 <template>
+  <div class="m-font-regular">
+    <Toast />
+    <h4>ORDER: <span style="color: var(--primary-color)"> {{ recData.id }}</span></h4>
+    <span class="m-gray-text">Provide some fake details, the data will be refreshed at certain interval</span>
 
-  <div v-loading="loading" >
-    <span class="sw-section-heading">
-      ORDER #  <span class="sw-primary-color"> {{orderData.id}}</span>
-    </span> <br/>
-    <div class="sw-gray-text">Update Order details (the data gets refreshed after certain interval)</div>
-    <br/><br/>
-    <table style="width:100%;vertical-align:top;">
-      <tr>
-        <td>
-          <div class="sw-row">
-            <label class="sw-label">Date</label>
-            <input type="text" class="sw-medium" v-model="orderData.strOrderDate">
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">Status</label>
-            <el-select size="medium" style="width:120px" v-model="orderData.orderStatus">
-              <el-option label="Complete" value="Complete"></el-option>
-              <el-option label="On Hold" value="On Hold"></el-option>
-              <el-option label="Shipped" value="Shipped"></el-option>
-              <el-option label="New" value="New"></el-option>
-            </el-select>  
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">Payment</label>
-            <el-select size="medium" style="width:120px" v-model="orderData.paymentType">
-              <el-option label="Cash" value="Cash"></el-option>
-              <el-option label="Check" value="Check"></el-option>
-              <el-option label="Card" value="Card"></el-option>
-            </el-select>  
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">Ship To</label>
-            <input type="text" class="sw-medium" v-model="orderData.shipName">
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">Shipping Fee</label>
-            <input type="text" class="sw-medium" v-model="orderData.shippingFee">
-          </div>
-
-        </td>
-        <td>
-          <div class="sw-row">
-            <label class="sw-label">Address</label>
-            <input type="text" placeholder="Address Line 1" class="sw-medium" v-model="orderData.shipAddress1">
-            <input type="text" placeholder="Address Line 2" class="sw-medium" v-model="orderData.shipAddress2">
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">City</label>
-            <input type="text" class="sw-medium" v-model="orderData.shipCity">
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">State</label>
-            <input type="text" class="sw-medium" v-model="orderData.shipState">
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">Postal Code</label>
-            <input type="text" class="sw-medium" v-model="orderData.shipPostalCode">
-          </div>
-          <div class="sw-row">
-            <label class="sw-label">Country</label>
-            <input type="text" class="sw-medium" v-model="orderData.shipCountry">
-          </div>
-
-
-        </td>
-      </tr>
-    </table>  
-
-    <br/><br/>
-    <div class="sw-toolbar sw-section-heading" style="width:650px;">
-      <span>ORDER ITEMS</span> 
-      <span style="flex:1"></span>
-      <span>ORDER TOTAL: &nbsp;</span>
-      <span class="sw-primary-color"> {{orderData.strOrderTotal}} </span>
+    <!-- Order Info -->
+    <div class="p-d-flex p-mt-4">
+      <div>
+        <div class="p-d-flex p-ai-center">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Date </label>
+          <InputText type="text" v-model="recData.strOrderDate" class="p-inputtext-sm p-mr-1"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Status</label>
+          <Dropdown class="p-inputtext-sm" v-model = "recData.orderStatus" :options = "['Complete', 'On Hold', 'Shipped', 'New']"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1" >Payment Type</label>
+          <Dropdown class="p-inputtext-sm" v-model = "recData.paymentType" :options = "['Card', 'Check', 'Cash']"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Ship To</label>
+          <InputText type="text" v-model="recData.shipName" class="p-inputtext-sm p-mr-1"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Shipping Fee</label>
+          <InputText type="text" v-model="recData.shippingFee" class="p-inputtext-sm p-mr-1"/>
+        </div>
+      </div>
+      <div style="flex:1"></div>
+      <div>
+        <div class="p-d-flex p-ai-center">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Address</label>
+          <InputText type="text" v-model="recData.shipAddress1" class="p-inputtext-sm p-mr-1"/>
+          <InputText type="text" v-model="recData.shipAddress2" class="p-inputtext-sm p-mr-1"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">City</label>
+          <InputText type="text" v-model="recData.shipCity" class="p-inputtext-sm p-mr-1"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">State</label>
+          <InputText type="text" v-model="recData.shipState" class="p-inputtext-sm p-mr-1"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Postal</label>
+          <InputText type="text" v-model="recData.shipPostalCode" class="p-inputtext-sm p-mr-1"/>
+        </div>
+        <div class="p-d-flex p-ai-center p-mt-1">
+          <label class="p-d-inline-block m-label-size-2 p-text-right p-mr-1">Country</label>
+          <InputText type="text" v-model="recData.shipCountry" class="p-inputtext-sm p-mr-1"/>
+        </div>
+      </div>
     </div>
-    <el-table :data="orderData.orderLine" style="width:650px;" empty-text="No Data">
-      <el-table-column prop="productId"   label="#"          width="50"/>
-      <el-table-column prop="productName" label="NAME" />
-      <el-table-column prop="quantity"    label="QTY"        width="60"/>
-      <el-table-column prop="unitPrice"   label="PRICE"      width="60"/>
-      <el-table-column prop="discount"    label="DISCOUNT"   width="80"/>
-      <el-table-column prop="orderItemStatus" label="STATUS" width="100"/>
-      <el-table-column width="60">
-        <template slot-scope="scope">
-          <!-- i  v-if="$store.state.role !== 'CUSTOMER'" class="el-icon-edit"   style="font-size:16px; vertical-align: middle; cursor:pointer; color:cornflowerblue" @click="onEdit(scope.row)"></i -->
-          <i  v-if="$store.state.role !== 'CUSTOMER'" class="el-icon-delete" style="font-size:16px; vertical-align: middle; cursor:pointer; color:orangered;margin-left:8px" @click="onDelete(scope.row)"></i>
+
+    <!-- Order Lines -->
+    <ConfirmPopup></ConfirmPopup>
+    <div class="p-d-flex p-mt-4 m-font-bold" style = "margin: 2px">
+      <span> ORDER ITEMS</span>
+      <div style="flex:1"></div>
+      <span> ORDER TOTAL : &nbsp;<span style="color: var(--primary-color)"> {{ orderTotal }} </span> </span>
+    </div>
+    <DataTable :value = "recData.orderLine" class="p-datatable-sm p-datatable-hoverable-rows m-border p-mb-4">
+      <Column field="productId" header="#" headerStyle="width:50px;"></Column>
+      <Column field="productName" header="NAME"></Column>
+      <Column field="quantity" header="QTY" headerStyle="width:50px"></Column>
+      <Column field="unitPrice" header="PRICE" headerStyle="width:60px"></Column>
+      <Column field="discount" header="DISCOUNT" headerStyle="width:75px"></Column>
+      <Column field="orderItemStatus" header="STATUS" headerStyle="width:75px"></Column>
+      <Column headerStyle="width:35px" bodyStyle="padding:3px">
+        <template #body="slotProps">
+          <Button v-if = "!changesApplied"
+            @click="onDeleteOrderItemClick($event, slotProps.data)"
+            icon="pi pi-trash"
+            class="p-button-sm p-button-rounded p-button-danger p-button-text"
+          />
         </template>
-      </el-table-column>
+      </Column>
+    </DataTable>
 
-    </el-table>
-
-
-    <br/>
-    <div class="sw-toolbar">
-      <el-button type="primary" size="medium" @click="onApplyChanges" class="sw-toolbar-item">APPLY CHANGES</el-button>
+    <div class="p-mt-2 p-d-flex p-flex-row p-jc-end" style="width:100%">
+      <template v-if= "changesApplied">
+        <Button label="CLOSE" @click="$emit('cancel')" class="p-button-sm"></Button>
+      </template>
+      <template v-else>
+        <Button label="CANCEL" @click="onCancel()" class="p-button-sm p-button-outlined p-mr-1"></Button>
+        <Button icon="pi pi-check" iconPos="left" label="APPLY CHANGES" @click="onApplyChanges($event)" class="p-button-sm"></Button>
+      </template>
     </div>
   </div>
 </template>
 
-<script>
-import Rest from '@/rest/Rest';
-import router from '@/router';
-import MrLogo from '@/components/logo/Logo';
+<script lang='ts'>
+import { defineComponent, ref, reactive, computed } from 'vue';
+import OrderApi from '@/api/order-api';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
-
-export default {
-
+export default defineComponent({
+  emits: ['cancel', 'changed'],
   props: {
-    rec:{type: Object, required:true},
+    rec: { type: Object, required: true },
+    isNew: { type: Boolean, default: true, required: false },
   },
 
-  data:function(){
+  setup(props, { emit }): unknown {
+    const showMessage = ref(false);
+    const changesApplied = ref(false);
+    const recData = reactive(JSON.parse(JSON.stringify(props.rec))); // do not create direct refs to props to avoid making changes to props, instead use a cloned value of prop
+    const confirm = useConfirm();
+    const toast = useToast();
+    const productIdsToDelete:string[] = [];
+    const orderTotal = computed(() => {
+      let totalVal = 0;
+      recData.orderLine.forEach((v:Record<string, unknown>) => {
+        totalVal += (((v.quantity as number) * (v.unitPrice as number)) - (v.discount as number));
+      });
+      return new Intl.NumberFormat('en-US', { useGrouping: true, currency: 'USD' }).format(totalVal);
+    });
+
+    const deleteOrderItemConfirmDlg = (ev:Event) => {
+      confirm.require({
+        target: ev.currentTarget as EventTarget,
+        message: `Are you sure to remove ${productIdsToDelete.length} items from this order?`,
+        header: 'Remove Order items',
+        icon: 'pi pi-question-circle',
+        acceptIcon: 'pi pi-check',
+        accept: async () => {
+          const commSeparatedProdIds:string = productIdsToDelete.join(',');
+          const resp = await OrderApi.deleteOrderLines(recData.id, commSeparatedProdIds);
+          if (resp.data.msgType === 'SUCCESS') {
+            toast.add({ severity: 'success', summary: 'Order Itmes removed', detail: resp.data.msg, life: 3000 });
+            changesApplied.value = true;
+            emit('changed');
+          } else {
+            toast.add({ severity: 'error', summary: 'Unable to remove', detail: resp.data.msg, life: 3000 });
+          }
+        },
+        reject: async () => {
+          recData.orderLine = props.rec.orderLine;
+          productIdsToDelete.length = 0;
+        },
+      });
+    };
+
+    const addProductIdToDeletedList = (orderItemRec:Record<string, unknown>) => {
+      productIdsToDelete.push(orderItemRec.productId as string);
+      recData.orderLine = recData.orderLine.filter((v:Record<string, unknown>) => v.productId !== orderItemRec.productId);
+    };
+
+    // Do not make API call, just add it to the productIds to delete list
+    const onDeleteOrderItemClick = (ev:Event, orderItemRec:Record<string, unknown>) => {
+      addProductIdToDeletedList(orderItemRec);
+      recData.orderLine = recData.orderLine.filter((v:Record<string, unknown>) => v.productId !== orderItemRec.productId);
+    };
+
+    const onApplyChanges = async (ev:Event) => {
+      if (productIdsToDelete.length > 0) {
+        deleteOrderItemConfirmDlg(ev);
+      }
+      showMessage.value = true;
+    };
+
+    const onCancel = () => {
+      emit('cancel');
+    };
+
     return {
-      loading:false,
-      orderData : this.rec,  // Assign the prop value to data to make it reactive
-    }
+      showMessage,
+      recData,
+      orderTotal,
+      onDeleteOrderItemClick,
+      changesApplied,
+      onApplyChanges,
+      onCancel,
+    };
   },
-  
-  methods:{
-    getData(){
-      let me = this;
-      Rest.getOrders(1,1000,this.$data.orderData.id).then(function(resp){
-        if (resp.data.msgType==="SUCCESS" && resp.data.list.length>0){
-
-          //me.$data.orderData = resp.data.list[0];
-
-          me.$data.orderData = resp.data.list.map(function(v){
-            let dt = new Date(v.orderDate);
-            let strOrderDate  = new Intl.DateTimeFormat('en-US', {year:'numeric', month: 'short', day:'numeric'}).format(dt);
-            let strOrderTotal = new Intl.NumberFormat('en-US', {useGrouping:true, currency: 'USD'}).format(v.orderTotal);
-            return {
-              ...v,
-              strOrderDate,
-              strOrderTotal
-            }
-          })[0];
-          me.$forceUpdate();
-        }
-      })
-      .catch(function(err){
-        console.log("REST ERROR: %O", err.response?err.response:err);
-        me.$data.loading=false;
-      });
-
-    },
-    
-    onApplyChanges(){
-      alert("Pending implementation...")
-      /*
-      let me = this;
-      let methodName = "updateProduct"
-      if ( me.$data.productData.id) {
-        methodName = "updateProduct";
-      }
-      else{
-        methodName = "addProduct";
-      }
-     
-      Rest[methodName](me.$data.productData).then(function(resp){
-        me.$data.loading=false;
-        if (resp.data.msgType==="ERROR"){
-          me.$message.error('Unable to Update/Add Product - id: '+ me.$data.productData.id)
-        }
-        else{
-          me.$message.success('Successfully Updated');
-        }
-      })
-      .catch(function(err){
-        console.log("REST ERROR: %O", err.response?err.response:err);
-      });
-      */
-
-    },
-
-    onDelete(row){
-      let me = this;
-      this.$confirm('Are you sure delete?', 'Confirm', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(() => {
-        return Rest.deleteOrderLine( me.$data.orderData.id, row.productId);
-      }).then((resp) => {
-        if (resp.data.msgType==="SUCCESS"){
-          //me.$emit("changed");
-          me.getData();
-          me.$message({message: 'Successfully deleted', type:'success'});
-        }
-        else{
-          me.$message({message: 'Unable to delete', type:'error', showClose:true, duration:6000});
-        }
-      })
-      .catch((resp) => {
-        me.$message({type:'info',message: 'Delete canceled'});          
-      });
-    },
-
-
-
-  },
-
-  mounted(){
-    console.log("id is :" + this.rec.id)
-  }
-
-}
+});
 </script>
-<style lang="scss" scoped>
-@import "~@/assets/styles/_vars.scss";
-.sw-medium{
-  width:120px;
-}
-.sw-label{
-  display:inline-block;
-  width:100px;
-  text-align:right;
-  line-height: 26px;
-  margin-right:5px;
-}
-.el-input,
-input{
-  width:200px;
-  margin-right:5px;
-  margin-top:2px;
-}
-
-.sw-gray-text{
-  display: inline-block;
-  font-size: 12px;
-  line-height: 12px;
-  vertical-align: middle;
-  color: #777;
-}
-.sw-row{
-  display:flex;
-  margin-top:2px;
-  align-items: center;
-}
-.sw-primary-color{
-  color:$sw-primary-color;
-}
-
-
-</style>
-

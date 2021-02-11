@@ -12,7 +12,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry; // Hibernate 4
-import com.app.model.user.User;
+import com.app.model.user.UserModel;
 import com.app.model.customer.CustomerModel;
 import com.app.model.employee.EmployeeModel;
 import com.app.model.product.ProductModel;
@@ -42,7 +42,7 @@ public class HibernateUtil {
             configuration.setProperty("hibernate.format_sql", "true");
 
             //Class Mappings
-            configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(UserModel.class);
             configuration.addAnnotatedClass(UserViewModel.class);
             configuration.addAnnotatedClass(EmployeeModel.class);
             configuration.addAnnotatedClass(EmployeeUserModel.class);

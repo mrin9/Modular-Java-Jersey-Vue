@@ -44,6 +44,7 @@ public class AuthenticationController extends BaseController {
         BaseResponse resp = new BaseResponse();
         if (StringUtils.isAnyBlank(uid,pwd )  ) {
             resp.setErrorMessage("Missing Username or Password");
+            resp.setTypeAndMessage(BaseResponse.MessageTypeEnum.AUTH_FAILED, "Missing Username or Password");
             return Response.status(Response.Status.UNAUTHORIZED).entity(resp).build();
         }
 
@@ -70,7 +71,7 @@ public class AuthenticationController extends BaseController {
             return Response.status(Response.Status.OK).entity(successResp).build();
         }
 
-        resp.setErrorMessage("Incorrect username/password");
+        resp.setTypeAndMessage(BaseResponse.MessageTypeEnum.AUTH_FAILED, "Incorrect username/password");
         return Response.status(Response.Status.UNAUTHORIZED).entity(resp).build();
     }
 }

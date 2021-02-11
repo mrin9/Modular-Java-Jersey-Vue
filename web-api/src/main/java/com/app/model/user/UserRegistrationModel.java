@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class UserRegistrationModel {
     @Schema(example = "mickey", required=true) private String userId;
     @Schema(example = "mickey", required=true) private String password;
-    @Schema(example = "CUSTOMER", allowableValues="ADMIN, SUPPORT, CUSTOMER", required=true) private String role;
+    @Schema(example = "CUSTOMER", allowableValues={"ADMIN", "SUPPORT", "CUSTOMER"}, required=true) private String role;
     @Schema(example = "Mouse" , required=true) private String lastName;
     @Schema(example = "Mickey", required=true) private String firstName;
     @Schema(example = "mmouse@example.com") private String email;

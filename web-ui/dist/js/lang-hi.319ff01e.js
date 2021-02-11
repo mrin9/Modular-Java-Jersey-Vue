@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["lang-hi"],{e3e4:function(n,a,e){"use strict";e.r(a),a["default"]={m:{product_name:"मृन",change_lang:"भाषा बदलो",login:"लॉग इन करें",username:"उपयोगकर्ता नाम",password:"पारण शब्द",domain:"डोमेन"}}}}]);
-//# sourceMappingURL=lang-hi.319ff01e.js.map

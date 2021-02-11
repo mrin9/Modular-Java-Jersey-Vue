@@ -6,7 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
 import javax.validation.ConstraintViolationException;
 import java.math.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+// import java.util.*;
 
 public class OrderDao {
     public static OrderModel getById(Session hbrSession, Integer orderId) {
@@ -166,5 +170,13 @@ public class OrderDao {
         return rowsEffected;
     }
 
+    public static int deleteOrderLines(Session hbrSession, Integer orderId, ArrayList<Integer> productIdList)  throws HibernateException, ConstraintViolationException {
+        String hql = "delete OrderItemModel where orderId = :orderId AND productId IN (:productIds)";
+        Query q = hbrSession.createQuery(hql);
+        q.setParameter("orderId"  , orderId);
+        q.setParameterList("productIds", productIdList);
+        int rowsEffected = q.executeUpdate();
+        return rowsEffected;
+    }
 
 }

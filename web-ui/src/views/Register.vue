@@ -1,37 +1,29 @@
 <template>
-
-  <div class="sw-register-form" >
-    <div class="sw-form-heading">
-      <mr-logo style="height:42px;width:42px;margin:5px; display:inline-block"></mr-logo>
+  <div class="m-register-form" >
+    <div class="m-form-heading">
+      <Logo style="height:42px;width:42px;margin:5px; display:inline-block"></Logo>
       <div>User Registration</div>
     </div>
     <div style="padding:10px">
-      <user-details :rec="{userId:'NEW', role:'CUSTOMER'}" :isCustomer="true" > </user-details>
+      <UserDetails :rec="{userId:'NEW', role:'CUSTOMER'}" :isCustomer="true" :isRegister="true"> </UserDetails>
     </div>
   </div>
 </template>
+<script lang='ts'>
+import { defineComponent } from 'vue';
+import Logo from '@/components/Logo.vue';
+import UserDetails from '@/views/UserDetails.vue';
 
-<script>
-import Rest from '@/rest/Rest';
-import router from '@/router';
-import MrLogo from '@/components/logo/Logo';
-import UserDetails from '@/views/UserDetails'
-
-export default {
-
+export default defineComponent({
   components: {
-    MrLogo,
-    UserDetails
-  }
-
-}
+    UserDetails,
+    Logo,
+  },
+});
 </script>
 <style lang="scss" scoped>
-@import "~@/assets/styles/_vars.scss";
-
 $sw-form-width:600px;
-
-.sw-register-form{
+.m-register-form {
   top : 24px;
   left: calc(50% - #{$sw-form-width/2});
   position: absolute;
@@ -39,18 +31,14 @@ $sw-form-width:600px;
   border-top-width: 3px;
   width:$sw-form-width;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  .sw-form-heading{
+  .m-form-heading {
     //background-color: #333;
     height:60px;
     color:#333;
     display:flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     font-size: 24px;
   }
 }
-
-
-
 </style>
-

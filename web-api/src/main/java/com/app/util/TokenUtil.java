@@ -6,17 +6,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import java.util.Date;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.app.model.user.User;
 
 public class TokenUtil {
 
@@ -24,7 +18,6 @@ public class TokenUtil {
 
     private static final long VALIDITY_TIME_MS =  2 * 60 * 60 * 1000; // 2 hours  validity
     private static String secret="mrin";
-
 
     public static String createTokenForUser(UserViewModel userView)  {
         if (userView == null) {
@@ -54,16 +47,13 @@ public class TokenUtil {
                 (Integer)claims.get("empId"),
                 (Integer)claims.get("custId")
             ) ;
-        }
-        catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e){
             log.error("Token Expired");
             return null;
-        }
-        catch (ClaimJwtException e){
+        } catch (ClaimJwtException e){
             log.error("Invalid Token");
             return null;
         }
-
     }
 
     public static boolean isExpiringIn30Minutes(String strToken) {

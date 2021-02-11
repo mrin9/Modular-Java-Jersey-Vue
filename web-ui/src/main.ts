@@ -1,66 +1,86 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
-import axios from 'axios';
-import ElementUI from 'element-ui';
+import { createApp } from 'vue';
 
-//@ts-ignore
-import locale from 'element-ui/lib/locale/lang/en'; //Its ok if this line shows error in VSCode
+// Localization
+import { createI18n } from 'vue-i18n';
 
-import '@clr/icons';
-import '@clr/icons/shapes/all-shapes';
-import '@clr/icons/clr-icons.min.css';
-import router from '@/router';
-import store from '@/store';
-import Rest from '@/rest/Rest';
-import RestUtil from '@/rest/RestUtil';
-import AppMenu from '@/menu/TopNav';
-import i18n, {loadLang} from '@/lang/index';
+// prime Vue
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/themes/saga-blue/theme.css';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 
-import App from '@/App.vue';
+// Prime Components
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputnumber';
+import Password from 'primevue/password';
+import Dropdown from 'primevue/dropdown';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
+import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmPopup from 'primevue/confirmpopup';
+import Toast from 'primevue/toast';
+import Message from 'primevue/message';
+import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
+import Sidebar from 'primevue/sidebar';
+import BlockUI from 'primevue/blockui';
+import SelectButton from 'primevue/selectbutton';
+import Menu from 'primevue/menu';
+import Chart from 'primevue/chart';
 
-Vue.config.productionTip = false;
-Vue.use(ElementUI,{locale});
+// Event Bus
+import mitt from 'mitt';
 
-// A golbal directiove 'v-sw-focus' which will set focus upon inertion into DOM
-Vue.directive('sw-focus', {
-  // When the bound element is inserted into the DOM...
-  inserted: function (el) {
-    // Focus the element
-    el.focus()
-  }
-})
+// App, Store and Router
+import router from './router';
+import store from './store';
+import App from './App.vue';
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  template: '<App/>',
-  components:{ App },
-  router,
-  store ,
-  i18n,
-  beforeCreate: function () {
-    var me = this;
+// Setup Locale translations
+const messages = {
+  en: { message: { hello: 'hello world' } },
+  ja: { message: { hello: 'こんにちは、世界' } },
+};
 
-    //Load Language bundle (if not defined)
-    if (this.$store.state.lang === undefined) {
-      this.$store.commit('lang',"en");
-    }
-    loadLang(this.$store.state.lang);
-    //Set the header Item
-    if (this.$store.state.currentHeaderItem === undefined) {
-      //this.$store.commit('currentHeaderItem',TopNav.items[0]);
-    }
+const i18n = createI18n({
+  locale: 'ja',
+  fallbackLocale: 'en',
+  messages,
+});
 
-    //Set Axios Defaults and  global response Interceptor
-    axios.defaults.timeout = RestUtil.ajaxTimeout;
-    axios.interceptors.response.use(RestUtil.globalSuccessParser.bind(this), RestUtil.globalErrorParser.bind(this));
+const AppEvent = mitt();
 
-  },
-  mounted(){
-    let me = this;
-    console.log("Mounted:(main.js)");
+const app = createApp(App)
+  .use(i18n)
+  .use(PrimeVue, { ripple: true })
+  .use(ToastService)
+  .use(ConfirmationService)
+  .use(store)
+  .use(router);
 
-  }
+app.component('Button', Button);
+app.component('InputText', InputText);
+app.component('InputNumber', InputNumber);
+app.component('Password', Password);
+app.component('Dropdown', Dropdown);
+app.component('SelectButton', SelectButton);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
+app.component('Dialog', Dialog);
+app.component('ConfirmDialog', ConfirmDialog);
+app.component('ConfirmPopup', ConfirmPopup);
+app.component('Toast', Toast);
+app.component('Message', Message);
+app.component('Sidebar', Sidebar);
+app.component('BlockUI', BlockUI);
+app.component('Menu', Menu);
+app.component('Chart', Chart);
 
-})
+// app.config.globalProperties.$AppEvent = AppEvent;
+app.mount('#app');
+app.provide('AppEvent', AppEvent);
+// eslint-disable-next-line import/prefer-default-export
+export { AppEvent };

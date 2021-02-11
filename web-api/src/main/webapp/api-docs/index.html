@@ -3,18 +3,46 @@
 <head>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes'>
-  <link rel="icon" type="image/png" href="images/favicon.ico" />
+  <link rel="icon" type="image/ico" href="images/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&family=Roboto+Mono&display=swap" rel="stylesheet">
   <script type='text/javascript' src='rapidoc-min.js'></script>
+  <style>
+    .btn {
+      background-color: #FF591E;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 13px;
+      margin: 0px 4px;
+      cursor: pointer;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+  </style>
 </head>
 <body>
-  <rapi-doc id = "thedoc" spec-url="../api/openapi.json" show-header = "false" render-style = "read" regular-font = 'Open Sans' mono-font = "Roboto Mono">
-    <div slot="nav-logo" style="width:100%; display: flex; flex-direction:column;">
-      <div style="text-align: center; padding: 20px 0 12px 0; color:#47AFE8"> Render Style</div>
-      <div style="display: flex;justify-content: center; margin: 2px 0">
-        <button class='btn medium' onclick="document.getElementById('thedoc').setAttribute('render-style', 'read')" >Read</button>
-        <button class='btn medium' onclick="document.getElementById('thedoc').setAttribute('render-style', 'view')" >View</button>
-      </div>
+  <rapi-doc
+    id = "thedoc"
+    spec-url="../api/openapi.json"
+    show-header = "false"
+    render-style = "read"
+    regular-font = 'Open Sans'
+    mono-font = "Roboto Mono"
+    sort-tags ="true"
+  >
+    <div style="display:flex; flex-direction:row; padding: 16px; align-items: center;">
+      <span style="font-size:13px; color:#777"> API Docs Powered By:
+        <a style="color: #009fff; text-decoration: none;font-weight: bold; margin-left:5px" href="https://mrin9.github.io/RapiDoc/">
+          RapiDoc
+        </a>
+      </span>
+      <div style="flex:1"></div>
+      <div style="font-weight: 700; font-size: 14px; color: #333">RENDER STYLE</div>
+      <button class='btn' onclick="document.getElementById('thedoc').setAttribute('render-style', 'read')" >Read</button>
+      <button class='btn' onclick="document.getElementById('thedoc').setAttribute('render-style', 'view')" >View</button>
     </div>
   </rapi-doc>
 </body>

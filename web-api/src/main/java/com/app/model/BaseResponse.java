@@ -3,7 +3,7 @@ package com.app.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BaseResponse {
-    public enum MessageTypeEnum {SUCCESS, ERROR, WARNING, NO_ACCESS, BAD_TOKEN};
+    public enum MessageTypeEnum {SUCCESS, ERROR, WARNING, AUTH_FAILED, NO_ACCESS, BAD_TOKEN};
 
     protected MessageTypeEnum  msgType;
     protected String  msg;

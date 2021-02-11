@@ -1,20 +1,16 @@
 @import "~@/assets/styles/_vars.scss";
-@import "~@/assets/styles/_typography.scss";
-@import "~@/assets/styles/_element_vars.scss"; /*  This contains all customizations and then loading of elements theme css */
-@import "~@/assets/styles/_sw_form.scss";
-@import "~@/assets/styles/_table.scss";
-@import "~@/assets/styles/_slideout.scss";
-@import url("https://fonts.googleapis.com/css?family=Nunito:300,400,600,700");
-
+@import "~@/assets/styles/_fonts.scss";
+// @import '~@/assets/styles/theme.css';
+// @import 'primevue/resources/primevue.min.css';
 
 body, html{
-  width:100%;
-  height:100%;
+  width:100vw;
+  height:100vh;
   margin:0;
   padding:0;
-  font-family: $sw-font-family, 'Nunito', sans-serif;
+  font-family: $regular-font, 'Nunito', sans-serif;
   font-weight:400;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing:normal;
   &::-webkit-scrollbar {width: 8px;}
   &::-webkit-scrollbar-track {background-color: transparent;}
@@ -23,67 +19,254 @@ body, html{
     border-radius:3px;
   }
 }
-
-input, textarea, select, button {
-  font-family: $sw-font-family, 'Nunito', sans-serif;
-  font-weight:400;
+:root {
+  --bg: #fafafa;
+  --fg: #333;
+  --fg-gray: #999;
+  --border-color-light: #ccc;
+  --border-color-gray: #999;
+  --border-color-dark: #666;
+  --bg-alt:#333;
+  --fg-alt: #fafafa;
+  --accent-color: #{$primary-color};
+  --primary-color: #{$primary-color};
+  --primary-color-text: #fff;
+  --primary-color-trans: #{rgba($primary-color, 0.4)};
+  --primary-color-trans-extra: #{rgba($primary-color, 0.05)};
+  --primary-color-dark: #{darken($primary-color, 10%)};
+  --border-radius: 2px;
+  --danger-color: #D32F2F;
 }
-/*
-input[type="text"],
-input[type="password"],
-.el-input{
-  width:175px;
-}
-*/
 
-.el-select{
-  .el-input{
-    width:100%;
+// General
+h1, h2, h3 {
+  font-weight: 200;
+}
+.p-component,
+.p-inputtext {
+  font-family: $regular-font, 'Nunito', sans-serif;
+}
+
+.m-gray-text{
+  color: var(--fg-gray);
+}
+.m-sub-heading {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.m-font-regular{
+  font-weight:normal;
+  font-size: .8rem;
+}
+.m-font-bold{
+  font-weight:700;
+  font-size: .8rem;
+}
+.m-label-size-1{ width:80px; }
+.m-label-size-2{ width:100px; }
+.m-label-size-3{ width:125px; }
+.m-label-size-4{ width:150px; }
+.m-label-size-5{ width:200px; }
+.m-label-size-6{ width:300px; }
+
+// Data Table
+.p-component .p-column-title  {
+  font-size: .75rem;
+}
+.p-datatable-tbody {
+  font-size: .8rem;
+}
+.p-datatable.m-border {
+  border: 1px solid  var(--border-color-gray);
+  padding: 0 2px;
+  border-radius: var(--border-radius);
+}
+
+.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
+  background-color: var(--primary-color-trans-extra);
+}
+
+// Paginator
+.p-component.p-paginator {
+  .p-link {
+    font-size: 0.75rem;
   }
 }
+.p-link:focus {
+  box-shadow: 0 0 0 0.15rem var(--primary-color-trans);
+}
 
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  height:100%;
-  width:100%;
-  margin:0;
-  padding:0;
-  &::-webkit-scrollbar {width: 8px;}
-  &::-webkit-scrollbar-track {background-color: transparent;}
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.4);
-    border-radius:3px;
+.p-paginator .p-paginator-pages .p-paginator-page,
+.p-paginator .p-paginator-first, 
+.p-paginator .p-paginator-prev, 
+.p-paginator .p-paginator-next, 
+.p-paginator .p-paginator-last {
+  min-width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--border-radius);
+}
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  border-color: var(--primary-color-trans);
+  background-color: var(--primary-color-trans);
+}
+.p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
+  background-color: var(--primary-color-trans-extra);
+}
+
+// Button
+.p-button {
+  border-radius: 2px;
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color-text);
+}
+.p-button.p-button-sm {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  min-height: 1.875rem;
+}
+.p-button:enabled:active,
+.p-button:enabled:hover {
+  background: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}
+
+// Button - Icon-only
+.p-button.p-button-icon-only.p-button-rounded {
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+// Button - Text 
+.p-button.p-button-text {
+  color: var(--primary-color);
+}
+
+.p-button.p-button-text:enabled:hover,
+.p-button.p-button-text:enabled:active {
+  color: var(--primary-color-dark);
+  background: var(--primary-color-trans-extra);
+}
+
+// Button - Outline
+.p-button.p-button-outlined {
+  color: var(--primary-color);
+}
+.p-button.p-button-outlined:enabled:active, 
+.p-button.p-button-outlined:enabled:hover {
+  color: var(--primary-color);
+  background: var(--primary-color-trans-extra);
+}
+.p-button:active,
+.p-button:focus {
+  box-shadow: 0 0 0 0.15rem var(--primary-color-trans);
+}
+
+// Input
+.p-inputtext {
+  border-radius: var(--border-radius);
+}
+.p-inputtext:enabled:hover {
+  border-color: var(--primary-color);
+}
+.p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 0.15rem var(--primary-color-trans);
+  border-color: var(--primary-color);
+}
+
+// Input Addons
+.p-inputgroup-addon {
+  padding: 0.4375rem 0.4375rem;
+}
+.p-inputgroup-addon:first-child, 
+.p-inputgroup button:first-child, 
+.p-inputgroup input:first-child, 
+.p-inputgroup > .p-inputwrapper:first-child, 
+.p-inputgroup > .p-inputwrapper:first-child > .p-inputtext {
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.p-password-panel.p-component {
+  margin-top: 2px;
+  font-size: 0.875rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color-gray);
+}
+
+// SelectButton
+.p-component.p-selectbutton.p-inputtext-sm {
+  .p-button {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    min-height: 1.875rem;
   }
 }
-
-.sw-toolbar {
-  display:flex;
-  align-items:center;
-  flex-direction: row;
-  margin:16px 0 5px 0;
+.p-selectbutton .p-button.p-highlight, 
+.p-selectbutton .p-button.p-highlight:hover {
+  background: var(--primary-color);
+  border-color:var(--primary-color);
+  color: var(--primary-color-text);
 }
 
-.sw-section-heading{
-  font-size: 14px;
-  font-weight:bold;
-  margin: 16px 0 8px 0;
+// Dropdown
+.p-dropdown {
+  border-radius: var(--border-radius);
+  &.p-inputtext-sm {
+    max-height: 1.875rem;
+  }
+}
+.p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-color);
+}
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.15rem var(--primary-color-trans);
 }
 
-span.sw-section-heading{
-  display:inline-block;
-  margin-right:16px;
+.p-dropdown-panel {
+  font-size: .8rem;
+  border-radius: var(--border-radius);
 }
-.sw-gray-text{
-  font-size: 12px;
-  line-height: 12px;
-  vertical-align: middle;
-  color: #999;
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  color: var(--primary-color-dark);
+  background: var(--primary-color-trans-extra);
 }
 
-//Quill editor overrides
-.ql-snow .ql-editor pre.ql-syntax {
-  background-color:transparent;
-  color: #555;
+// Dialog
+.p-dialog .p-dialog-header .p-dialog-title {
+  font-weight: 200;
+}
+
+// Toast
+.p-toast.p-component {
+  font-size: 0.8rem;
+}
+.p-toast .p-toast-message .p-toast-message-content .p-toast-summary {
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+// Message
+.p-message .p-message-wrapper {
+  padding: .5rem 1rem;
+}
+
+// Sidebar
+.p-sidebar .p-sidebar-close:focus {
+  box-shadow: 0 0 0 0.15rem var(--primary-color-trans);
+}
+.p-sidebar .p-sidebar-close:enabled:hover {
+  background: var(--primary-color-trans-extra);
+}
+
+// Menu
+.p-menu{
+  border-radius: var(--border-radius);
+}
+.p-menu.m-small {
+  font-size: 0.875rem;
+  .p-menuitem-link {
+    padding: 0.50rem 0.75rem;
+  }
 }

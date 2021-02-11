@@ -156,12 +156,12 @@ public class UserController extends BaseController {
       responses = { @ApiResponse(content = @Content(schema = @Schema(implementation = BaseResponse.class)))}
     )
     public Response deleteUser(
-        @Parameter(description="User Id", example="mdaniel") @PathParam("userId") String userId,
+        @Parameter(description="User ID", example="mdaniel") @PathParam("userId") String userId,
         @Parameter(description="Delete associated orders, customer/employee data also", example="true") @DefaultValue("true")  @QueryParam("delete-related-data") boolean deleteRelatedData
     ) {
         BaseResponse resp = new BaseResponse();
         if (userId.equals("admin") || userId.equals("support") || userId.equals("customer")){
-            resp.setErrorMessage("Cannot delete reserved User Ids - 'admin', 'support' or 'customer'");
+            resp.setErrorMessage("Cannot delete reserved User IDs - (admin, support or customer)");
             return Response.ok(resp).build();
         }
 
@@ -198,7 +198,7 @@ public class UserController extends BaseController {
         BaseResponse resp = new BaseResponse();
         UserViewModel userFromToken = (UserViewModel)securityContext.getUserPrincipal();  // securityContext is defined in BaseController
         //Customers can query their own cart only
-        if (userFromToken==null || userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_ADMIN)==false ){
+        if (userFromToken==null || !userFromToken.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_ADMIN)){
             if (registerObj.getRole().equalsIgnoreCase(Constants.UserRoleConstants.ROLE_ADMIN)) {
                 resp.setErrorMessage("Role cannot be ADMIN ");
                 return Response.ok(resp).build();
@@ -208,7 +208,7 @@ public class UserController extends BaseController {
         Session hbrSession = HibernateUtil.getSession();
         hbrSession.setFlushMode(FlushMode.ALWAYS);
 
-        User user;
+        UserModel userModel;
         try {
             hbrSession.beginTransaction();
             if (registerObj.getRole().equalsIgnoreCase("CUSTOMER")){
@@ -226,7 +226,7 @@ public class UserController extends BaseController {
                     registerObj.getCountry()
                 );
                 hbrSession.save(cust);
-                user = new User(registerObj.getUserId(), registerObj.getPassword(), registerObj.getRole(), null, cust.getId());
+                userModel = new UserModel(registerObj.getUserId(), registerObj.getPassword(), registerObj.getRole(), null, cust.getId());
             } else {
                 EmployeeModel emp = new EmployeeModel(
                     registerObj.getLastName(),
@@ -245,9 +245,9 @@ public class UserController extends BaseController {
                     registerObj.getCountry()
                 );
                 hbrSession.save(emp);
-                user = new User(registerObj.getUserId(), registerObj.getPassword(), registerObj.getRole(), emp.getId(), null);
+                userModel = new UserModel(registerObj.getUserId(), registerObj.getPassword(), registerObj.getRole(), emp.getId(), null);
             }
-            hbrSession.save(user);
+            hbrSession.save(userModel);
             hbrSession.getTransaction().commit();
             resp.setSuccessMessage("User Registered Successfully");
         } catch (HibernateException | ConstraintViolationException  e) {

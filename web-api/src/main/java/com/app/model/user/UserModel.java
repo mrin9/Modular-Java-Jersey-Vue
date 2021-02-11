@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable, Principal {
+public class UserModel implements Serializable, Principal {
     @Id
     @Column(name = "user_id") private String userId;
     private String password;
@@ -23,9 +23,9 @@ public class User implements Serializable, Principal {
     private Integer customerId;
 
     //Constructors
-    public User(){}
+    public UserModel(){}
 
-    public User(String userId, String password, String role, Integer employeeId, Integer customerId){
+    public UserModel(String userId, String password, String role, Integer employeeId, Integer customerId){
         this.setUserId(userId);
         this.setPassword(password);
         this.setRole(role);

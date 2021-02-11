@@ -18,16 +18,17 @@ public class DatabaseService {
     public static void initDB() {
         try {
             getDBConnection();
-            //dbWebServer = Server.createWebServer("-webPort","9000", "-webAllowOthers").start();
-            dbWebServer = Server.createTcpServer("-tcpPort", "9092", "-tcpAllowOthers").start();
+            dbWebServer = Server.createWebServer("-webPort","9000", "-webAllowOthers").start();
+            // dbWebServer = Server.createTcpServer("-tcpPort", "9092", "-tcpAllowOthers").start(); // If you dont want a web console
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        log.info("\n\n *** Database Initiated  ***"+
-            "\n DB Console : " + dbWebServer.getURL()  +
-            "\n JDBC URL   : jdbc:h2:mem:test" +
-            "\n User       : "+DB_USER +
-            "\n Password   : "+DB_PASSWORD +
+        log.info("\n\n *** Database Console ***"+
+            "\n DB Console   : " + dbWebServer.getURL() +
+            "\n Driver Class : org.h2.Driver" +
+            "\n JDBC URL     : jdbc:h2:mem:test" +
+            "\n User         : "+DB_USER +
+            "\n Password     : "+DB_PASSWORD +
             "\n *** *** *** *** *** \n"
         );
     }
@@ -39,7 +40,6 @@ public class DatabaseService {
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage());
         }
-
         try {
             dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
             return dbConnection;
