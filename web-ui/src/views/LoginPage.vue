@@ -92,7 +92,8 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      store.commit('baseUrl', 'http://localhost:8080/');
+      // store.commit('baseUrl', 'http://localhost:8080/');
+      store.commit('baseUrl', `${window.location.origin}/`);
     });
 
     return {
