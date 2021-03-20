@@ -2,7 +2,7 @@ package com.app.dao;
 
 import com.app.model.customer.CustomerModel;
 import org.hibernate.*;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 public class CustomerDao {
 

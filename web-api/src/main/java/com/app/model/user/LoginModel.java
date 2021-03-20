@@ -8,7 +8,7 @@ public class LoginModel {
     @Schema(description = "User Name", example = "admin", required=true)
     private String  username;
 
-    @Schema(description = "Password", example = "admin", required=true)
+    @Schema(description = "Password", example = "password", required=true)
     private String  password;
 
     public String getUsername() {return username;}

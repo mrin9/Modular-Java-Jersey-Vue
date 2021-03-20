@@ -2,7 +2,7 @@ package com.app.dao;
 
 import com.app.model.employee.EmployeeModel;
 import org.hibernate.*;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 public class EmployeeDao {
     public static EmployeeModel getById(Session hbrSession, Integer employeeId){

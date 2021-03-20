@@ -14,13 +14,11 @@
 
   <!-- Dependencies -->
   <dependencies>
-
-    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version>
-      <scope>provided</scope>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.1.1</version>
     </dependency>
 
     <!-- Tomcat -->
@@ -53,11 +51,7 @@
       <artifactId>hibernate-c3p0</artifactId>
       <version>${hibernate-version}</version>
     </dependency>
-    <dependency>
-      <groupId>javax.activation</groupId>
-      <artifactId>activation</artifactId>
-      <version>1.1.1</version>
-    </dependency>
+
     <!-- Jersey -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
@@ -112,79 +106,23 @@
     <!-- Swagger -->
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <version>2.1.6</version>
+      <artifactId>swagger-annotations-jakarta</artifactId>
+      <version>${swagger-version}</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-core</artifactId>
-      <version>2.1.6</version>
+      <artifactId>swagger-core-jakarta</artifactId>
+      <version>${swagger-version}</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-jaxrs2</artifactId>
-      <version>2.1.6</version>
+      <artifactId>swagger-jaxrs2-jakarta</artifactId>
+      <version>${swagger-version}</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-models</artifactId>
-      <version>2.1.6</version>
-    </dependency>
-    <!--
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-annotations</artifactId>
+      <artifactId>swagger-models-jakarta</artifactId>
       <version>${swagger-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-core</artifactId>
-      <version>${swagger-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-jaxrs</artifactId>
-      <version>${swagger-version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.ws.rs</groupId>
-          <artifactId>jsr311-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-jersey2-jaxrs</artifactId>
-      <version>${swagger-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-models</artifactId>
-      <version>${swagger-version}</version>
-    </dependency>
-    -->
-
-    <!-- Javax Annotation -->
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <version>1.3.2</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jaxb</groupId>
-      <artifactId>jaxb-core</artifactId>
-      <version>2.3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jaxb</groupId>
-      <artifactId>jaxb-runtime</artifactId>
-      <version>2.3.0</version>
     </dependency>
 
     <!-- For ASCII art -->

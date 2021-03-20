@@ -1,9 +1,9 @@
 package com.app.filters;
 
 import java.io.IOException;
-import javax.annotation.Priority;
-import javax.ws.rs.container.*;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.container.*;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 @Priority(0)
 public class CORSResponseFilter  implements ContainerResponseFilter {

@@ -16,11 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import javax.annotation.security.RolesAllowed;
-import javax.validation.ConstraintViolationException;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.List;
 

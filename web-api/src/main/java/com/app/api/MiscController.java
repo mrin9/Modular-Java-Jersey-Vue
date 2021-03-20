@@ -1,12 +1,12 @@
 package com.app.api;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import javax.annotation.security.PermitAll;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
+import jakarta.annotation.security.PermitAll;
 
 import com.app.DatabaseService;
 import com.app.model.BaseResponse;
-import javax.annotation.security.RolesAllowed;
+import jakarta.annotation.security.RolesAllowed;
 
 import com.app.util.Constants.UserRoleConstants;
 import io.swagger.v3.oas.annotations.Operation;

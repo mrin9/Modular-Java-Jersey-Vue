@@ -4,7 +4,7 @@ import com.app.model.order.OrderModel;
 import com.app.model.order.OrderWithNestedDetailModel;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import java.math.*;
 import java.util.ArrayList;
 import java.util.Date;

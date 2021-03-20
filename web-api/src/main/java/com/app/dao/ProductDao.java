@@ -2,7 +2,7 @@ package com.app.dao;
 
 import com.app.model.product.ProductModel;
 import org.hibernate.*;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 
 public class ProductDao {

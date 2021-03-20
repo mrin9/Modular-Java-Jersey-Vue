@@ -3,7 +3,7 @@ package com.app.dao;
 import com.app.model.cart.CartModel;
 import com.app.model.cart.CartViewModel;
 import org.hibernate.*;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 
 public class CartDao {

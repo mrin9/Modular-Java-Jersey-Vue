@@ -1,9 +1,9 @@
 package com.app;
 
-import javax.servlet.ServletContext;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
+import jakarta.servlet.ServletContext;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.UriInfo;
 
 import com.app.api.HandleInputJsonParseException;
 import com.app.util.HibernateUtil;
@@ -30,7 +30,6 @@ public class JerseyApplication extends ResourceConfig {
 
     @Context
     UriInfo uri;
-
     public JerseyApplication(@Context ServletContext servletContext) {
         log.info(String.format("\n\n " +
           "*** Web App Initiated *** " +
