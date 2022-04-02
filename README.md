@@ -10,7 +10,7 @@ Allow about 2-3 mins for the instance to start
 Component          | Technology
 ---                | ---
 Backend Lang       | Java 11 (with modules)
-Restfull Framwork  | Jersey 
+Restfull Framework  | Jersey 
 Container          | Tomcat 9 (Embeded Mode)
 Server Build Tools | maven 3.5.4 (Creates a Executable Jar with embeded tomcat)
 Security           | Token Based ([JWT](https://github.com/auth0/java-jwt) )
